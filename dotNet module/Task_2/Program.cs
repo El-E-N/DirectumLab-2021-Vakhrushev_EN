@@ -56,72 +56,96 @@ namespace Task_2
             return durationTime;
         }
     }*/
+
+    /// <summary>
+    /// Класс встречи
+    /// </summary>
     public abstract class Meeting
     {
-        private DateTime start_time;
-        private DateTime end_time;
-        private TimeSpan duration_time;
+        private DateTime startTime; 
+        private DateTime endTime;
+        private TimeSpan durationTime; // продолжительность
+
         public DateTime StartTime
         {
-            get { return start_time; }
-            set { start_time = value; }
+            get { return this.startTime; }
+            set { this.startTime = value; }
         }
+
         public DateTime EndTime
         {
-            get { return end_time; }
-            set { end_time = value; }
+            get { return this.endTime; }
+            set { this.endTime = value; }
         }
+
+        /// <summary>
+        /// будет высчитываться автоматически при запросе продолжительности 
+        /// </summary>
         public TimeSpan DurationTime
         {
             get 
             { 
-                duration_time = end_time.Subtract(start_time);
-                return duration_time;
+                this.durationTime = this.endTime.Subtract(this.startTime);
+                return this.durationTime;
             }
         }
     }
-    interface IRemind
+
+    /// <summary>
+    /// интерфейс напоминания
+    /// </summary>
+    public interface IRemind
     {
         public DateTime EventTime { get; set; }
     }
+
+    /// <summary>
+    /// класс встречи с напоминанием
+    /// </summary>
     public class MeetingWithRemind : Meeting, IRemind
     {
-        private static System.Timers.Timer timer;
+        private System.Timers.Timer timer;
+
         public MeetingWithRemind(DateTime start_time, DateTime end_time, DateTime event_time)
         {
             EventTime = event_time;
             EndTime = end_time;
             StartTime = start_time;
-            timer = new System.Timers.Timer(5000);
-            timer.Elapsed += Remind;
-            timer.AutoReset = true;
-            timer.Enabled = true;
+            this.timer = new System.Timers.Timer(60000); // 60 секунд
+            this.timer.Elapsed += Remind; // добавление события
+            this.timer.AutoReset = true; // повторять много раз
+            this.timer.Enabled = true; // включить таймер
         }
-        private DateTime event_time;
+
+        private DateTime eventTime;
+
         public DateTime EventTime
         {
-            get { return event_time; }
-            set { event_time = value; }
+            get { return this.eventTime; }
+            set { this.eventTime = value; }
         }
+
         private void Remind(object source, System.Timers.ElapsedEventArgs e)
         {
             if (DateTime.Now > EventTime)
             {
                 Console.WriteLine("Событие началось!");
-                timer.Stop();
+                this.timer.Stop(); // остановка, чтобы больше не работал таймер
             }
         }
     }
+
     public class Program
     {
         public static void Main(string[] args)
         {
             DateTime start1 = new DateTime();
             DateTime end1 = new DateTime(2021, 3, 2, 22, 49, 30);
-            DateTime event1 = new DateTime(2021, 3, 2, 23, 15, 00);
+            DateTime event1 = new DateTime(2021, 3, 3, 18, 43, 00);
             MeetingWithRemind mwr = new MeetingWithRemind(start1, end1, event1);
-            while (DateTime.Now < new DateTime(2021, 3, 3, 0, 0, 0)) { }
-            //Console.ReadKey();
+            // while (DateTime.Now < new DateTime(2021, 3, 4, 0, 0, 0)) { }
+            Console.ReadKey(); // нужно подождать для примера, пока событие не сработает, 
+                               // и нажать любую клавишу для выхода из программы
         }
     }
 }
