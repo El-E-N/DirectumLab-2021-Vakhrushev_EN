@@ -56,7 +56,7 @@ namespace Task_2
             return durationTime;
         }
     }*/
-    public class Meeting
+    public abstract class Meeting
     {
         private DateTime start_time;
         private DateTime end_time;
