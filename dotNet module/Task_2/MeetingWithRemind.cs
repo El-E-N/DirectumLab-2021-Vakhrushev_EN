@@ -8,7 +8,7 @@ namespace Task_2
     /// </summary>
     public class MeetingWithRemind : Meeting, IRemind
     {
-        private System.Timers.Timer timer;
+        private Timer timer;
 
         public MeetingWithRemind(DateTime startTime, DateTime endTime, DateTime eventTime)
         {
@@ -21,13 +21,7 @@ namespace Task_2
             this.timer.Enabled = true; // включить таймер
         }
 
-        private DateTime eventTime;
-
-        public DateTime EventTime
-        {
-            get { return this.eventTime; }
-            set { this.eventTime = value; }
-        }
+        public DateTime EventTime { get; set; }
 
         private void Remind(object source, System.Timers.ElapsedEventArgs e)
         {
