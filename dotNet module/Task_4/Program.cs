@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
+using System.Text;
 
 /// <summary>
 /// Тип прав.
@@ -237,6 +239,39 @@ namespace Task_4
             logger.Dispose();
         }
 
+        /// <summary>
+        /// Дополнительное задание
+        /// </summary>
+        /// <remarks>Операции конкатенации и взятия подстроки работают дольше у StringBuilder</remarks>
+        public static void AdditionalTask()
+        {
+            string str = string.Empty;
+            StringBuilder strBuilder = new StringBuilder();
+            Stopwatch stopwatch = new Stopwatch();
+            Console.WriteLine("Конкатенация строк:");
+            stopwatch.Start();
+            str += "a";
+            str += "bc";
+            str += "def";
+            stopwatch.Stop();
+            Console.WriteLine("string: " + stopwatch.ElapsedTicks);
+            stopwatch.Start();
+            strBuilder.Append("a");
+            strBuilder.Append("bc");
+            strBuilder.Append("def");
+            stopwatch.Stop();
+            Console.WriteLine("StringBuilder: " + stopwatch.ElapsedTicks);
+            Console.WriteLine("Получение подстроки:");
+            stopwatch.Start();
+            var text = str.Substring(1, 4);
+            stopwatch.Stop();
+            Console.WriteLine("string: " + text + " " + stopwatch.ElapsedTicks);
+            stopwatch.Start();
+            text = strBuilder.ToString(1, 4);
+            stopwatch.Stop();
+            Console.WriteLine("StringBuilder: " + text + " " + stopwatch.ElapsedTicks);
+        }
+
         public static void Main(string[] args)
         {
             Console.WriteLine("\nЗадание 1\n");
@@ -254,6 +289,9 @@ namespace Task_4
 
             Console.WriteLine("\nЗадание 5\n");
             Task5("tempLog.log");
+
+            Console.WriteLine("\nДополнительное задание\n");
+            AdditionalTask();
         }
     }
 }
