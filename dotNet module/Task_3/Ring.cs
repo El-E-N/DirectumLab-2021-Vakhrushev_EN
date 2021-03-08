@@ -16,7 +16,7 @@ namespace Task_3
         public Ring(Point coord, double r1, double r2)
             : base(1)
         {
-            this.Coordinates = new Point[1] { coord };
+            this.Vertices = new Point[1] { coord };
             this.RadiusMin = r1;
             this.RadiusMax = r2;
         }
@@ -25,18 +25,18 @@ namespace Task_3
 
         public double RadiusMax { get; set; }
 
-        public double Area() => Math.PI * ((this.RadiusMax * this.RadiusMax) - (this.RadiusMin * this.RadiusMin));
+        public double Area { get => Math.PI * ((this.RadiusMax * this.RadiusMax) - (this.RadiusMin * this.RadiusMin)); }
 
         /// <summary>
         /// Длина меньшей окружности
         /// </summary>
         /// <returns></returns>
-        public double LengthMin() => 2 * Math.PI * this.RadiusMin;
+        public double LengthMin { get => 2 * Math.PI * this.RadiusMin; }
 
         /// <summary>
         /// Длина большей окружности
         /// </summary>
         /// <returns></returns>
-        public double LengthMax() => 2 * Math.PI * this.RadiusMax;
+        public double LengthMax { get => 2 * Math.PI * this.RadiusMax; }
     }
 }

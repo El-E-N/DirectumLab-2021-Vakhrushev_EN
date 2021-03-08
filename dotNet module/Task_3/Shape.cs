@@ -7,14 +7,14 @@
     {
         public Shape(int count)
         {
-            this.Coordinates = new Point[count];
+            this.Vertices = new Point[count];
         }
 
         public Shape(Point[] coords)
         {
-            this.Coordinates = coords;
+            this.Vertices = coords;
         }
 
-        public Point[] Coordinates { get; set; }
+        public Point[] Vertices { get; set; }
     }
 }
