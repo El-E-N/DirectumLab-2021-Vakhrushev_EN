@@ -5,7 +5,7 @@ namespace Task_3
     public class Program
     {
         public static void Main(string[] args)
-        { 
+        {    
             Point point1 = new Point(1, 2);
             Point point2 = new Point(-1, -2);
             Point point3 = new Point(0, 1);
