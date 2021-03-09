@@ -7,25 +7,20 @@ namespace Task_3
     /// </summary>
     public class Ring : Shape
     {
-        public Ring()
-            : base(1)
+        public Ring(Point center, double r1, double r2)
         {
-            (RadiusMin, RadiusMax) = (0, 0);
-        }
-
-        public Ring(Point coord, double r1, double r2)
-            : base(1)
-        {
-            this.Vertices = new Point[1] { coord };
+            this.Center = center;
             this.RadiusMin = r1;
             this.RadiusMax = r2;
         }
 
-        public double RadiusMin { get; set; }
+        private Point Center { get; set;  }
 
-        public double RadiusMax { get; set; }
+        public double RadiusMin { get; set; } = 0;
 
-        public double Area { get => Math.PI * ((this.RadiusMax * this.RadiusMax) - (this.RadiusMin * this.RadiusMin)); }
+        public double RadiusMax { get; set; } = 0;
+
+        public override double Area { get => Math.PI * ((this.RadiusMax * this.RadiusMax) - (this.RadiusMin * this.RadiusMin)); }
 
         /// <summary>
         /// Длина меньшей окружности

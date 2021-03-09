@@ -9,11 +9,12 @@ namespace Task_3
     {
         public double Radius { get; set; }
 
-        public Circle(Point coord, double r)
-            : base(1)
+        public Point Center { get; set; }
+
+        public Circle(Point center, double radius)
         {
-            this.Vertices = new Point[1] { coord };
-            this.Radius = r;
+            this.Center = center;
+            this.Radius = radius;
         }
 
         public double Length { get => 2 * Math.PI * this.Radius; } // длина окружности

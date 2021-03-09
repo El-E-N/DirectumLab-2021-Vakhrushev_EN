@@ -7,9 +7,9 @@ namespace Task_3
     /// </summary>
     public class Round : Circle
     {
-        public Round(Point coord, double r)
-            : base(coord, r) { }
+        public Round(Point center, double r)
+            : base(center, r) { }
 
-        public double Area { get => Math.PI * this.Radius * this.Radius; }
+        public override double Area { get => Math.PI * this.Radius * this.Radius; }
     }
 }
