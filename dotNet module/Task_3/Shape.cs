@@ -5,16 +5,16 @@
     /// </summary>
     public class Shape
     {
-        public Shape(int count)
+        public Shape(double x = 0, double y = 0)
         {
-            this.Vertices = new Point[count];
+            this.X = x;
+            this.Y = y;
         }
 
-        public Shape(Point[] coords)
-        {
-            this.Vertices = coords;
-        }
+        public double X { get; set; }
 
-        public Point[] Vertices { get; set; }
+        public double Y { get; set; }
+
+        public virtual double Area { get => 0; }
     }
 }
