@@ -7,76 +7,34 @@ namespace Task_3
     /// </summary>
     public class Square : Polygon
     {
-        public Point Vertice1 { get; set; }
+        public Point Vertice1 { get; }
 
-        public Point Vertice2 { get; set; }
+        public Point Vertice2 { get; }
 
-        public Point Vertice3 { get; set; }
+        public Point Vertice3 { get; }
 
-        public Point Vertice4 { get; set; }
+        public Point Vertice4 { get; }
 
-        public override double Area
+        public override double Area { get => this.GetArea(this.Vertice1, this.Vertice2, this.Vertice3, this.Vertice4); }
+
+        public double Perimeter { get => this.GetPerimeter(this.Vertice1, this.Vertice2, this.Vertice3, this.Vertice4); }
+
+        /// <summary>
+        /// Конструктор квадрата
+        /// </summary>
+        /// <param name="p">Левая верхняя вершина</param>
+        /// <param name="side">Длина стороны</param>
+        public Square(Point p, double side)
         {
-            get
+            if (side >= 0)
             {
-                if (this.EqualityOfAllSides())
-                {
-                    if (this.CheckOnPythagoras(this.Vertice1, this.Vertice2, this.Vertice3) && this.CheckOnPythagoras(this.Vertice2, this.Vertice3, this.Vertice4))
-                        return this.GetArea(this.Vertice1, this.Vertice2, this.Vertice3, this.Vertice4);
-                    else
-                        Console.WriteLine("Углы квадрата не прямые!");
-                }
-                else
-                    Console.WriteLine("Все стороны квадрата не равны!");
-                return 0;
-            }
-        }
-
-        public double Perimeter
-        {
-            get
-            {
-                if (this.EqualityOfAllSides())
-                {
-                    if (this.CheckOnPythagoras(this.Vertice1, this.Vertice2, this.Vertice3) && this.CheckOnPythagoras(this.Vertice2, this.Vertice3, this.Vertice4))
-                        return this.GetPerimeter(this.Vertice1, this.Vertice2, this.Vertice3, this.Vertice4);
-                    else
-                        Console.WriteLine("Углы квадрата не прямые!");
-                }
-                else
-                    Console.WriteLine("Все стороны квадрата не равны!");
-                return 0;
-            }
-        }
-
-        public Square(Point[] verts)
-        {
-            if (verts.Length == 4)
-            {
-                // если все стороны равны
-                if (this.EqualityOfAllSides())
-                {
-                    // углы прямые по теореме Пифагора
-                    if (this.CheckOnPythagoras(verts[0], verts[1], verts[2]) && this.CheckOnPythagoras(verts[1], verts[2], verts[3]))
-                    {
-                        this.Vertice1 = verts[0];
-                        this.Vertice2 = verts[1];
-                        this.Vertice3 = verts[2];
-                        this.Vertice4 = verts[3];
-                    }
-                    else
-                        Console.WriteLine("Углы квадрата не прямые!");
-                }
-                else
-                    Console.WriteLine("Все стороны квадрата не равны!");
+                this.Vertice1 = p;
+                this.Vertice2 = new Point(p.X + side, p.Y);
+                this.Vertice3 = new Point(p.X + side, p.Y + side);
+                this.Vertice4 = new Point(p.X, p.Y + side);
             }
             else
-                Console.WriteLine("Нужно ввести координаты четырех вершин квадрата!");
+                Console.WriteLine("Длина стороны квадрата не должна быть отрицательной!");
         }
-
-        private bool EqualityOfAllSides() =>
-            this.GetLengthOfSide(this.Vertice1, this.Vertice2) == this.GetLengthOfSide(this.Vertice2, this.Vertice3)
-                    && this.GetLengthOfSide(this.Vertice2, this.Vertice3) == this.GetLengthOfSide(this.Vertice3, this.Vertice4)
-                    && this.GetLengthOfSide(this.Vertice3, this.Vertice4) == this.GetLengthOfSide(this.Vertice1, this.Vertice4);
     }
 }

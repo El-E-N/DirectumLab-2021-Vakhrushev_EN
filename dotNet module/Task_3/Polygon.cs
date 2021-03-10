@@ -35,8 +35,5 @@ namespace Task_3
             sum += this.GetLengthOfSide(vertices[vertices.Length - 1], vertices[0]);
             return sum;
         }
-
-        protected bool CheckOnPythagoras(Point p1, Point p2, Point p3) => Math.Round(Math.Pow(this.GetLengthOfSide(p1, p2), 2)
-            + Math.Pow(this.GetLengthOfSide(p2, p3), 2), 5) == Math.Round(Math.Pow(this.GetLengthOfSide(p1, p3), 2), 5);
     }
 }

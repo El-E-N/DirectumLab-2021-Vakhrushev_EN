@@ -5,26 +5,21 @@
     /// </summary>
     public class Triangle : Polygon
     {
-        public Point Vertice1 { get; set; }
+        public Point Vertice1 { get; }
 
-        public Point Vertice2 { get; set; }
+        public Point Vertice2 { get; }
 
-        public Point Vertice3 { get; set; }
+        public Point Vertice3 { get; }
 
         public override double Area { get => this.GetArea(this.Vertice1, this.Vertice2, this.Vertice3); }
 
         public double Perimeter { get => this.GetPerimeter(this.Vertice1, this.Vertice2, this.Vertice3); }
 
-        public Triangle(Point[] verts)
+        public Triangle(Point p1, Point p2, Point p3)
         {
-            if (verts.Length == 3)
-            {
-                this.Vertice1 = verts[0];
-                this.Vertice2 = verts[1];
-                this.Vertice3 = verts[2];
-            }
-            else
-                System.Console.WriteLine("Нужно ввести координаты трех вершин треугольника!");
+            this.Vertice1 = p1;
+            this.Vertice2 = p2;
+            this.Vertice3 = p3;
         }
     }
 }
