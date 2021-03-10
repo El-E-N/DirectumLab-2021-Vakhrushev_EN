@@ -21,10 +21,8 @@ namespace Task_4
         {
             if (disposing)
             {
-                if (this.logWriter != null)
-                    this.logWriter.Close();
-                if (this.logFile != null)
-                    this.logFile.Close();
+                this.logWriter?.Close();
+                this.logFile?.Close();
             }
         }
 

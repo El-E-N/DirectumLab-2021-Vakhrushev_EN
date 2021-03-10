@@ -6,7 +6,7 @@ namespace Task_4
     /// <summary>
     /// Возможность ввода пустого значения для окончания
     /// </summary>
-    public class MeetingWithBlankEndTime : Meeting
+    public class MeetingWithIndefiniteTime : Meeting
     {
         public new DateTime? EndTime { get; set; } = null;
 
