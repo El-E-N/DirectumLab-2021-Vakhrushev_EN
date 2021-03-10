@@ -12,7 +12,12 @@
             this.Value = value;
         }
 
-        public override bool Equals(object obj) => ((StringValue)obj).Value == this.Value;
+        public override bool Equals(object obj)
+        {
+            if (obj is StringValue)
+                return ((StringValue)obj).Value == this.Value;
+            throw new System.InvalidCastException();
+        }
 
         public override int GetHashCode() => this.Value.GetHashCode();
 
