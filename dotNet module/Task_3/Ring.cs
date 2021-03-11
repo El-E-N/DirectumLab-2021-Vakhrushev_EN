@@ -14,7 +14,7 @@ namespace Task_3
             this.RadiusMax = r2;
         }
 
-        private Point Center { get; set;  }
+        public Point Center { get; set;  }
 
         public double RadiusMin { get; set; } = 0;
 
@@ -33,5 +33,9 @@ namespace Task_3
         /// </summary>
         /// <returns></returns>
         public double LengthMax { get => 2 * Math.PI * this.RadiusMax; }
+
+        public override double X { get => this.Center.X; }
+
+        public override double Y { get => this.Center.Y; }
     }
 }
