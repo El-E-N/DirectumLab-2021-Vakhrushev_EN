@@ -14,9 +14,9 @@
 
         public override bool Equals(object obj)
         {
-            if (obj is StringValue)
-                return ((StringValue)obj).Value == this.Value;
-            throw new System.InvalidCastException();
+            if (obj is StringValue strValue)
+                return strValue.Value == this.Value;
+            throw new System.ArgumentException();
         }
 
         public override int GetHashCode() => this.Value.GetHashCode();
