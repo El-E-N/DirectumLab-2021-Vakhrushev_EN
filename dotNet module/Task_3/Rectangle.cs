@@ -17,15 +17,8 @@ namespace Task_3
 
         public override double Area { get => this.GetArea(this.Vertice1, this.Vertice2, this.Vertice3, this.Vertice4); }
 
-        public double Perimeter { get => this.GetPerimeter(this.Vertice1, this.Vertice2, this.Vertice3, this.Vertice4); }
         public override double Perimeter { get => this.GetPerimeter(this.Vertice1, this.Vertice2, this.Vertice3, this.Vertice4); }
 
-        /// <summary>
-        /// Конструктор прямоугольника, создающегося на координатах двух противоположных вершин
-        /// </summary>
-        /// <param name="p1">Левая верхняя вершина</param>
-        /// <param name="p3">Правая нижняя вершина</param>
-        public Rectangle(Point p1, Point p3)
         public override double X { get => this.Vertice1.X; }
 
         public override double Y { get => this.Vertice1.Y; }

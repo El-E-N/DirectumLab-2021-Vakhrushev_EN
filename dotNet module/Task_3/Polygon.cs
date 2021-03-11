@@ -36,7 +36,6 @@ namespace Task_3
             return sum;
         }
 
-
-		public abstract double Perimeter { get; }
+        public abstract double Perimeter { get; }
     }
 }

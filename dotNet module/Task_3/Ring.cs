@@ -14,7 +14,7 @@ namespace Task_3
             this.RadiusMax = r2;
         }
 
-        public Point Center { get; set;  }
+        public Point Center { get; set; }
 
         public double RadiusMin { get; set; } = 0;
 
