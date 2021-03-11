@@ -6,7 +6,7 @@ namespace Task_3
     /// Полигон.
     /// </summary>
     /// <remarks>Многоугольник создан для добавления к Shape новых методов для дальнешего удобства.</remarks>>
-    public class Polygon : Shape
+    public abstract class Polygon : Shape
     {
         protected double GetLengthOfSide(Point p1, Point p2) => Math.Sqrt(((p1.X - p2.X) * (p1.X - p2.X)) + ((p1.Y - p2.Y) * (p1.Y - p2.Y)));
 
@@ -35,5 +35,7 @@ namespace Task_3
             sum += this.GetLengthOfSide(vertices[vertices.Length - 1], vertices[0]);
             return sum;
         }
+
+        public abstract double Perimeter { get; }
     }
 }

@@ -13,7 +13,11 @@
 
         public override double Area { get => this.GetArea(this.Vertice1, this.Vertice2, this.Vertice3); }
 
-        public double Perimeter { get => this.GetPerimeter(this.Vertice1, this.Vertice2, this.Vertice3); }
+        public override double Perimeter { get => this.GetPerimeter(this.Vertice1, this.Vertice2, this.Vertice3); }
+
+        public override double X { get => this.Vertice1.X; }
+
+        public override double Y { get => this.Vertice1.Y; }
 
         public Triangle(Point p1, Point p2, Point p3)
         {

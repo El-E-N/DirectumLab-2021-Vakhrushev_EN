@@ -3,9 +3,9 @@
 namespace Task_3
 {
     public class Program
-    {
+    { 
         public static void Main(string[] args)
-        {     
+        {      
             var point1 = new Point(1, 2);
             var point2 = new Point(-1, -2);
             var point3 = new Point(0, 1);

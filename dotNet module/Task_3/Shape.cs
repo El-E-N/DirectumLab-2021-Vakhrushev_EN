@@ -3,18 +3,12 @@
     /// <summary>
     /// Фигура
     /// </summary>
-    public class Shape
+    public abstract class Shape
     {
-        public Shape(double x = 0, double y = 0)
-        {
-            this.X = x;
-            this.Y = y;
-        }
+        public abstract double X { get; }
 
-        public double X { get; set; }
+        public abstract double Y { get; }
 
-        public double Y { get; set; }
-
-        public virtual double Area { get => 0; }
+        public abstract double Area { get; }
     }
 }
