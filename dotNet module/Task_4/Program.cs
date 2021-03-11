@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Task_4
 {
-    public partial class Program
+    public class Program
     {
         /// <summary>
         /// Проверка методов классов MeetingWithTypes и MeetingWithBlankEndTime
@@ -69,7 +69,7 @@ namespace Task_4
             booksTable1.TableName = "newName";
             bookStore.Tables.Add(booksTable1);
             booksTable.Rows.Add(new object[] { null, "Отцы и эти", 228 });
-            Console.WriteLine(Separator.SeparationOfDataSet(bookStore, "---", "|||", "///"));
+            Console.WriteLine(DataSetUtils.ConvertToString(bookStore, "---", "|||", "///"));
         }
 
         /// <summary>
@@ -150,8 +150,9 @@ namespace Task_4
 
         public static void Task5(string nameOfFile)
         {
-            var logger = new Logger(nameOfFile);
-            logger.WriteString("Some information");
+            Logger logger;
+            using (logger = new Logger(nameOfFile))
+                logger.WriteString("Some information");
             try
             {
                 logger = new Logger(nameOfFile);
