@@ -40,7 +40,7 @@ namespace Task_6
                     var arrayOfLine = reader.ReadLine().Split("\t");
                     var tempTime = DateTime.Parse(arrayOfLine[0] + " " + arrayOfLine[1]);
                     if (start < tempTime && tempTime < end)
-                        count += 1;
+                        count++;
                 }
             }
             return count;
