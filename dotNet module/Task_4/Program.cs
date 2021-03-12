@@ -152,16 +152,17 @@ namespace Task_4
         {
             Logger logger;
             using (logger = new Logger(nameOfFile))
+            {
                 logger.WriteString("Some information");
-            try
-            {
-                logger = new Logger(nameOfFile);
+                try
+                {
+                     var logger2 = new Logger(nameOfFile);
+                }
+                catch
+                {
+                    Console.WriteLine("Сперва закройте файл!");
+                }
             }
-            catch
-            {
-                Console.WriteLine("Сперва закройте файл!");
-            }
-            logger.Dispose();
             using (logger = new Logger(nameOfFile))
             {
                 logger.WriteString("New some information");
