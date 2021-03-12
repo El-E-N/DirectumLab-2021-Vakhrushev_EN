@@ -9,7 +9,7 @@ namespace Task_6
         {
             try
             { 
-                var count = CountOfNotes("ClientConnectionLog.log", new DateTime(2007, 12, 5, 13, 50, 0), new DateTime(2007, 12, 11, 17, 01, 15));
+                var count = CountLines("ClientConnectionLog.log", new DateTime(2007, 12, 5, 13, 50, 0), new DateTime(2007, 12, 11, 17, 01, 15));
                 Console.WriteLine("Количество записей в интервале = " + count);
             }
             catch (Exception ex)
@@ -29,7 +29,7 @@ namespace Task_6
         /// <param name="start">начало интервала</param>
         /// <param name="end">конец интервала</param>
         /// <returns>количество записей</returns>
-        public static int CountOfNotes(string pathToFile, DateTime start, DateTime end)
+        public static int CountLines(string pathToFile, DateTime start, DateTime end)
         {
             int count = 0;
             using (var reader = new StreamReader(pathToFile))
