@@ -17,9 +17,27 @@ namespace Task_7_WF
             {
                 using (var targetStream = File.Create(resultFile))
                 {
-                    using (var decompressionStream = new GZipStream(sourceStream, CompressionMode.Decompress))
+                    try
                     {
-                        decompressionStream.CopyTo(targetStream);
+                        try
+                        {
+                            using (var decompressionStream = new GZipStream(sourceStream, CompressionMode.Decompress))
+                            {
+                                decompressionStream.CopyTo(targetStream);
+                            }
+                        }
+                        catch (FileNotFoundException ex)
+                        {
+                            throw new LoadFileException($"Файл {gzipFile} не найден", ex);
+                        }
+                        catch (UnauthorizedAccessException ex)
+                        {
+                            throw new LoadFileException($"Недостаточно прав доступа к файлу {gzipFile}", ex);
+                        }
+                    }
+                    catch (LoadFileException ex)
+                    {
+                        Console.WriteLine(ex.Message);
                     }
                 }
                 using (var myFile = new StreamReader(resultFile))
