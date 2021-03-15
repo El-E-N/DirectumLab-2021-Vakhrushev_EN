@@ -6,7 +6,7 @@ namespace Task_8
     /// <summary>
     /// Содержит список строк из файла txt формата
     /// </summary>
-    public class ContentOfFile
+    public class ContentOfFile : IEnumerable
     {
         public List<string> ContentList { get; }
 
