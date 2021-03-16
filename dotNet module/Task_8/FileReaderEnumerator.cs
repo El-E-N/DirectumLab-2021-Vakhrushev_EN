@@ -7,13 +7,13 @@ namespace Task_8
     /// <summary>
     /// Реализация Enumerator для содержимого файла txt
     /// </summary>
-    public class ContentEnumerator : IEnumerator
+    public class FileReaderEnumerator : IEnumerator
     {
         public List<string> ContentList { get; }
 
         private int position = -1;
 
-        public ContentEnumerator(List<string> content)
+        public FileReaderEnumerator(List<string> content)
         {
             this.ContentList = content;
         }

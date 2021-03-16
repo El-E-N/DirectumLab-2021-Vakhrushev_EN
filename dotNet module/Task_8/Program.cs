@@ -9,7 +9,7 @@ namespace Task_8
         public static void Main(string[] args)
         {
             Console.WriteLine("Задача 2");
-            Console.WriteLine("Максимальное из a, ab и abc: " + GetterMax<string>.Max("a", "ab", "abc"));
+            Console.WriteLine("Максимальное из a, ab и abc: " + GetterMax<string>.Max("abc", "ab", "a"));
 
             Console.WriteLine("\nЗадача 3");
             // List для возможности получения доступа к элементам
@@ -45,13 +45,9 @@ namespace Task_8
             // Также множество классов с такими же названиями с приставкой Concurrent для потокобезопасности
             Console.WriteLine("\nЗадание 4");
             var path = "MyTextFile.txt";
-            ContentOfFile enumerator;
-            using (var txtFile = new StreamReader(path))
-            {
-                enumerator = new ContentOfFile(txtFile.ReadToEnd());
-            }
+            FileReader fileReader = new FileReader(path);
             Console.WriteLine(path + ":");
-            foreach (var line in enumerator)
+            foreach (var line in fileReader)
                 Console.WriteLine(line);
         }
     }

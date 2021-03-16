@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 
 namespace Task_8
 {
@@ -6,13 +6,16 @@ namespace Task_8
     /// Получение максимального значения из 3 элементов неопределенного типа
     /// </summary>
     /// <typeparam name="T">неопределенный тип</typeparam>
-    public static class GetterMax<T>
+    public static class GetterMax<T> where T : IComparable
     {
         public static T Max(T element1, T element2, T element3)
         {
-            var list = new List<T> { element1, element2, element3 };
-            list.Sort();
-            return list[2];
+            if (element1.CompareTo(element2) >= 0 && element1.CompareTo(element3) >= 0)
+                return element1;
+            else if (element2.CompareTo(element1) >= 0 && element2.CompareTo(element3) >= 0)
+                return element2;
+            else
+                return element3;
         }
     } 
 }
