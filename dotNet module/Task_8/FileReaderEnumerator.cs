@@ -35,11 +35,6 @@ namespace Task_8
             {
                 this.reader.BaseStream.Position = 0;
             }
-
-            public void Dispose()
-            {
-                this.reader.Dispose();
-            }
         }
     }
 }
