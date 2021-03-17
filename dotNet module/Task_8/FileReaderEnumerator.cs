@@ -1,47 +1,47 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Task_8
 {
-    /// <summary>
-    /// Реализация Enumerator для содержимого файла txt
-    /// </summary>
-    public class FileReaderEnumerator : IEnumerator
+    public partial class FileReader
     {
-        public List<string> ContentList { get; }
-
-        private int position = -1;
-
-        public FileReaderEnumerator(List<string> content)
+        /// <summary>
+        /// Реализация Enumerator для содержимого файла txt
+        /// </summary>
+        private class FileReaderEnumerator : IEnumerator<string>
         {
-            this.ContentList = content;
-        }
+            private readonly StreamReader reader;
+            private string current;
 
-        public object Current
-        {
-            get
+            public FileReaderEnumerator(StreamReader reader)
             {
-                if (this.position == -1 || this.position >= this.ContentList.Count)
-                    throw new InvalidOperationException();
-                return this.ContentList[this.position];
+                this.reader = reader;
             }
-        }
 
-        public bool MoveNext()
-        {
-            if (this.position < this.ContentList.Count - 1)
+            public string Current { get => this.current; }
+
+            object IEnumerator.Current { get => this.Current; }
+
+            public bool MoveNext()
             {
-                this.position++;
+                if (this.reader.EndOfStream)
+                    return false;
+                this.current = this.reader.ReadLine();
                 return true;
             }
-            else
-                return false;
-        }
 
-        public void Reset()
-        {
-            this.position = -1;
+            public void Reset()
+            {
+                this.reader.DiscardBufferedData();
+                this.reader.BaseStream.Seek(0, SeekOrigin.Begin);
+                this.reader.BaseStream.Position = 0;
+            }
+
+            public void Dispose()
+            {
+                this.reader.Dispose();
+            }
         }
     }
 }

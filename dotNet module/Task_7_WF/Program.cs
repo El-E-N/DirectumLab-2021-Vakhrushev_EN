@@ -9,34 +9,26 @@ namespace Task_7_WF
     {
         public static string RtfReader(string gzipFile)
         {
-            using (var sourceStream = new FileStream(gzipFile, FileMode.OpenOrCreate))
+            try
             {
-                try
+                using (var sourceStream = new FileStream(gzipFile, FileMode.OpenOrCreate))
                 {
-                    try
+                    using (var decompressionStream = new GZipStream(sourceStream, CompressionMode.Decompress))
                     {
-                        using (var decompressionStream = new GZipStream(sourceStream, CompressionMode.Decompress))
+                        using (var myFile = new StreamReader(decompressionStream))
                         {
-                            using (var myFile = new StreamReader(decompressionStream))
-                            {
-                                return myFile.ReadToEnd();
-                            }
+                            return myFile.ReadToEnd();
                         }
                     }
-                    catch (FileNotFoundException ex)
-                    {
-                        throw new LoadFileException($"Файл {gzipFile} не найден", ex);
-                    }
                 }
-                catch (UnauthorizedAccessException ex)
-                {
-                    throw new LoadFileException($"Недостаточно прав доступа к файлу {gzipFile}", ex);
-                }
-                catch (LoadFileException ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    return string.Empty;
-                }
+            }
+            catch (FileNotFoundException ex)
+            {
+                throw new LoadFileException($"Файл {gzipFile} не найден", ex);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                throw new LoadFileException($"Недостаточно прав доступа к файлу {gzipFile}", ex);
             }
         }
 

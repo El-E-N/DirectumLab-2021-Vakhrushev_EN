@@ -8,8 +8,5 @@ public class LoadFileException : Exception
     public Exception SpecificError { get; }
 
     public LoadFileException(string message, Exception ex)
-        : base(message) 
-    {
-        this.SpecificError = ex;
-    }
+        : base(message, ex) { }
 }
