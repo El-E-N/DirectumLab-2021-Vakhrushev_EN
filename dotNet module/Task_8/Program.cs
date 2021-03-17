@@ -54,11 +54,12 @@ namespace Task_8
 
         public static void Task4(string path)
         {
-            var fileReader = new FileReader(path);
-            Console.WriteLine(path + ":");
-            foreach (var line in fileReader)
-                Console.WriteLine(line);
-            fileReader.Dispose();
+            using (var fileReader = new FileReader(path))
+            {
+                Console.WriteLine(path + ":");
+                foreach (var line in fileReader)
+                    Console.WriteLine(line);
+            }
         }
 
         public static void Main(string[] args)

@@ -33,8 +33,6 @@ namespace Task_8
 
             public void Reset()
             {
-                this.reader.DiscardBufferedData();
-                this.reader.BaseStream.Seek(0, SeekOrigin.Begin);
                 this.reader.BaseStream.Position = 0;
             }
 

@@ -5,8 +5,6 @@
 /// </summary>
 public class LoadFileException : Exception
 {
-    public Exception SpecificError { get; }
-
-    public LoadFileException(string message, Exception ex)
-        : base(message, ex) { }
+    public LoadFileException(string message, Exception innerException)
+        : base(message, innerException) { }
 }
