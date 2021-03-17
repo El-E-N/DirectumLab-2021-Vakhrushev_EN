@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
-using System.IO;
 using System.Linq;
+using Task_8;
 
 namespace Task_9
 {
@@ -15,15 +15,10 @@ namespace Task_9
         /// <returns>сортированный и отфильтрованный массив</returns>
         public static IEnumerable GetSortedDateLines(string path, DateTime datetime)
         {
-            ContentOfFile content;
+            var fileReader = new FileReader(path);
             var dateStr = datetime.Day + "." + datetime.Month + "." + datetime.Year;
-            using (var file = new StreamReader(path))
-            {
-                content = new ContentOfFile(file.ReadToEnd());
-            }
-            content.ContentList.RemoveAt(0); // убираем шапку
-            content.ContentList.Remove(string.Empty); // убираем пустые строки
-            var list = from string line in content
+            var list = from string line in fileReader
+                       where line != string.Empty
                        let date = line.Split("\t")[0] // дата
                        let time = line.Split("\t")[1] // время
                        where date == dateStr

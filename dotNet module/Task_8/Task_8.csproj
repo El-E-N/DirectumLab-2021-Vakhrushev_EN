@@ -6,17 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="ClientConnectionLog.log" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="ClientConnectionLog.log">
+    <None Update="MyTextFile.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Task_8\Task_8.csproj" />
+    </None>
   </ItemGroup>
 
 </Project>
