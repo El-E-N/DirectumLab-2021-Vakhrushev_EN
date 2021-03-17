@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.IO.Compression;
 using System.Windows.Forms;
@@ -9,15 +9,26 @@ namespace Task_7_WF
     {
         public static string RtfReader(string gzipFile)
         {
-            using (var sourceStream = new FileStream(gzipFile, FileMode.OpenOrCreate))
+            try
             {
-                using (var decompressionStream = new GZipStream(sourceStream, CompressionMode.Decompress))
+                using (var sourceStream = new FileStream(gzipFile, FileMode.OpenOrCreate))
                 {
-                    using (var myFile = new StreamReader(decompressionStream))
+                    using (var decompressionStream = new GZipStream(sourceStream, CompressionMode.Decompress))
                     {
-                        return myFile.ReadToEnd();
+                        using (var myFile = new StreamReader(decompressionStream))
+                        {
+                            return myFile.ReadToEnd();
+                        }
                     }
                 }
+            }
+            catch (FileNotFoundException ex)
+            {
+                throw new LoadFileException($"Файл {gzipFile} не найден", ex);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                throw new LoadFileException($"Недостаточно прав доступа к файлу {gzipFile}", ex);
             }
         }
 
