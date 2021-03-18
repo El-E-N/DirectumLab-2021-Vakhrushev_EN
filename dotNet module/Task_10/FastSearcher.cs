@@ -13,12 +13,12 @@ namespace Task_10
         /// <summary>
         /// Максимальное количество параллельных задач
         /// </summary>
-        public uint MaxCountOfParallelTasks { get; set; } = 10;
+        public uint MaxCountOfParallelTasks { get; set; } = 1;
 
         /// <summary>
         /// Минимальное количество значений в коллекции
         /// </summary>
-        public uint MinCountOfValueInCollection { get; set; } = 2;
+        public uint MinCountOfValueInCollection { get; set; } = 1;
 
         /// <summary>
         /// Количество параллельных задач в настоящее время
