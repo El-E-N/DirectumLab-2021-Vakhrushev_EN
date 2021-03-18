@@ -11,13 +11,11 @@ namespace Task_10
         public static void Main(string[] args)
         {
             var list = new Collection<int> { };
-            for (int i = 0; i < 10000; i++)
+            for (int i = 0; i < 1000; i++)
                 list.Add(i);
             Condition cond = IsEven;
-            var fastSearcher = new FastSearcher<int>();
-            fastSearcher.MaxCountOfParallelTasks = 10;
-            fastSearcher.MinCountOfValueInCollection  = 2;
-            Task t = fastSearcher.SearchValue(list, cond);
+            var fastSearcher = new FastSearcher<int>(30, 5);
+            var t = fastSearcher.SearchValue(list, cond);
             foreach (var value in fastSearcher.Values)
                 Console.WriteLine(value);
         }

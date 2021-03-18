@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Task_10
@@ -13,45 +13,48 @@ namespace Task_10
         /// <summary>
         /// Максимальное количество параллельных задач
         /// </summary>
-        public uint MaxCountOfParallelTasks { get; set; } = 1;
+        public uint MaxCountOfParallelTasks { get; }
 
         /// <summary>
         /// Минимальное количество значений в коллекции
         /// </summary>
-        public uint MinCountOfValueInCollection { get; set; } = 1;
+        public uint MinCountOfValueInCollection { get; }
 
         /// <summary>
         /// Количество параллельных задач в настоящее время
         /// </summary>
-        private uint CountOfParallelTasks { get; set; } = 1;
+        private uint CountOfParallelTasks { get; set; }
+
+        public FastSearcher(uint max, uint min)
+        {
+            this.MaxCountOfParallelTasks = max;
+            this.MinCountOfValueInCollection = min;
+            this.CountOfParallelTasks = 1;
+        }
 
         /// <summary>
         /// Список из нужных значений
         /// </summary>
         public List<T> Values { get; } = new List<T>();
 
-        public async Task SearchValue(Collection<T> collection, Condition cond)
+        public async Task SearchValue(IEnumerable<T> collection, Condition cond)
         { 
-            if (collection.Count / 2 >= this.MinCountOfValueInCollection
+            if (collection.Count() / 2 >= this.MinCountOfValueInCollection
                 && this.CountOfParallelTasks + 1 <= this.MaxCountOfParallelTasks)
             {
                 this.CountOfParallelTasks++; // при разбиении количество пооков увеличивается на 1
-                var col1 = new Collection<T> { };
-                var col2 = new Collection<T> { };
-                int i = 0;
-                for (; i < collection.Count / 2; i++)
-                    col1.Add(collection[i]);
-                for (; i < collection.Count; i++)
-                    col2.Add(collection[i]);
-                await this.SearchValue(col2, cond);
-                await this.SearchValue(col1, cond);
+                var col1 = collection.Take(collection.Count() / 2);
+                var col2 = collection.Skip(collection.Count() / 2);
+                var task1 = this.SearchValue(col1, cond);
+                var task2 = this.SearchValue(col2, cond);
+                await Task.WhenAll(task1, task2);
             }
             else
             {
                 foreach (var element in collection)
                     if (cond(element))
                         this.Values.Add(element);
-                this.CountOfParallelTasks--;
+                this.CountOfParallelTasks--; // при завершении задача прерывается и появляется возможность заменить на новую задачу
             }
         }
     }
