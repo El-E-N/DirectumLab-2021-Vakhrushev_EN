@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Task_8
@@ -7,7 +8,7 @@ namespace Task_8
     /// <summary>
     /// Содержит список строк из файла txt формата
     /// </summary>
-    public partial class FileReader : IEnumerable, IDisposable
+    public partial class FileReader : IEnumerable<string>, IDisposable
     {
         /// <summary>
         /// Файл, с которым работаем
@@ -19,9 +20,19 @@ namespace Task_8
             this.reader = new StreamReader(path);
         }
 
-        public IEnumerator GetEnumerator()
+        public IEnumerator<string> GetEnumerator()
         {
             return new FileReaderEnumerator(this.reader);
+        }
+
+        private IEnumerator GetEnumerator1()
+        {
+            return this.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator1();
         }
 
         public void Dispose()

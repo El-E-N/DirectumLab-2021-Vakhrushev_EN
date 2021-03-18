@@ -13,24 +13,32 @@ namespace Task_9
         /// <param name="path">путь к файлу</param>
         /// <param name="datetime">определенная дата</param>
         /// <returns>сортированный и отфильтрованный массив</returns>
-        public static IEnumerable GetSortedDateLines(string path, DateTime datetime)
+        public static IEnumerable GetSortedDateLines(string path, DateTime datetime, bool expansionsLinq = false)
         {
             var fileReader = new FileReader(path);
             var dateStr = datetime.Day + "." + datetime.Month + "." + datetime.Year;
-            var list = from string line in fileReader
+            if (expansionsLinq)
+                return fileReader
+                .Where(line => line != string.Empty)
+                .Where(line => line.Split("\t")[0] == dateStr)
+                .OrderBy(line => line.Split("\t")[1]);
+
+            return from string line in fileReader
                        where line != string.Empty
                        let date = line.Split("\t")[0] // дата
                        let time = line.Split("\t")[1] // время
                        where date == dateStr
                        orderby time
                        select line;
-            return list;
         }
 
         public static void Main(string[] args)
         {
             var path = "ClientConnectionLog.log";
             var ourList = GetSortedDateLines(path, new DateTime(2007, 12, 11));
+            foreach (var line in ourList)
+                Console.WriteLine(line);
+            ourList = GetSortedDateLines(path, new DateTime(2007, 12, 11), true);
             foreach (var line in ourList)
                 Console.WriteLine(line);
         }
