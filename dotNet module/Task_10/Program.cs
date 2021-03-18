@@ -15,6 +15,8 @@ namespace Task_10
                 list.Add(i);
             Condition cond = IsEven;
             var fastSearcher = new FastSearcher<int>();
+            fastSearcher.MaxCountOfParallelTasks = 10;
+            fastSearcher.MinCountOfValueInCollection  = 2;
             Task t = fastSearcher.SearchValue(list, cond);
             foreach (var value in fastSearcher.Values)
                 Console.WriteLine(value);
