@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Task_10
@@ -25,26 +26,33 @@ namespace Task_10
         /// </summary>
         private uint CountOfParallelTasks { get; set; }
 
-        public FastSearcher(uint max, uint min)
+        public FastSearcher(uint maxCountOfParallelTasks, uint minCountOfValueInCollection)
         {
-            this.MaxCountOfParallelTasks = max;
-            this.MinCountOfValueInCollection = min;
+            this.MaxCountOfParallelTasks = maxCountOfParallelTasks;
+            this.MinCountOfValueInCollection = minCountOfValueInCollection;
             this.CountOfParallelTasks = 1;
         }
 
         /// <summary>
         /// Список из нужных значений
         /// </summary>
-        public List<T> Values { get; } = new List<T>();
+        private readonly List<T> values = new List<T>();
+
+        public IEnumerable<T> GetValues()
+        {
+            return this.values;
+        }
 
         public async Task SearchValue(IEnumerable<T> collection, Condition cond)
-        { 
-            if (collection.Count() / 2 >= this.MinCountOfValueInCollection
+        {
+            var centerList = collection.Count() / 2;
+            if (centerList >= this.MinCountOfValueInCollection
                 && this.CountOfParallelTasks + 1 <= this.MaxCountOfParallelTasks)
             {
-                this.CountOfParallelTasks++; // при разбиении количество пооков увеличивается на 1
-                var col1 = collection.Take(collection.Count() / 2);
-                var col2 = collection.Skip(collection.Count() / 2);
+                var count = (int)this.CountOfParallelTasks;
+                Interlocked.Increment(ref count); // при разбиении количество пооков увеличивается на 1
+                var col1 = collection.Take(centerList);
+                var col2 = collection.Skip(centerList);
                 var task1 = this.SearchValue(col1, cond);
                 var task2 = this.SearchValue(col2, cond);
                 await Task.WhenAll(task1, task2);
@@ -53,8 +61,10 @@ namespace Task_10
             {
                 foreach (var element in collection)
                     if (cond(element))
-                        this.Values.Add(element);
-                this.CountOfParallelTasks--; // при завершении задача прерывается и появляется возможность заменить на новую задачу
+                        this.values.Add(element);
+                var count = (int)this.CountOfParallelTasks;
+                Interlocked.Decrement(ref count); // при завершении задача прерывается и появляется
+                                                  // возможность заменить на новую задачу
             }
         }
     }
