@@ -95,6 +95,10 @@ namespace Task_12
             Console.WriteLine("\nЗадание 3:");
             foreach (var dict in ObjectPropertyInfoWithoutObsolete(new User("MyName", 22, 12345)))
                 Console.WriteLine($"Имя свойства: {dict["Name"]}; значение: {dict["Value"]}");
+
+            Console.WriteLine("\nЗадание 5:");
+            ShowPropertyInfo("User1.dll", "User1.User1");
+            ShowPropertyInfo("User2.dll", "User2.User2");
         }
     }
 }
