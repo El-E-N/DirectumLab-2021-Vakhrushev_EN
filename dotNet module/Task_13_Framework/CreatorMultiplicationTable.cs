@@ -12,51 +12,44 @@ namespace Task_13_Framework
         /// Раннее связывание.
         /// </summary>
         /// <param name="pathOfFile">Путь с именем к нужному файлу для сохранения.</param>
-        public static void WithEarlyBinding(string pathOfFile)
+        /// /// <param name="tableSize">Размер таблицы.</param>
+        public static void WithEarlyBinding(string pathOfFile, uint tableSize)
         {
-            string[] letters = { "B", "C", "D", "E", "F", "G", "H", "I", "J" };
-            var number = 1;
             var excelApp = new Excel.Application() { Visible = true };
-            excelApp.Workbooks.Add();
-            Excel.Worksheet workSheet = excelApp.ActiveSheet;
-
-            foreach (var letter in letters)
-            {
-                workSheet.Cells[1, letter] = number;
-                number++;
-            }
-
-            for (int i = 2; i <= 10; i++)
-                workSheet.Cells[i, "A"] = i - 1;
-
-            workSheet.get_Range("B2", "J10").Formula = "= $A2 * B$1";
-            workSheet.SaveAs(pathOfFile);
+            BindingBody(excelApp, pathOfFile, tableSize);
         }
 
         /// <summary>
         /// Позднее связывание.
         /// </summary>
         /// <param name="pathOfFile">Путь с именем к нужному файлу для сохранения.</param>
-        public static void WithLateBinding(string pathOfFile)
+        /// /// <param name="tableSize">Размер таблицы.</param>
+        public static void WithLateBinding(string pathOfFile, uint tableSize)
         {
             dynamic excelApp = Activator.CreateInstance(Type.GetTypeFromProgID(
                                 "Excel.Application"));
             excelApp.Visible = true;
-            string[] letters = { "B", "C", "D", "E", "F", "G", "H", "I", "J" };
-            var number = 1;
-            excelApp.Workbooks.Add();
-            Excel.Worksheet workSheet = excelApp.ActiveSheet;
+            BindingBody(excelApp, pathOfFile, tableSize);
+        }
 
-            foreach (var letter in letters)
+        /// <summary>
+        /// Общая часть кода реализована здесь.
+        /// </summary>
+        /// <param name="excelApp">Программа Excel.</param>
+        /// <param name="pathOfFile">Путь к файлу.</param>
+        /// <param name="tableSize">Размер таблицы.</param>
+        private static void BindingBody(Excel.Application excelApp, string pathOfFile, uint tableSize)
+        {
+            excelApp.Workbooks.Add();
+            var workSheet = (Excel.Worksheet)excelApp.ActiveSheet;
+
+            for (int i = 2; i <= tableSize + 1; i++)
             {
-                workSheet.Cells[1, letter] = number;
-                number++;
+                workSheet.Cells[1, i] = i - 1;
+                workSheet.Cells[i, "A"] = i - 1;
             }
 
-            for (int i = 2; i <= 10; i++)
-                workSheet.Cells[i, "A"] = i - 1;
-
-            workSheet.get_Range("B2", "J10").Formula = "= $A2 * B$1";
+            workSheet.get_Range($"{workSheet.Cells[2, 2].Address}", $"{workSheet.Cells[tableSize + 1, tableSize + 1].Address}").Formula = "= $A2 * B$1";
             workSheet.SaveAs(pathOfFile);
         }
     }

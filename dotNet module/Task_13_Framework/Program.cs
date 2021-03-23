@@ -13,9 +13,9 @@ namespace Task_13_Framework
         /// <param name="args">Информация от консоли.</param>
         public static void Main(string[] args)
         {
-            CreatorMultiplicationTable.WithEarlyBinding("EarlyBinding.xlsx");
+            CreatorMultiplicationTable.WithEarlyBinding("WithEarlyBinding.xlsx", 5);
             Console.WriteLine("Раннее связывание окончено");
-            CreatorMultiplicationTable.WithEarlyBinding("LateBinding.xlsx");
+            CreatorMultiplicationTable.WithLateBinding("WithLateBinding.xlsx", 5);
             Console.WriteLine("Позднее связывание окончено");
             Console.ReadLine();
         }
