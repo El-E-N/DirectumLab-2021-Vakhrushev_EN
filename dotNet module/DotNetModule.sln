@@ -28,7 +28,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocalizedApp", "LocalizedAp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task_13_Framework", "Task_13_Framework\Task_13_Framework.csproj", "{21F16F2A-5830-44AE-B71F-D34F9A0AE93A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task_15.Tests", "Task_15.Tests\Task_15.Tests.csproj", "{59192FA5-7FA9-411B-95F9-7186EBEB649D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Task_15.Tests", "Task_15.Tests\Task_15.Tests.csproj", "{59192FA5-7FA9-411B-95F9-7186EBEB649D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D1E694EB-23BC-4232-911D-04FC3E0FCE90}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
