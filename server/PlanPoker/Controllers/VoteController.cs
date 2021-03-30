@@ -1,30 +1,34 @@
 ﻿using DataService.Models;
 using DataService.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PlanPoker.Services;
 using System;
+using System.Linq;
 
 namespace PlanPoker.Controllers
 {
+    [ApiController]
+    [Route("/[controller]")]
     public class VoteController
     {
-        private readonly VoteServices services;
+        private readonly VoteService services;
 
-        public VoteController()
+        public VoteController(VoteService services)
         {
-            this.services = new VoteServices(new VoteMemoryRepository(new VoteContext()));
+            this.services = services;
         }
 
-        [HttpPost]
-        public void Create(Guid cardId, Guid roomId, Guid playerId, Guid discussionId)
+        [HttpPost("create/{cardId&roomId&playerId&discussionId}")]
+        public Vote Create(Guid cardId, Guid roomId, Guid playerId, Guid discussionId)
         {
-            this.services.Create(cardId, roomId, playerId, discussionId);
+            return this.services.Create(cardId, roomId, playerId, discussionId);
         }
 
-        [HttpPost]
-        public void ChangeCard(Guid voteId, Guid cardId)
+        [HttpPost("getall")]
+        public IQueryable<Vote> GetAll()
         {
-            this.services.ChangeCard(voteId, cardId);
+            return this.services.GetAll();
         }
     }
 }

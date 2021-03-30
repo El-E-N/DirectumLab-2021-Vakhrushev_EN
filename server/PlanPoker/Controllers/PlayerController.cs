@@ -1,30 +1,36 @@
 ﻿using DataService.Models;
 using DataService.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PlanPoker.Services;
 using System;
+using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
+using System.Linq;
 
 namespace PlanPoker.Controllers
 {
-    public class PlayerController
+    [ApiController]
+    [Route("/[controller]")]
+    public class PlayerController : ControllerBase
     {
-        private readonly PlayerServices services;
+        private readonly PlayerService services;
 
-        public PlayerController()
+        public PlayerController(PlayerService services)
         {
-            this.services = new PlayerServices(new PlayerMemoryRepository(new PlayerContext()));
+            this.services = services;
         }
 
-        [HttpPost]
-        public void Create(string name)
+        [HttpPost("create/{name}")]
+        public Player Create(string name)
         {
-            this.services.Create(name);
+            return this.services.Create(name);
         }
 
-        [HttpPost]
-        public void ChangeName(Guid id, string name)
+        [HttpPost("getall")]
+        public IQueryable<Player> GetAll()
         {
-            this.services.ChangeName(id, name);
+            return this.services.GetAll();
         }
     }
 }
