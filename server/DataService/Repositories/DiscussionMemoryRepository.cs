@@ -12,6 +12,8 @@ namespace DataService.Repositories
         /// Конструктор.
         /// </summary>
         /// <param name="context">Контекст.</param>
-        public DiscussionMemoryRepository(DiscussionContext context) : base(context) { }
+        public DiscussionMemoryRepository(DiscussionContext context) : base(context) 
+        {
+        }
     }
 }

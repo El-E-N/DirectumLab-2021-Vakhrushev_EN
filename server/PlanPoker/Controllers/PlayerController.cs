@@ -1,5 +1,7 @@
 ﻿using DataService.Models;
 using Microsoft.AspNetCore.Mvc;
+using PlanPoker.DTO;
+using PlanPoker.DTO.Builders;
 using PlanPoker.Services;
 using System;
 using System.Linq;
@@ -31,12 +33,11 @@ namespace PlanPoker.Controllers
         /// Создание игрока с именем.
         /// </summary>
         /// <param name="name">Имя игрока.</param>
-        /// <returns>Объект игрока.</returns>
-        // [HttpGet("create/{name}")]
+        /// <returns>Объект DTO игрока.</returns>
         [HttpGet]
-        public Player Create(string name)
+        public PlayerDTO Create(string name)
         {
-            return this.service.Create(name);
+            return PlayerDTOBuilder.Build(this.service.Create(name));
         }
 
         /// <summary>
@@ -44,22 +45,22 @@ namespace PlanPoker.Controllers
         /// </summary>
         /// <param name="playerId">Id игрока.</param>
         /// <param name="name">Новое имя игрока.</param>
-        /// <returns>Игрок с измененным именем.</returns>
+        /// <returns>Объект DTO игрока с измененным именем.</returns>
         [HttpGet]
-        public Player ChangeName(Guid playerId, string name)
+        public PlayerDTO ChangeName(Guid playerId, string name)
         {
-            return this.service.ChangeName(playerId, name);
+            return PlayerDTOBuilder.Build(this.service.ChangeName(playerId, name));
         }
 
         /// <summary>
-        /// Просто для проверки работы.
+        /// Получить всех игроков.
         /// </summary>
         /// <returns>Все игроки из базы данных.</returns>
-        // [HttpGet("getall")]
         [HttpGet]
-        public IQueryable<Player> GetAll()
+        public IQueryable<PlayerDTO> GetPlayers()
         {
-            return this.service.GetAll();
+            return this.service.GetPlayers()
+                .Select(el => PlayerDTOBuilder.Build(el));
         }
     }
 }

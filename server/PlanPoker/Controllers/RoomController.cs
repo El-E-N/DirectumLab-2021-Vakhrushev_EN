@@ -1,9 +1,10 @@
 ﻿using DataService.Models;
-using DataService.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using PlanPoker.DTO;
+using PlanPoker.DTO.Builders;
 using PlanPoker.Services;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace PlanPoker.Controllers
@@ -18,15 +19,22 @@ namespace PlanPoker.Controllers
         /// <summary>
         /// Сервисы комнаты.
         /// </summary>
-        private readonly RoomService service;
+        private readonly RoomService roomService;
+
+        /// <summary>
+        /// Сервисы игроков.
+        /// </summary>
+        private readonly PlayerService playerService;
 
         /// <summary>
         /// Конструктор.
         /// </summary>
-        /// <param name="service">Сервисы.</param>
-        public RoomController(RoomService service)
+        /// <param name="roomService">Сервисы комнат.</param>
+        /// <param name="playerService">Сервисы игроков.</param>
+        public RoomController(RoomService roomService, PlayerService playerService)
         {
-            this.service = service;
+            this.roomService = roomService;
+            this.playerService = playerService;
         }
 
         /// <summary>
@@ -34,11 +42,14 @@ namespace PlanPoker.Controllers
         /// </summary>
         /// <param name="name">Название комнаты.</param>
         /// <param name="creatorId">Id создателя.</param>
-        /// <returns>Объект созданной комнаты.</returns>
+        /// <returns>Объект DTO созданной комнаты.</returns>
         [HttpGet]
-        public Room Create(string name, Guid creatorId)
+        public RoomDTO Create(string name, Guid creatorId)
         {
-            return this.service.Create(name, creatorId);
+            var room = this.roomService.Create(name, creatorId);
+            return RoomDTOBuilder.Build(
+                room,
+                (List<PlayerDTO>)room.PlayersIDs.Select(el => PlayerDTOBuilder.Build(this.playerService.Get(el))));
         }
 
         /// <summary>
@@ -49,7 +60,7 @@ namespace PlanPoker.Controllers
         [HttpPost]
         public void AddPlayer(Guid roomId, Guid playerId)
         {
-            this.service.AddPlayer(roomId, playerId);
+            this.roomService.AddPlayer(roomId, playerId);
         }
 
         /// <summary>
@@ -60,7 +71,7 @@ namespace PlanPoker.Controllers
         [HttpPost]
         public void RemovePlayer(Guid roomId, Guid playerId)
         {
-            this.service.RemovePlayer(roomId, playerId);
+            this.roomService.RemovePlayer(roomId, playerId);
         }
 
         /// <summary>
@@ -71,17 +82,20 @@ namespace PlanPoker.Controllers
         [HttpPost]
         public void ChangeHost(Guid roomId, Guid hostId)
         {
-            this.service.ChangeHost(roomId, hostId);
+            this.roomService.ChangeHost(roomId, hostId);
         }
 
         /// <summary>
-        /// Просто для проверки работы.
+        /// Получение всех комнат.
         /// </summary>
         /// <returns>Все комнаты из базы данных.</returns>
         [HttpGet]
-        public IQueryable<Room> GetAll()
+        public IQueryable<RoomDTO> GetRooms()
         {
-            return this.service.GetAll();
+            return this.roomService.GetRooms()
+                .Select(room => RoomDTOBuilder.Build(
+                    room,
+                    (List<PlayerDTO>)room.PlayersIDs.Select(id => PlayerDTOBuilder.Build(this.playerService.Get(id)))));
         }
     }
 }

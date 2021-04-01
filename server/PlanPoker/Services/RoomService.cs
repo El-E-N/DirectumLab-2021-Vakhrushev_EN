@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace PlanPoker.Services
 {
+    /// <summary>
+    /// Сервис комнаты.
+    /// </summary>
     public class RoomService
     {
         /// <summary>
@@ -71,10 +74,10 @@ namespace PlanPoker.Services
         }
 
         /// <summary>
-        /// Просто для проверки работы.
+        /// Получение всех комнат.
         /// </summary>
         /// <returns>Все комнаты из базы данных.</returns>
-        public IQueryable<Room> GetAll()
+        public IQueryable<Room> GetRooms()
         {
             return this.repository.GetAll();
         }

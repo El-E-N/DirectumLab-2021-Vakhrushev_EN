@@ -14,7 +14,8 @@ namespace DataService.Models.Contexts
         /// </summary>
         /// <param name="options">Опции.</param>
         public ItemContext(DbContextOptions options) : base(options)
-        { }
+        { 
+        }
 
         /// <summary>
         /// Объекты из БД.

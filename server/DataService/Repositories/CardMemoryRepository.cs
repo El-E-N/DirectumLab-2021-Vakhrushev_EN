@@ -12,6 +12,8 @@ namespace DataService.Repositories
         /// Конструктор.
         /// </summary>
         /// <param name="context">Контекст.</param>
-        public CardMemoryRepository(CardContext context) : base(context) { }
+        public CardMemoryRepository(CardContext context) : base(context) 
+        {
+        }
     }
 }

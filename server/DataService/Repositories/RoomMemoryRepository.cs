@@ -12,6 +12,8 @@ namespace DataService.Repositories
         /// Конструктор.
         /// </summary>
         /// <param name="context">Контекст.</param>
-        public RoomMemoryRepository(RoomContext context) : base(context) { }
+        public RoomMemoryRepository(RoomContext context) : base(context) 
+        { 
+        }
     }
 }

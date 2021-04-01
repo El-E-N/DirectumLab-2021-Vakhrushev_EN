@@ -60,20 +60,20 @@ namespace PlanPoker.Services
         }
 
         /// <summary>
-        /// Возвращает список результатов.
+        /// Возвращает список оценок.
         /// </summary>
         /// <param name="discussionId">Id обсуждения.</param>
-        /// <returns>Список результатов.</returns>
-        public List<Guid> GetResults(Guid discussionId) 
+        /// <returns>Список Id оценок.</returns>
+        public List<Guid> GetVoteIds(Guid discussionId) 
         {
             return this.repository.Get(discussionId).VoteIDs;
         }
 
         /// <summary>
-        /// Просто для проверки работы.
+        /// Возвращает список обсуждений.
         /// </summary>
         /// <returns>Все обсуждения из базы данных.</returns>
-        public IQueryable<Discussion> GetAll()
+        public IQueryable<Discussion> GetDiscussions()
         {
             return this.repository.GetAll();
         }

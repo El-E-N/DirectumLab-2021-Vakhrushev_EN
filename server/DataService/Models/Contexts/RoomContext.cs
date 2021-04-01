@@ -11,6 +11,8 @@ namespace DataService.Models.Contexts
         /// Конструктор.
         /// </summary>
         /// <param name="options">Опции.</param>
-        public RoomContext(DbContextOptions<RoomContext> options) : base(options) { }
+        public RoomContext(DbContextOptions<RoomContext> options) : base(options) 
+        { 
+        }
     }
 }

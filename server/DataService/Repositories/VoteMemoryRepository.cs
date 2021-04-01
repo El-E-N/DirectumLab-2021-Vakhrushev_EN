@@ -12,6 +12,8 @@ namespace DataService.Repositories
         /// Конструктор.
         /// </summary>
         /// <param name="context">Контекст.</param>
-        public VoteMemoryRepository(VoteContext context) : base(context) { }
+        public VoteMemoryRepository(VoteContext context) : base(context) 
+        {
+        }
     }
 }

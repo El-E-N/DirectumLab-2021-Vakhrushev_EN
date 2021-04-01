@@ -12,7 +12,7 @@ namespace DataService.Models
         /// Конструктор обсуждения.
         /// </summary>
         /// <param name="id">Его id.</param>
-        /// <param name="roomId">id комнаты.</param>
+        /// <param name="roomId">Id комнаты.</param>
         /// <param name="name">Название обсуждения.</param>
         public Discussion(Guid id, Guid roomId, string name)
         {
@@ -46,7 +46,7 @@ namespace DataService.Models
         public DateTime? StartAt { get; set; }
 
         /// <summary>
-        /// время конца обсуждения.
+        /// Время конца обсуждения.
         /// </summary>
         public DateTime? EndAt { get; set; }
 

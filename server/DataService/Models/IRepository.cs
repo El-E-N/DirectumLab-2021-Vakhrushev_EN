@@ -34,6 +34,10 @@ namespace DataService.Models
         /// <returns>Все объекты.</returns>
         public IQueryable<T> GetAll();
 
+        /// <summary>
+        /// Удаление объекта.
+        /// </summary>
+        /// <param name="id">Идентификатор.</param>
         public void Delete(Guid id);
     }
 }

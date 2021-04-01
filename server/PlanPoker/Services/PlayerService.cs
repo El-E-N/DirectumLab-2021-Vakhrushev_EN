@@ -13,7 +13,7 @@ namespace PlanPoker.Services
         /// <summary>
         /// Репозиторий игроков.
         /// </summary>
-        public readonly IRepository<Player> repository;
+        public readonly IRepository<Player> Repository;
 
         /// <summary>
         /// Конструктор.
@@ -21,7 +21,7 @@ namespace PlanPoker.Services
         /// <param name="repository">Репозиторий игроков.</param>
         public PlayerService(IRepository<Player> repository)
         {
-            this.repository = repository;
+            this.Repository = repository;
         }
 
         /// <summary>
@@ -33,9 +33,9 @@ namespace PlanPoker.Services
         {
             var token = Guid.NewGuid().ToString();
             var id = Guid.NewGuid();
-            this.repository.Create(new Player(id, name, token));
-            this.repository.Save();
-            return this.repository.Get(id);
+            this.Repository.Create(new Player(id, name, token));
+            this.Repository.Save();
+            return this.Repository.Get(id);
         }
 
         /// <summary>
@@ -46,18 +46,25 @@ namespace PlanPoker.Services
         /// <returns>Игрок с измененным именем.</returns>
         public Player ChangeName(Guid playerId, string name)
         {
-            this.repository.Get(playerId).Name = name;
-            this.repository.Save();
-            return this.repository.Get(playerId);
+            this.Repository.Get(playerId).Name = name;
+            this.Repository.Save();
+            return this.Repository.Get(playerId);
         }
 
         /// <summary>
-        /// Просто для проверки работы.
+        /// Получение игрока.
+        /// </summary>
+        /// <param name="id">Идентификатор.</param>
+        /// <returns>Игрок.</returns>
+        public Player Get(Guid id) => this.Repository.Get(id);
+
+        /// <summary>
+        /// Получение всех игроков.
         /// </summary>
         /// <returns>Все игроки из базы данных.</returns>
-        public IQueryable<Player> GetAll()
+        public IQueryable<Player> GetPlayers()
         {
-            return this.repository.GetAll();
+            return this.Repository.GetAll();
         }
     }
 }

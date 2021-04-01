@@ -41,7 +41,7 @@ namespace DataService.Models
         /// <summary>
         /// Токен для браузера.
         /// </summary>
-        /// <remarks>Для подтверждения, что он нужный игрок</remarks>
+        /// <remarks>Для подтверждения, что он нужный игрок.</remarks>
         public string Token { get; set; }
 
         /// <summary>

@@ -11,6 +11,8 @@ namespace DataService.Models.Contexts
         /// Конструктор.
         /// </summary>
         /// <param name="options">Опции контекста.</param>
-        public DiscussionContext(DbContextOptions<DiscussionContext> options) : base(options) { }
+        public DiscussionContext(DbContextOptions<DiscussionContext> options) : base(options) 
+        {
+        }
     }
 }

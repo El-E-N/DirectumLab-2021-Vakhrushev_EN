@@ -79,12 +79,9 @@ namespace DataService.Repositories
         public virtual void Dispose(bool disposing)
         {
             if (!this.disposed)
-            {
                 if (disposing)
-                {
                     this.db.Dispose();
-                }
-            }
+
             this.disposed = true;
         }
 
@@ -93,7 +90,7 @@ namespace DataService.Repositories
         /// </summary>
         public void Dispose()
         {
-            Dispose(true);
+            this.Dispose(true);
             GC.SuppressFinalize(this);
         }
     }

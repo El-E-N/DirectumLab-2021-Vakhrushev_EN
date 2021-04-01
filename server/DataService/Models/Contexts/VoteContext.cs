@@ -11,6 +11,8 @@ namespace DataService.Models.Contexts
         /// Конструктор.
         /// </summary>
         /// <param name="options">Опции.</param>
-        public VoteContext(DbContextOptions<VoteContext> options) : base(options) { }
+        public VoteContext(DbContextOptions<VoteContext> options) : base(options) 
+        {
+        }
     }
 }

@@ -26,13 +26,12 @@ namespace PlanPoker.Services
         }
 
         /// <summary>
-        /// Создание голоса.
+        /// Создание карты.
         /// </summary>
-        /// <param name="cardId">Id выбранной карты.</param>
-        /// <param name="roomId">Id комнаты.</param>
-        /// <param name="playerId">Id игрока.</param>
-        /// <param name="discussionId">Id обсуждения.</param>
-        /// <returns></returns>
+        /// <param name="id">Идентификатор.</param>
+        /// <param name="value">Значение.</param>
+        /// <param name="name">Название.</param>
+        /// <returns>Карта.</returns>
         public Card Create(Guid id, int? value, string name)
         {
             this.repository.Create(new Card(id, value, name));
@@ -41,10 +40,20 @@ namespace PlanPoker.Services
         }
 
         /// <summary>
-        /// Просто для проверки работы.
+        /// Получение карты по id.
+        /// </summary>
+        /// <param name="id">Идентификатор.</param>
+        /// <returns>Карта.</returns>
+        public Card Get(Guid id)
+        {
+            return this.repository.Get(id);
+        }
+
+        /// <summary>
+        /// Получение всех карт.
         /// </summary>
         /// <returns>Все голоса из базы данных.</returns>
-        public IQueryable<Card> GetAll()
+        public IQueryable<Card> GetCards()
         {
             return this.repository.GetAll();
         }

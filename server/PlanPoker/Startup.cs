@@ -1,14 +1,14 @@
+using DataService.Models;
+using DataService.Models.Contexts;
+using DataService.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PlanPoker.Services;
-using DataService.Models;
-using DataService.Models.Contexts;
-using DataService.Repositories;
-using Microsoft.EntityFrameworkCore;
 
 namespace PlanPoker
 {
@@ -81,7 +81,9 @@ namespace PlanPoker
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
+                endpoints.MapGet(
+                    "/", 
+                    async context =>
                 {
                     await context.Response.WriteAsync($"Application Name: {env.ApplicationName}");
                 });

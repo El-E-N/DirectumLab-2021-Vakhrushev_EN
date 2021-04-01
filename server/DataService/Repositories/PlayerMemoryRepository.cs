@@ -12,6 +12,8 @@ namespace DataService.Repositories
         /// Конструктор.
         /// </summary>
         /// <param name="context">Контекст.</param>
-        public PlayerMemoryRepository(PlayerContext context) : base(context) { }
+        public PlayerMemoryRepository(PlayerContext context) : base(context)
+        { 
+        }
     }
 }

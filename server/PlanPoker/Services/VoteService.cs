@@ -31,7 +31,7 @@ namespace PlanPoker.Services
         /// <param name="roomId">Id комнаты.</param>
         /// <param name="playerId">Id игрока.</param>
         /// <param name="discussionId">Id обсуждения.</param>
-        /// <returns></returns>
+        /// <returns>Голос.</returns>
         public Vote Create(Guid cardId, Guid roomId, Guid playerId, Guid discussionId) 
         {
             var id = Guid.NewGuid();
@@ -52,10 +52,20 @@ namespace PlanPoker.Services
         }
 
         /// <summary>
-        /// Просто для проверки работы.
+        /// Получить оценку по id.
+        /// </summary>
+        /// <param name="id">Идентификатор.</param>
+        /// <returns>Оценка.</returns>
+        public Vote GetVote(Guid id)
+        {
+            return this.repository.Get(id);
+        }
+
+        /// <summary>
+        /// Получение всех оценок.
         /// </summary>
         /// <returns>Все голоса из базы данных.</returns>
-        public IQueryable<Vote> GetAll()
+        public IQueryable<Vote> GetAllVote()
         {
             return this.repository.GetAll();
         }

@@ -1,5 +1,7 @@
 ﻿using DataService.Models;
 using Microsoft.AspNetCore.Mvc;
+using PlanPoker.DTO;
+using PlanPoker.DTO.Builders;
 using PlanPoker.Services;
 using System;
 using System.Linq;
@@ -16,29 +18,37 @@ namespace PlanPoker.Controllers
         /// <summary>
         /// Сервисы голоса.
         /// </summary>
-        private readonly VoteService service;
+        private readonly VoteService voteService;
+
+        /// <summary>
+        /// Сервис карт.
+        /// </summary>
+        private readonly CardService cardService;
 
         /// <summary>
         /// Конструктор.
         /// </summary>
-        /// <param name="service">Сервисы.</param>
-        public VoteController(VoteService service)
+        /// <param name="voteService">Сервисы оценок.</param>
+        /// <param name="cardService">Сервисы карт.</param>
+        public VoteController(VoteService voteService, CardService cardService)
         {
-            this.service = service;
+            this.voteService = voteService;
+            this.cardService = cardService;
         }
 
         /// <summary>
-        /// Создание голоса.
+        /// Создание оценки.
         /// </summary>
         /// <param name="cardId">Id карты, которой проголосовали.</param>
         /// <param name="roomId">Id комнаты. в которой проголосовали.</param>
         /// <param name="playerId">Id игрока, котрый проголосовал.</param>
         /// <param name="discussionId">Id обсуждения, на которое проголосовали.</param>
-        /// <returns></returns>
+        /// <returns>Оценка.</returns>
         [HttpGet]
-        public Vote Create(Guid cardId, Guid roomId, Guid playerId, Guid discussionId)
+        public VoteDTO Create(Guid cardId, Guid roomId, Guid playerId, Guid discussionId)
         {
-            return this.service.Create(cardId, roomId, playerId, discussionId);
+            var vote = this.voteService.Create(cardId, roomId, playerId, discussionId);
+            return VoteDTOBuilder.Build(vote, this.cardService.Get(vote.CardID));
         }
 
         /// <summary>
@@ -49,7 +59,7 @@ namespace PlanPoker.Controllers
         [HttpPost]
         public void ChangeCard(Guid voteId, Guid cardId)
         {
-            this.service.ChangeCard(voteId, cardId);
+            this.voteService.ChangeCard(voteId, cardId);
         }
 
         /// <summary>
@@ -57,9 +67,10 @@ namespace PlanPoker.Controllers
         /// </summary>
         /// <returns>Все голоса из базы данных.</returns>
         [HttpGet]
-        public IQueryable<Vote> GetAll()
+        public IQueryable<VoteDTO> GetAllVote()
         {
-            return this.service.GetAll();
+            return this.voteService.GetAllVote()
+                .Select(vote => VoteDTOBuilder.Build(vote, this.cardService.Get(vote.CardID)));
         }
     }
 }

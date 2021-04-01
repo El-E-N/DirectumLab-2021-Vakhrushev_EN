@@ -8,7 +8,9 @@ namespace DataService
         /// <summary>
         /// Не нужно.
         /// </summary>
-        /// <param name="args"></param>
-        public static void Main(string[] args) { }
+        /// <param name="args">Для консоли.</param>
+        public static void Main(string[] args) 
+        {
+        }
     }
 }

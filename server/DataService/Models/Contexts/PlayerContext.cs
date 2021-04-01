@@ -11,6 +11,8 @@ namespace DataService.Models.Contexts
         /// Конструктор.
         /// </summary>
         /// <param name="options">Опции.</param>
-        public PlayerContext(DbContextOptions<PlayerContext> options) : base(options) { }
+        public PlayerContext(DbContextOptions<PlayerContext> options) : base(options) 
+        { 
+        }
     }
 }
