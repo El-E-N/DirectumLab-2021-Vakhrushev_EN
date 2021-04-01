@@ -1,7 +1,5 @@
 ﻿using DataService.Models;
-using DataService.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PlanPoker.Services;
 using System;
 using System.Collections.Generic;
@@ -9,45 +7,79 @@ using System.Linq;
 
 namespace PlanPoker.Controllers
 {
+    /// <summary>
+    /// Контроллер обсуждения.
+    /// </summary>
     [ApiController]
-    [Route("/[controller]")]
+    [Route("/api/[controller]/[action]")]
     public class DiscussionController
     {
-        private readonly DiscussionService services;
+        /// <summary>
+        /// Сервис обсуждения.
+        /// </summary>
+        private readonly DiscussionService service;
 
-        public DiscussionController(DiscussionService services)
+        /// <summary>
+        /// Конструктор с присваиванием сервиса.
+        /// </summary>
+        /// <param name="service">Сервисы.</param>
+        public DiscussionController(DiscussionService service)
         {
-            this.services = services;
+            this.service = service;
         }
 
-        [HttpPost("create/{roomId&name}")]
+        /// <summary>
+        /// Создание обсуждения в конкретной комнате по ее Id.
+        /// </summary>
+        /// <param name="roomId">Id комнаты.</param>
+        /// <param name="name">Название обсуждения.</param>
+        /// <returns>Объект этого обсуждения.</returns>
+        [HttpGet]
         public Discussion Create(Guid roomId, string name = "")
         {
-            return this.services.Create(roomId, name);
+            return this.service.Create(roomId, name);
         }
 
-        [HttpPost("close/{id}")]
+        /// <summary>
+        /// Закрытие обсуждения.
+        /// </summary>
+        /// <param name="discussionId">Id этого обсуждения.</param>
+        [HttpPost]
         public void Close(Guid discussionId)
         {
-            this.services.Close(discussionId);
+            this.service.Close(discussionId);
         }
 
-        [HttpPost("addvote/{discussionId&voteId}")]
+        /// <summary>
+        /// Добавление голоса в обсуждение по Id обсуждения.
+        /// </summary>
+        /// <param name="discussionId">Id обсуждения.</param>
+        /// <param name="voteId">Id голоса.</param>
+        [HttpPost]
         public void AddVote(Guid discussionId, Guid voteId)
         {
-            this.services.AddVote(discussionId, voteId);
+            this.service.AddVote(discussionId, voteId);
         }
 
-        [HttpPost("getresults/{discussionId}")]
+        /// <summary>
+        /// Возвращает список результатов.
+        /// </summary>
+        /// <param name="discussionId">Id обсуждения.</param>
+        /// <returns>Список результатов.</returns>
+        [HttpGet]
         public List<Guid> GetResults(Guid discussionId)
         {
-            return this.services.GetResults(discussionId);
+            return this.service.GetResults(discussionId);
         }
 
-        [HttpPost("getall")]
+        /// <summary>
+        /// Просто для проверки работы.
+        /// </summary>
+        /// <returns>Все обсуждения из базы данных.</returns>
+        [HttpGet]
         public IQueryable<Discussion> GetAll()
         {
-            return this.services.GetAll();
+            return this.service.GetAll();
         }
     }
 }

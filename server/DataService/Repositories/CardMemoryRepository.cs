@@ -4,14 +4,14 @@ using DataService.Models.Contexts;
 namespace DataService.Repositories
 {
     /// <summary>
-    /// Репозиторий обсуждений.
+    /// Репозиторий карт.
     /// </summary>
-    public class DiscussionMemoryRepository : MemoryRepository<Discussion>
+    public class CardMemoryRepository : MemoryRepository<Card>
     {
         /// <summary>
         /// Конструктор.
         /// </summary>
         /// <param name="context">Контекст.</param>
-        public DiscussionMemoryRepository(DiscussionContext context) : base(context) { }
+        public CardMemoryRepository(CardContext context) : base(context) { }
     }
 }

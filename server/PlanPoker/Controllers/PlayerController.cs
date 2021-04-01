@@ -1,36 +1,65 @@
 ﻿using DataService.Models;
-using DataService.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PlanPoker.Services;
 using System;
-using Microsoft.AspNetCore.Http;
-using System.Threading.Tasks;
 using System.Linq;
 
 namespace PlanPoker.Controllers
 {
+    /// <summary>
+    /// Контроллер игрока.
+    /// </summary>
     [ApiController]
-    [Route("/[controller]")]
+    [Route("/api/[controller]/[action]")]
     public class PlayerController : ControllerBase
     {
-        private readonly PlayerService services;
+        /// <summary>
+        /// Сервисы игрока.
+        /// </summary>
+        private readonly PlayerService service;
 
-        public PlayerController(PlayerService services)
+        /// <summary>
+        /// Конструктор игрока.
+        /// </summary>
+        /// <param name="service">Сервисы.</param>
+        public PlayerController(PlayerService service)
         {
-            this.services = services;
+            this.service = service;
         }
 
-        [HttpPost("create/{name}")]
+        /// <summary>
+        /// Создание игрока с именем.
+        /// </summary>
+        /// <param name="name">Имя игрока.</param>
+        /// <returns>Объект игрока.</returns>
+        // [HttpGet("create/{name}")]
+        [HttpGet]
         public Player Create(string name)
         {
-            return this.services.Create(name);
+            return this.service.Create(name);
         }
 
-        [HttpPost("getall")]
+        /// <summary>
+        /// Изменение имени игрока.
+        /// </summary>
+        /// <param name="playerId">Id игрока.</param>
+        /// <param name="name">Новое имя игрока.</param>
+        /// <returns>Игрок с измененным именем.</returns>
+        [HttpGet]
+        public Player ChangeName(Guid playerId, string name)
+        {
+            return this.service.ChangeName(playerId, name);
+        }
+
+        /// <summary>
+        /// Просто для проверки работы.
+        /// </summary>
+        /// <returns>Все игроки из базы данных.</returns>
+        // [HttpGet("getall")]
+        [HttpGet]
         public IQueryable<Player> GetAll()
         {
-            return this.services.GetAll();
+            return this.service.GetAll();
         }
     }
 }

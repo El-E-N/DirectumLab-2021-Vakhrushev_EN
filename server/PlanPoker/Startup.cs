@@ -6,45 +6,70 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PlanPoker.Services;
 using DataService.Models;
+using DataService.Models.Contexts;
 using DataService.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace PlanPoker
 {
+    /// <summary>
+    /// Конфигурация программы.
+    /// </summary>
     public class Startup
     {
+        /// <summary>
+        /// Конструктор с присваиванием конфигурации.
+        /// </summary>
+        /// <param name="configuration">Конфигурация.</param>
         public Startup(IConfiguration configuration)
         {
             this.Configuration = configuration;
         }
 
+        /// <summary>
+        /// Конфигурация.
+        /// </summary>
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        /// <summary>
+        /// Добавление сервисов для конфигурации.
+        /// </summary>
+        /// <param name="services">Сервисы.</param>
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddTransient<DiscussionService>();
-            services.AddTransient<PlayerService>();
-            services.AddTransient<RoomService>();
-            services.AddTransient<VoteService>();
+
+            services.AddDbContext<RoomContext>(opt =>
+                                               opt.UseInMemoryDatabase("RoomDb"));
+            services.AddDbContext<PlayerContext>(opt =>
+                                               opt.UseInMemoryDatabase("PlayerDb"));
+            services.AddDbContext<DiscussionContext>(opt =>
+                                                opt.UseInMemoryDatabase("DiscussionDb"));
+            services.AddDbContext<VoteContext>(opt =>
+                                               opt.UseInMemoryDatabase("VoteDb"));
+            services.AddDbContext<CardContext>(opt =>
+                                               opt.UseInMemoryDatabase("VoteDb"));
 
             services.AddTransient<IRepository<Discussion>, DiscussionMemoryRepository>();
             services.AddTransient<IRepository<Player>, PlayerMemoryRepository>();
             services.AddTransient<IRepository<Vote>, VoteMemoryRepository>();
             services.AddTransient<IRepository<Room>, RoomMemoryRepository>();
+            services.AddTransient<IRepository<Card>, CardMemoryRepository>();
 
-            services.AddDbContext<RoomContext>(opt =>
-                                               opt.UseInMemoryDatabase("Room"));
-            services.AddDbContext<PlayerContext>(opt =>
-                                               opt.UseInMemoryDatabase("Player"));
-            services.AddDbContext<DiscussionContext>(opt =>
-                                               opt.UseInMemoryDatabase("Discussion"));
-            services.AddDbContext<VoteContext>(opt =>
-                                               opt.UseInMemoryDatabase("Vote"));
+            services.AddTransient<DiscussionService>();
+            services.AddTransient<PlayerService>();
+            services.AddTransient<RoomService>();
+            services.AddTransient<VoteService>();
+            services.AddTransient<CardService>();
+
+            services.AddEntityFrameworkInMemoryDatabase();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// <summary>
+        /// Основная конфигурация.
+        /// </summary>
+        /// <param name="app">Объект IApplicationBuilder.</param>
+        /// <param name="env">Объект для hostа.</param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())

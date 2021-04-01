@@ -1,0 +1,82 @@
+﻿using System;
+using System.Linq;
+using DataService.Models;
+using Microsoft.AspNetCore.Mvc;
+
+namespace PlanPoker.Services
+{
+    public class RoomService
+    {
+        /// <summary>
+        /// Репозиторий комнат.
+        /// </summary>
+        private readonly IRepository<Room> repository;
+
+        /// <summary>
+        /// Конструктор.
+        /// </summary>
+        /// <param name="repository">Репозиторий комнта.</param>
+        public RoomService(IRepository<Room> repository)
+        {
+            this.repository = repository;
+        }
+
+        /// <summary>
+        /// Создание комнаты.
+        /// </summary>
+        /// <param name="name">Название комнаты.</param>
+        /// <param name="creatorId">Id создателя комнаты.</param>
+        /// <returns>Созданная комната.</returns>
+        public Room Create(string name, Guid creatorId) 
+        {
+            var id = Guid.NewGuid();
+            var hash = Guid.NewGuid();
+            var room = new Room(name, creatorId, id, hash);
+            this.repository.Create(room);
+            this.repository.Save();
+            return this.repository.Get(id);
+        }
+
+        /// <summary>
+        /// Добавление игрока в комнату.
+        /// </summary>
+        /// <param name="roomId">Id комнаты.</param>
+        /// <param name="playerId">Id игрока.</param>
+        public void AddPlayer(Guid roomId, Guid playerId) 
+        {
+            this.repository.Get(roomId).PlayersIDs.Add(playerId);
+            this.repository.Save();
+        }
+
+        /// <summary>
+        /// Удаление игрока из комнаты.
+        /// </summary>
+        /// <param name="roomId">Id комнаты.</param>
+        /// <param name="playerId">Id игрока.</param>
+        public void RemovePlayer(Guid roomId, Guid playerId) 
+        {
+            this.repository.Get(roomId).PlayersIDs.Remove(playerId);
+            this.repository.Save();
+        }
+
+        /// <summary>
+        /// Изменение ведущего комнаты.
+        /// </summary>
+        /// <param name="roomId">Id комнаты.</param>
+        /// <param name="hostId">Id ведущего.</param>
+        public void ChangeHost(Guid roomId, Guid hostId)
+        {
+            this.repository.Get(roomId).HostID = hostId;
+            this.repository.Save();
+        }
+
+        /// <summary>
+        /// Просто для проверки работы.
+        /// </summary>
+        /// <returns>Все комнаты из базы данных.</returns>
+        public IQueryable<Room> GetAll()
+        {
+            return this.repository.GetAll();
+        }
+    }
+}

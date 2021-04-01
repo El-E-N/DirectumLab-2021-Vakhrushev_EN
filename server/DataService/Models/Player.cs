@@ -2,37 +2,51 @@
 
 namespace DataService.Models
 {
+    /// <summary>
+    /// Игрок.
+    /// </summary>
     public class Player
     {
+        /// <summary>
+        /// Конструктор по умолчанию.
+        /// </summary>
+        public Player()
+        {
+            this.Id = Guid.NewGuid();
+            this.Token = Guid.NewGuid().ToString();
+            this.Name = "Player" + this.Id;
+        }
+
+        /// <summary>
+        /// Конструктор с параметрами.
+        /// </summary>
+        /// <param name="id">Id игрока.</param>
+        /// <param name="name">Имя игрока.</param>
+        /// <param name="token">Токен игрока.</param>
         public Player(Guid id, string name, string token)
         {
-            this.ID = id;
+            this.Id = id;
             this.Token = token;
             if (name != string.Empty)
                 this.Name = name;
             else
-                this.Name = "Player" + this.ID;
+                this.Name = "Player" + this.Id;
         }
 
-        public Guid ID { get; }
+        /// <summary>
+        /// Id игрока.
+        /// </summary>
+        public Guid Id { get; set; }
 
         /// <summary>
         /// Токен для браузера.
         /// </summary>
         /// <remarks>Для подтверждения, что он нужный игрок</remarks>
-        public string Token { get; }
+        public string Token { get; set; }
 
-        public string Name 
-        { 
-            get => this.Name;
-
-            set
-            {
-                if (value != string.Empty)
-                    this.Name = value;
-                else
-                    this.Name = "Player" + this.ID;
-            }
-        } 
+        /// <summary>
+        /// Имя игрока.
+        /// </summary>
+        public string Name { get; set; } 
     }
 }

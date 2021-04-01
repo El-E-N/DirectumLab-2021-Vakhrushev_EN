@@ -8,28 +8,44 @@ namespace DataService.Models
     /// </summary>
     public class Room
     {
+        /// <summary>
+        /// Конструктор с параметрами.
+        /// </summary>
+        /// <param name="name">Название.</param>
+        /// <param name="creatorId">Id создателя.</param>
+        /// <param name="id">Id комнаты.</param>
+        /// <param name="hash">Hash комнаты.</param>
         public Room(string name, Guid creatorId, Guid id, Guid hash)
         {
             this.CreatorID = creatorId;
-            this.ID = id;
+            this.Id = id;
             this.Hash = hash;
             this.HostID = creatorId;
             if (name != string.Empty)
                 this.Name = name;
             else
-                this.Name = "Room" + this.ID;
+                this.Name = "Room" + this.Id;
         }
 
-        public Guid ID { get; }
+        /// <summary>
+        /// Id комнаты.
+        /// </summary>
+        public Guid Id { get; set; }
 
         /// <summary>
         /// Уникальный идентификатор для браузера.
         /// </summary>
-        public Guid Hash { get; }
+        public Guid Hash { get; set; }
 
-        public string Name { get; }
+        /// <summary>
+        /// Название комнаты.
+        /// </summary>
+        public string Name { get; set; }
 
-        public List<Guid> PlayersIDs { get; }
+        /// <summary>
+        /// Id игроков.
+        /// </summary>
+        public List<Guid> PlayersIDs { get; set; }
 
         /// <summary>
         /// ID управляющего комнатой.
@@ -37,6 +53,9 @@ namespace DataService.Models
         /// <remarks>По умолчанию ID создателя.</remarks>
         public Guid HostID { get; set; }
 
-        public Guid CreatorID { get; }
+        /// <summary>
+        /// Id создателя.
+        /// </summary>
+        public Guid CreatorID { get; set; }
     }
 }

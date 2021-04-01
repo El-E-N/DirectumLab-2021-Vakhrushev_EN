@@ -3,35 +3,56 @@ using System.Collections.Generic;
 
 namespace DataService.Models
 {
+    /// <summary>
+    /// Обсуждение.
+    /// </summary>
     public class Discussion
     {
+        /// <summary>
+        /// Конструктор обсуждения.
+        /// </summary>
+        /// <param name="id">Его id.</param>
+        /// <param name="roomId">id комнаты.</param>
+        /// <param name="name">Название обсуждения.</param>
         public Discussion(Guid id, Guid roomId, string name)
         {
-            this.ID = id;
+            this.Id = id;
             this.RoomID = roomId;
             if (name != string.Empty)
                 this.Name = name;
             else
-                this.Name = "Discussion" + this.ID;
+                this.Name = "Discussion" + this.Id;
             this.StartAt = DateTime.Now;
         }
 
-        public Guid ID { get; }
+        /// <summary>
+        /// Его Id.
+        /// </summary>
+        public Guid Id { get; set; }
 
-        public Guid RoomID { get; }
+        /// <summary>
+        /// Id комнаты.
+        /// </summary>
+        public Guid RoomID { get; set; }
 
-        public string Name { get; }
+        /// <summary>
+        /// Его название.
+        /// </summary>
+        public string Name { get; set; }
 
         /// <summary>
         /// Время начала обсуждения.
         /// </summary>
-        public DateTime? StartAt { get; }
+        public DateTime? StartAt { get; set; }
 
         /// <summary>
         /// время конца обсуждения.
         /// </summary>
         public DateTime? EndAt { get; set; }
 
-        public List<Guid> VoteIDs { get; }
+        /// <summary>
+        /// Id голосований из него.
+        /// </summary>
+        public List<Guid> VoteIDs { get; set; }
     }
 }

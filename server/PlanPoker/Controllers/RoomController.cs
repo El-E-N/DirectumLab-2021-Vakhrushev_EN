@@ -8,39 +8,80 @@ using System.Linq;
 
 namespace PlanPoker.Controllers
 {
+    /// <summary>
+    /// Контроллер комнаты.
+    /// </summary>
     [ApiController]
-    [Route("/[controller]")]
+    [Route("/api/[controller]/[action]")]
     public class RoomController
     {
-        private readonly RoomService services;
+        /// <summary>
+        /// Сервисы комнаты.
+        /// </summary>
+        private readonly RoomService service;
 
-        public RoomController(RoomService services)
+        /// <summary>
+        /// Конструктор.
+        /// </summary>
+        /// <param name="service">Сервисы.</param>
+        public RoomController(RoomService service)
         {
-            this.services = services;
+            this.service = service;
         }
 
-        [HttpPost("create/{name&creatorId}")]
+        /// <summary>
+        /// Создание комнаты с названием и Id создателя комнаты.
+        /// </summary>
+        /// <param name="name">Название комнаты.</param>
+        /// <param name="creatorId">Id создателя.</param>
+        /// <returns>Объект созданной комнаты.</returns>
+        [HttpGet]
         public Room Create(string name, Guid creatorId)
         {
-            return this.services.Create(name, creatorId);
+            return this.service.Create(name, creatorId);
         }
 
-        [HttpPost("addplayer/{roomId&playerId}")]
+        /// <summary>
+        /// Добавление игрока в комнату.
+        /// </summary>
+        /// <param name="roomId">Id комнаты.</param>
+        /// <param name="playerId">Id добавляемого игрока.</param>
+        [HttpPost]
         public void AddPlayer(Guid roomId, Guid playerId)
         {
-            this.services.AddPlayer(roomId, playerId);
+            this.service.AddPlayer(roomId, playerId);
         }
 
-        [HttpPost("removeplayer/{roomId&playerId}")]
+        /// <summary>
+        /// Удаление игрока из комнаты.
+        /// </summary>
+        /// <param name="roomId">Id комнаты.</param>
+        /// <param name="playerId">Id игрока.</param>
+        [HttpPost]
         public void RemovePlayer(Guid roomId, Guid playerId)
         {
-            this.services.RemovePlayer(roomId, playerId);
+            this.service.RemovePlayer(roomId, playerId);
         }
 
-        [HttpPost("getall")]
+        /// <summary>
+        /// Изменение ведущего комнаты.
+        /// </summary>
+        /// <param name="roomId">Id комнаты.</param>
+        /// <param name="hostId">Id ведущего.</param>
+        [HttpPost]
+        public void ChangeHost(Guid roomId, Guid hostId)
+        {
+            this.service.ChangeHost(roomId, hostId);
+        }
+
+        /// <summary>
+        /// Просто для проверки работы.
+        /// </summary>
+        /// <returns>Все комнаты из базы данных.</returns>
+        [HttpGet]
         public IQueryable<Room> GetAll()
         {
-            return this.services.GetAll();
+            return this.service.GetAll();
         }
     }
 }
