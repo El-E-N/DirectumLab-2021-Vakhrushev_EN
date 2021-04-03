@@ -5,7 +5,7 @@ namespace DataService.Models
     /// <summary>
     /// Игрок.
     /// </summary>
-    public class Player
+    public class Player : Entity
     {
         /// <summary>
         /// Конструктор по умолчанию.
@@ -32,11 +32,6 @@ namespace DataService.Models
             else
                 this.Name = "Player" + this.Id;
         }
-
-        /// <summary>
-        /// Id игрока.
-        /// </summary>
-        public Guid Id { get; set; }
 
         /// <summary>
         /// Токен для браузера.

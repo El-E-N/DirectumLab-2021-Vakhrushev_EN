@@ -9,8 +9,8 @@ namespace DataService.Repositories
     /// Репозиторий объектов.
     /// </summary>
     /// <typeparam name="T">Любой класс объекта.</typeparam>
-    public class MemoryRepository<T> : IRepository<T>
-        where T : class
+    public class MemoryRepository<T> : IRepository<T>, IDisposable
+        where T : class, IEntity
     {
         /// <summary>
         /// Контекст объекта.

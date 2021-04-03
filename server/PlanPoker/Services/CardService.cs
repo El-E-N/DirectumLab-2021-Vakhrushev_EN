@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using DataService.Repositories;
+using System;
 using System.Linq;
-using System.Threading.Tasks;
 using DataService.Models;
 
 namespace PlanPoker.Services

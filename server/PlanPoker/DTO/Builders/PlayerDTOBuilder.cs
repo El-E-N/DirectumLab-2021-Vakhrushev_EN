@@ -1,4 +1,6 @@
 ﻿using DataService.Models;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PlanPoker.DTO.Builders
 {
@@ -17,9 +19,18 @@ namespace PlanPoker.DTO.Builders
             return new PlayerDTO()
             {
                 Id = player.Id,
-                Name = player.Name,
-                Token = player.Token
+                Name = player.Name
             };
+        }
+
+        /// <summary>
+        /// Получение списка DTO игроков.
+        /// </summary>
+        /// <param name="players">Игроки.</param>
+        /// <returns>Список DTO игроков.</returns>
+        public static IEnumerable<PlayerDTO> BuildList(IEnumerable<Player> players)
+        {
+            return players.Select(player => Build(player));
         }
     }
 }

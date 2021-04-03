@@ -13,7 +13,7 @@ namespace PlanPoker.Services
         /// <summary>
         /// Репозиторий игроков.
         /// </summary>
-        public readonly IRepository<Player> Repository;
+        private readonly IRepository<Player> repository;
 
         /// <summary>
         /// Конструктор.
@@ -21,7 +21,7 @@ namespace PlanPoker.Services
         /// <param name="repository">Репозиторий игроков.</param>
         public PlayerService(IRepository<Player> repository)
         {
-            this.Repository = repository;
+            this.repository = repository;
         }
 
         /// <summary>
@@ -33,9 +33,9 @@ namespace PlanPoker.Services
         {
             var token = Guid.NewGuid().ToString();
             var id = Guid.NewGuid();
-            this.Repository.Create(new Player(id, name, token));
-            this.Repository.Save();
-            return this.Repository.Get(id);
+            this.repository.Create(new Player(id, name, token));
+            this.repository.Save();
+            return this.repository.Get(id);
         }
 
         /// <summary>
@@ -46,9 +46,9 @@ namespace PlanPoker.Services
         /// <returns>Игрок с измененным именем.</returns>
         public Player ChangeName(Guid playerId, string name)
         {
-            this.Repository.Get(playerId).Name = name;
-            this.Repository.Save();
-            return this.Repository.Get(playerId);
+            this.repository.Get(playerId).Name = name;
+            this.repository.Save();
+            return this.repository.Get(playerId);
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace PlanPoker.Services
         /// </summary>
         /// <param name="id">Идентификатор.</param>
         /// <returns>Игрок.</returns>
-        public Player Get(Guid id) => this.Repository.Get(id);
+        public Player Get(Guid id) => this.repository.Get(id);
 
         /// <summary>
         /// Получение всех игроков.
@@ -64,7 +64,7 @@ namespace PlanPoker.Services
         /// <returns>Все игроки из базы данных.</returns>
         public IQueryable<Player> GetPlayers()
         {
-            return this.Repository.GetAll();
+            return this.repository.GetAll();
         }
     }
 }

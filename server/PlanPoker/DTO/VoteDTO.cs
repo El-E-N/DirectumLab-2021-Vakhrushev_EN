@@ -21,16 +21,16 @@ namespace PlanPoker.DTO
         /// <summary>
         /// Id комнаты.
         /// </summary>
-        public Guid RoomID { get; set; }
+        public Guid RoomId { get; set; }
 
         /// <summary>
         /// Id игрока.
         /// </summary>
-        public Guid PlayerID { get; set; }
+        public Guid PlayerId { get; set; }
 
         /// <summary>
         /// Id обсуждения.
         /// </summary>
-        public Guid DiscussionID { get; set; }
+        public Guid DiscussionId { get; set; }
     }
 }

@@ -6,7 +6,7 @@ namespace DataService.Models
     /// <summary>
     /// Сущность комнаты для покер-планирования.
     /// </summary>
-    public class Room
+    public class Room : Entity
     {
         /// <summary>
         /// Конструктор с параметрами.
@@ -17,20 +17,15 @@ namespace DataService.Models
         /// <param name="hash">Hash комнаты.</param>
         public Room(string name, Guid creatorId, Guid id, Guid hash)
         {
-            this.CreatorID = creatorId;
+            this.CreatorId = creatorId;
             this.Id = id;
             this.Hash = hash;
-            this.HostID = creatorId;
+            this.HostId = creatorId;
             if (name != string.Empty)
                 this.Name = name;
             else
                 this.Name = "Room" + this.Id;
         }
-
-        /// <summary>
-        /// Id комнаты.
-        /// </summary>
-        public Guid Id { get; set; }
 
         /// <summary>
         /// Уникальный идентификатор для браузера.
@@ -45,17 +40,17 @@ namespace DataService.Models
         /// <summary>
         /// Id игроков.
         /// </summary>
-        public List<Guid> PlayersIDs { get; set; }
+        public List<Guid> PlayersIds { get; set; }
 
         /// <summary>
         /// ID управляющего комнатой.
         /// </summary>
         /// <remarks>По умолчанию ID создателя.</remarks>
-        public Guid HostID { get; set; }
+        public Guid HostId { get; set; }
 
         /// <summary>
         /// Id создателя.
         /// </summary>
-        public Guid CreatorID { get; set; }
+        public Guid CreatorId { get; set; }
     }
 }

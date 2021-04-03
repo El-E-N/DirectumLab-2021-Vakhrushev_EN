@@ -1,5 +1,4 @@
-﻿using DataService.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PlanPoker.DTO;
 using PlanPoker.DTO.Builders;
 using PlanPoker.Services;
@@ -53,12 +52,10 @@ namespace PlanPoker.Controllers
         [HttpGet]
         public DiscussionDTO Create(Guid roomId, string name = "")
         {
-            var voteList = (List<VoteDTO>)this.voteService.GetAllVote()
-                           .Select(el => 
-                           VoteDTOBuilder.Build(el, this.cardService.Get(el.CardID)));
             return DiscussionDTOBuilder.Build(
                 this.discussionService.Create(roomId, name),
-                voteList);
+                this.voteService, 
+                this.cardService);
         }
 
         /// <summary>
@@ -88,12 +85,10 @@ namespace PlanPoker.Controllers
         /// <param name="discussionId">Id обсуждения.</param>
         /// <returns>Список оценок.</returns>
         [HttpGet]
-        public List<VoteDTO> GetAllVote(Guid discussionId)
+        public IEnumerable<VoteDTO> GetAllVote(Guid discussionId)
         {
-            return (List<VoteDTO>)this.discussionService.GetVoteIds(discussionId)
-                   .Select(el => VoteDTOBuilder.Build(
-                       this.voteService.GetVote(el), 
-                       this.cardService.Get(this.voteService.GetVote(el).CardID)));
+            var discussion = this.discussionService.GetDiscussion(discussionId);
+            return VoteDTOBuilder.BuildList(discussion.VoteIds.Select(id => this.voteService.GetVote(id)), this.cardService);
         }
 
         /// <summary>
@@ -101,10 +96,9 @@ namespace PlanPoker.Controllers
         /// </summary>
         /// <returns>Все обсуждения из базы данных.</returns>
         [HttpGet]
-        public IQueryable<DiscussionDTO> GetDiscussionList()
+        public IEnumerable<DiscussionDTO> GetDiscussionList()
         {
-            return this.discussionService.GetDiscussions()
-                .Select(el => DiscussionDTOBuilder.Build(el, this.GetAllVote(el.Id)));
+            return DiscussionDTOBuilder.BuildList(this.discussionService.GetDiscussions(), this.voteService, this.cardService);
         }
     }
 }

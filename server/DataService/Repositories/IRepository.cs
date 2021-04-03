@@ -1,14 +1,14 @@
-﻿using System;
+﻿using DataService.Models;
+using System;
 using System.Linq;
 
-namespace DataService.Models
+namespace DataService.Repositories
 {
     /// <summary>
     /// Интерфейс репозитория.
     /// </summary>
     /// <typeparam name="T">Любой класс, который он будет содержать.</typeparam>
-    public interface IRepository<T> : IDisposable
-        where T : class
+    public interface IRepository<T> where T : class, IEntity
     {
         /// <summary>
         /// Создание.

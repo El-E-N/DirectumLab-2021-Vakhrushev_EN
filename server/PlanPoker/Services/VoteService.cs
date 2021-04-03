@@ -47,7 +47,7 @@ namespace PlanPoker.Services
         /// <param name="cardId">Id карты.</param>
         public void ChangeCard(Guid voteId, Guid cardId)
         {
-            this.repository.Get(voteId).CardID = cardId;
+            this.repository.Get(voteId).CardId = cardId;
             this.repository.Save();
         }
 

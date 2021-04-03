@@ -1,10 +1,9 @@
-﻿using DataService.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PlanPoker.DTO;
 using PlanPoker.DTO.Builders;
 using PlanPoker.Services;
 using System;
-using System.Linq;
+using System.Collections.Generic;
 
 namespace PlanPoker.Controllers
 {
@@ -48,7 +47,7 @@ namespace PlanPoker.Controllers
         public VoteDTO Create(Guid cardId, Guid roomId, Guid playerId, Guid discussionId)
         {
             var vote = this.voteService.Create(cardId, roomId, playerId, discussionId);
-            return VoteDTOBuilder.Build(vote, this.cardService.Get(vote.CardID));
+            return VoteDTOBuilder.Build(vote, this.cardService);
         }
 
         /// <summary>
@@ -67,10 +66,9 @@ namespace PlanPoker.Controllers
         /// </summary>
         /// <returns>Все голоса из базы данных.</returns>
         [HttpGet]
-        public IQueryable<VoteDTO> GetAllVote()
+        public IEnumerable<VoteDTO> GetAllVote()
         {
-            return this.voteService.GetAllVote()
-                .Select(vote => VoteDTOBuilder.Build(vote, this.cardService.Get(vote.CardID)));
+            return VoteDTOBuilder.BuildList(this.voteService.GetAllVote(), this.cardService);
         }
     }
 }

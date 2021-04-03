@@ -8,7 +8,7 @@ namespace PlanPoker.DTO
     public class CardDTO
     {
         /// <summary>
-        /// Ее Id.
+        /// Id карты.
         /// </summary>
         public Guid Id { get; set; }
 
@@ -16,10 +16,10 @@ namespace PlanPoker.DTO
         /// Значение карты.
         /// </summary>
         /// <remarks>NULL для нечисловых значений.</remarks>
-        public int? Value { get; set; }
+        public double? Value { get; set; }
 
         /// <summary>
-        /// Ее название.
+        /// Название карты.
         /// </summary>
         public string Name { get; set; }
     }

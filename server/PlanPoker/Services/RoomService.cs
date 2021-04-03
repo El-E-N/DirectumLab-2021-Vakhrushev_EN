@@ -1,7 +1,7 @@
-﻿using System;
+﻿using DataService.Models;
+using DataService.Repositories;
+using System;
 using System.Linq;
-using DataService.Models;
-using Microsoft.AspNetCore.Mvc;
 
 namespace PlanPoker.Services
 {
@@ -47,7 +47,7 @@ namespace PlanPoker.Services
         /// <param name="playerId">Id игрока.</param>
         public void AddPlayer(Guid roomId, Guid playerId) 
         {
-            this.repository.Get(roomId).PlayersIDs.Add(playerId);
+            this.repository.Get(roomId).PlayersIds.Add(playerId);
             this.repository.Save();
         }
 
@@ -58,7 +58,7 @@ namespace PlanPoker.Services
         /// <param name="playerId">Id игрока.</param>
         public void RemovePlayer(Guid roomId, Guid playerId) 
         {
-            this.repository.Get(roomId).PlayersIDs.Remove(playerId);
+            this.repository.Get(roomId).PlayersIds.Remove(playerId);
             this.repository.Save();
         }
 
@@ -69,7 +69,7 @@ namespace PlanPoker.Services
         /// <param name="hostId">Id ведущего.</param>
         public void ChangeHost(Guid roomId, Guid hostId)
         {
-            this.repository.Get(roomId).HostID = hostId;
+            this.repository.Get(roomId).HostId = hostId;
             this.repository.Save();
         }
 

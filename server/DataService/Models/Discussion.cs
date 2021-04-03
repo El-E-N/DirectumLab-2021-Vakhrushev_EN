@@ -6,7 +6,7 @@ namespace DataService.Models
     /// <summary>
     /// Обсуждение.
     /// </summary>
-    public class Discussion
+    public class Discussion : Entity
     {
         /// <summary>
         /// Конструктор обсуждения.
@@ -17,7 +17,7 @@ namespace DataService.Models
         public Discussion(Guid id, Guid roomId, string name)
         {
             this.Id = id;
-            this.RoomID = roomId;
+            this.RoomId = roomId;
             if (name != string.Empty)
                 this.Name = name;
             else
@@ -26,17 +26,12 @@ namespace DataService.Models
         }
 
         /// <summary>
-        /// Его Id.
-        /// </summary>
-        public Guid Id { get; set; }
-
-        /// <summary>
         /// Id комнаты.
         /// </summary>
-        public Guid RoomID { get; set; }
+        public Guid RoomId { get; set; }
 
         /// <summary>
-        /// Его название.
+        /// Название обсуждения.
         /// </summary>
         public string Name { get; set; }
 
@@ -51,8 +46,8 @@ namespace DataService.Models
         public DateTime? EndAt { get; set; }
 
         /// <summary>
-        /// Id голосований из него.
+        /// Id голосований из обсуждения.
         /// </summary>
-        public List<Guid> VoteIDs { get; set; }
+        public List<Guid> VoteIds { get; }
     }
 }

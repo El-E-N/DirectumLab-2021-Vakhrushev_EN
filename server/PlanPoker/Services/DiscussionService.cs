@@ -1,4 +1,5 @@
 ﻿using DataService.Models;
+using DataService.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,7 +56,7 @@ namespace PlanPoker.Services
         /// <param name="voteId">Id голоса.</param>
         public void AddVote(Guid discussionId, Guid voteId) 
         {
-            this.repository.Get(discussionId).VoteIDs.Add(voteId);
+            this.repository.Get(discussionId).VoteIds.Add(voteId);
             this.repository.Save();
         }
 
@@ -66,7 +67,17 @@ namespace PlanPoker.Services
         /// <returns>Список Id оценок.</returns>
         public List<Guid> GetVoteIds(Guid discussionId) 
         {
-            return this.repository.Get(discussionId).VoteIDs;
+            return this.repository.Get(discussionId).VoteIds;
+        }
+
+        /// <summary>
+        /// Получение обсуждения.
+        /// </summary>
+        /// <param name="id">Идентификатор.</param>
+        /// <returns>Обсуждение.</returns>
+        public Discussion GetDiscussion(Guid id)
+        {
+            return this.repository.Get(id);
         }
 
         /// <summary>

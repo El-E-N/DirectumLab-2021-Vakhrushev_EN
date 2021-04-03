@@ -5,7 +5,7 @@ namespace DataService.Models
     /// <summary>
     /// Карта.
     /// </summary>
-    public class Card
+    public class Card : Entity
     {
         /// <summary>
         /// Конструктор с параметрами.
@@ -21,18 +21,13 @@ namespace DataService.Models
         }
 
         /// <summary>
-        /// Ее Id.
-        /// </summary>
-        public Guid Id { get; set; }
-
-        /// <summary>
         /// Значение карты.
         /// </summary>
         /// <remarks>NULL для нечисловых значений.</remarks>
-        public int? Value { get; set; }
+        public double? Value { get; set; }
 
         /// <summary>
-        /// Ее название.
+        /// Название карты.
         /// </summary>
         public string Name { get; set; }
     }

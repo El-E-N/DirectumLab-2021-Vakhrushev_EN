@@ -5,7 +5,7 @@ namespace DataService.Models
     /// <summary>
     /// Оценка.
     /// </summary>
-    public class Vote
+    public class Vote : Entity
     {
         /// <summary>
         /// Конструктор с параметрами.
@@ -18,35 +18,30 @@ namespace DataService.Models
         public Vote(Guid id, Guid cardId, Guid roomId, Guid playerId, Guid discussionId)
         {
             this.Id = id;
-            this.CardID = cardId;
-            this.RoomID = roomId;
-            this.PlayerID = playerId;
-            this.DiscussionID = discussionId;
+            this.CardId = cardId;
+            this.RoomId = roomId;
+            this.PlayerId = playerId;
+            this.DiscussionId = discussionId;
         }
-
-        /// <summary>
-        /// Id оценки.
-        /// </summary>
-        public Guid Id { get; set; }
 
         /// <summary>
         /// Id карты.
         /// </summary>
-        public Guid CardID { get; set;  }
+        public Guid CardId { get; set;  }
 
         /// <summary>
         /// Id комнаты.
         /// </summary>
-        public Guid RoomID { get; set; }
+        public Guid RoomId { get; set; }
 
         /// <summary>
         /// Id игрока.
         /// </summary>
-        public Guid PlayerID { get; set; }
+        public Guid PlayerId { get; set; }
 
         /// <summary>
         /// Id обсуждения.
         /// </summary>
-        public Guid DiscussionID { get; set; }
+        public Guid DiscussionId { get; set; }
     }
 }

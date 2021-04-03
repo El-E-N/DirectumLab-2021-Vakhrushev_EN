@@ -1,11 +1,9 @@
-﻿using DataService.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PlanPoker.DTO;
 using PlanPoker.DTO.Builders;
 using PlanPoker.Services;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace PlanPoker.Controllers
 {
@@ -46,10 +44,7 @@ namespace PlanPoker.Controllers
         [HttpGet]
         public RoomDTO Create(string name, Guid creatorId)
         {
-            var room = this.roomService.Create(name, creatorId);
-            return RoomDTOBuilder.Build(
-                room,
-                (List<PlayerDTO>)room.PlayersIDs.Select(el => PlayerDTOBuilder.Build(this.playerService.Get(el))));
+            return RoomDTOBuilder.Build(this.roomService.Create(name, creatorId), this.playerService);
         }
 
         /// <summary>
@@ -90,12 +85,9 @@ namespace PlanPoker.Controllers
         /// </summary>
         /// <returns>Все комнаты из базы данных.</returns>
         [HttpGet]
-        public IQueryable<RoomDTO> GetRooms()
+        public IEnumerable<RoomDTO> GetRooms()
         {
-            return this.roomService.GetRooms()
-                .Select(room => RoomDTOBuilder.Build(
-                    room,
-                    (List<PlayerDTO>)room.PlayersIDs.Select(id => PlayerDTOBuilder.Build(this.playerService.Get(id)))));
+            return RoomDTOBuilder.BuildList(this.roomService.GetRooms(), this.playerService);
         }
     }
 }

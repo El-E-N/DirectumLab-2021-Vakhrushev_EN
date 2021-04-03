@@ -2,7 +2,7 @@
 using PlanPoker.DTO;
 using PlanPoker.DTO.Builders;
 using PlanPoker.Services;
-using System.Linq;
+using System.Collections.Generic;
 
 namespace PlanPoker.Controllers
 {
@@ -31,10 +31,9 @@ namespace PlanPoker.Controllers
         /// Получение всех оценок.
         /// </summary>
         /// <returns>Все оценки.</returns>
-        public IQueryable<CardDTO> GetCards()
+        public IEnumerable<CardDTO> GetCards()
         {
-            return this.service.GetCards()
-                .Select(card => CardDTOBuilder.Build(card));
+            return CardDTOBuilder.BuildList(this.service.GetCards());
         }
     }
 }

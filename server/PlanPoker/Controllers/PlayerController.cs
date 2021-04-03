@@ -1,10 +1,9 @@
-﻿using DataService.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PlanPoker.DTO;
 using PlanPoker.DTO.Builders;
 using PlanPoker.Services;
 using System;
-using System.Linq;
+using System.Collections.Generic;
 
 namespace PlanPoker.Controllers
 {
@@ -57,10 +56,9 @@ namespace PlanPoker.Controllers
         /// </summary>
         /// <returns>Все игроки из базы данных.</returns>
         [HttpGet]
-        public IQueryable<PlayerDTO> GetPlayers()
+        public IEnumerable<PlayerDTO> GetPlayers()
         {
-            return this.service.GetPlayers()
-                .Select(el => PlayerDTOBuilder.Build(el));
+            return PlayerDTOBuilder.BuildList(this.service.GetPlayers());
         }
     }
 }
