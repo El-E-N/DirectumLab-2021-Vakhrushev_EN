@@ -18,7 +18,7 @@ namespace PlanPoker.DTO.Builders
         /// <returns>DTO оценки.</returns>
         public static VoteDTO Build(Vote vote, CardService cardService)
         {
-            var card = cardService.Get(vote.CardId);
+            var card = cardService.Get(vote.CardId.ToString());
             return new VoteDTO()
             {
                 Id = vote.Id,

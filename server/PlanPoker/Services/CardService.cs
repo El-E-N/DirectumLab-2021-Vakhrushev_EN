@@ -13,13 +13,13 @@ namespace PlanPoker.Services
         /// <summary>
         /// Репозиторий с картами.
         /// </summary>
-        private readonly IRepository<Card> repository;
+        private readonly CardMemoryRepository repository;
 
         /// <summary>
         /// Конструктор.
         /// </summary>
         /// <param name="repository">Репозиторий с голосованиями.</param>
-        public CardService(IRepository<Card> repository)
+        public CardService(CardMemoryRepository repository)
         {
             this.repository = repository;
         }
@@ -27,14 +27,13 @@ namespace PlanPoker.Services
         /// <summary>
         /// Создание карты.
         /// </summary>
-        /// <param name="id">Идентификатор.</param>
         /// <param name="value">Значение.</param>
         /// <param name="name">Название.</param>
         /// <returns>Карта.</returns>
-        public Card Create(Guid id, int? value, string name)
+        public Card Create(double? value, string name)
         {
-            this.repository.Create(new Card(id, value, name));
-            this.repository.Save();
+            var id = Guid.NewGuid();
+            this.repository.Create(id, value, name);
             return this.repository.Get(id);
         }
 
@@ -43,9 +42,9 @@ namespace PlanPoker.Services
         /// </summary>
         /// <param name="id">Идентификатор.</param>
         /// <returns>Карта.</returns>
-        public Card Get(Guid id)
+        public Card Get(string id)
         {
-            return this.repository.Get(id);
+            return this.repository.Get(Guid.Parse(id.Replace(" ", string.Empty)));
         }
 
         /// <summary>
@@ -54,7 +53,7 @@ namespace PlanPoker.Services
         /// <returns>Все голоса из базы данных.</returns>
         public IQueryable<Card> GetCards()
         {
-            return this.repository.GetAll();
+            return this.repository.GetItems();
         }
     }
 }

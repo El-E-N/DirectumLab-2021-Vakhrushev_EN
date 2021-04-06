@@ -13,13 +13,13 @@ namespace PlanPoker.Services
         /// <summary>
         /// Репозиторий с голосованиями.
         /// </summary>
-        private readonly IRepository<Vote> repository;
+        private readonly VoteMemoryRepository repository;
 
         /// <summary>
         /// Конструктор.
         /// </summary>
         /// <param name="repository">Репозиторий с голосованиями.</param>
-        public VoteService(IRepository<Vote> repository)
+        public VoteService(VoteMemoryRepository repository)
         {
             this.repository = repository;
         }
@@ -32,11 +32,15 @@ namespace PlanPoker.Services
         /// <param name="playerId">Id игрока.</param>
         /// <param name="discussionId">Id обсуждения.</param>
         /// <returns>Голос.</returns>
-        public Vote Create(Guid cardId, Guid roomId, Guid playerId, Guid discussionId) 
+        public Vote Create(string cardId, string roomId, string playerId, string discussionId) 
         {
             var id = Guid.NewGuid();
-            this.repository.Create(new Vote(id, cardId, roomId, playerId, discussionId));
-            this.repository.Save();
+            this.repository.Create(
+                id, 
+                Guid.Parse(cardId.Replace(" ", string.Empty)), 
+                Guid.Parse(roomId.Replace(" ", string.Empty)), 
+                Guid.Parse(playerId.Replace(" ", string.Empty)), 
+                Guid.Parse(discussionId.Replace(" ", string.Empty)));
             return this.repository.Get(id);
         }
 
@@ -45,10 +49,12 @@ namespace PlanPoker.Services
         /// </summary>
         /// <param name="voteId">Id оценки.</param>
         /// <param name="cardId">Id карты.</param>
-        public void ChangeCard(Guid voteId, Guid cardId)
+        public void ChangeCard(string voteId, string cardId)
         {
-            this.repository.Get(voteId).CardId = cardId;
-            this.repository.Save();
+            var discussionId = this.repository.Get(Guid.Parse(voteId.Replace(" ", string.Empty))).DiscussionId;
+            var playerId = this.repository.Get(Guid.Parse(voteId.Replace(" ", string.Empty))).PlayerId;
+            var roomId = this.repository.Get(Guid.Parse(voteId.Replace(" ", string.Empty))).RoomId;
+            this.repository.Save(new Vote(Guid.Parse(voteId.Replace(" ", string.Empty)), Guid.Parse(cardId.Replace(" ", string.Empty)), roomId, playerId, discussionId));
         }
 
         /// <summary>
@@ -56,9 +62,9 @@ namespace PlanPoker.Services
         /// </summary>
         /// <param name="id">Идентификатор.</param>
         /// <returns>Оценка.</returns>
-        public Vote GetVote(Guid id)
+        public Vote GetVote(string id)
         {
-            return this.repository.Get(id);
+            return this.repository.Get(Guid.Parse(id.Replace(" ", string.Empty)));
         }
 
         /// <summary>
@@ -67,7 +73,7 @@ namespace PlanPoker.Services
         /// <returns>Все голоса из базы данных.</returns>
         public IQueryable<Vote> GetAllVote()
         {
-            return this.repository.GetAll();
+            return this.repository.GetItems();
         }
     }
 }

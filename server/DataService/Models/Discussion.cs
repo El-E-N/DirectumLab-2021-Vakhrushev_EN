@@ -23,6 +23,7 @@ namespace DataService.Models
             else
                 this.Name = "Discussion" + this.Id;
             this.StartAt = DateTime.Now;
+            this.VoteIds = new List<Guid>();
         }
 
         /// <summary>
@@ -48,6 +49,6 @@ namespace DataService.Models
         /// <summary>
         /// Id голосований из обсуждения.
         /// </summary>
-        public List<Guid> VoteIds { get; }
+        public ICollection<Guid> VoteIds { get; }
     }
 }

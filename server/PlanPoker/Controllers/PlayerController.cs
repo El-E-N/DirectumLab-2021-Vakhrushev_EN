@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DataService.Models;
+using Microsoft.AspNetCore.Mvc;
 using PlanPoker.DTO;
 using PlanPoker.DTO.Builders;
 using PlanPoker.Services;
-using System;
 using System.Collections.Generic;
 
 namespace PlanPoker.Controllers
@@ -32,11 +32,12 @@ namespace PlanPoker.Controllers
         /// Создание игрока с именем.
         /// </summary>
         /// <param name="name">Имя игрока.</param>
-        /// <returns>Объект DTO игрока.</returns>
+        /// <returns>Объект игрока.</returns>
+        /// <remarks>Не DTO, так как необходим токен.</remarks>
         [HttpGet]
-        public PlayerDTO Create(string name)
+        public Player Create(string name)
         {
-            return PlayerDTOBuilder.Build(this.service.Create(name));
+            return this.service.Create(name);
         }
 
         /// <summary>
@@ -46,7 +47,7 @@ namespace PlanPoker.Controllers
         /// <param name="name">Новое имя игрока.</param>
         /// <returns>Объект DTO игрока с измененным именем.</returns>
         [HttpGet]
-        public PlayerDTO ChangeName(Guid playerId, string name)
+        public PlayerDTO ChangeName(string playerId, string name)
         {
             return PlayerDTOBuilder.Build(this.service.ChangeName(playerId, name));
         }

@@ -11,15 +11,15 @@ namespace DataService.Repositories
     public interface IRepository<T> where T : class, IEntity
     {
         /// <summary>
-        /// Создание.
-        /// </summary>
-        /// <param name="item">Объект.</param>
-        public void Create(T item);
-
-        /// <summary>
         /// Сохранение.
         /// </summary>
-        public void Save();
+        /// <param name="item">Объект сущности.</param>
+        public void Save(T item);
+
+        /// <summary>
+        /// Сохранение изменений.
+        /// </summary>
+        public void SaveChanges();
 
         /// <summary>
         /// Получение из БД по id.
@@ -32,7 +32,7 @@ namespace DataService.Repositories
         /// Получить все объекты.
         /// </summary>
         /// <returns>Все объекты.</returns>
-        public IQueryable<T> GetAll();
+        public IQueryable<T> GetItems();
 
         /// <summary>
         /// Удаление объекта.

@@ -2,7 +2,6 @@
 using PlanPoker.DTO;
 using PlanPoker.DTO.Builders;
 using PlanPoker.Services;
-using System;
 using System.Collections.Generic;
 
 namespace PlanPoker.Controllers
@@ -44,7 +43,7 @@ namespace PlanPoker.Controllers
         /// <param name="discussionId">Id обсуждения, на которое проголосовали.</param>
         /// <returns>Оценка.</returns>
         [HttpGet]
-        public VoteDTO Create(Guid cardId, Guid roomId, Guid playerId, Guid discussionId)
+        public VoteDTO Create(string cardId, string roomId, string playerId, string discussionId)
         {
             var vote = this.voteService.Create(cardId, roomId, playerId, discussionId);
             return VoteDTOBuilder.Build(vote, this.cardService);
@@ -56,7 +55,7 @@ namespace PlanPoker.Controllers
         /// <param name="voteId">Id оценки.</param>
         /// <param name="cardId">Id карты.</param>
         [HttpPost]
-        public void ChangeCard(Guid voteId, Guid cardId)
+        public void ChangeCard(string voteId, string cardId)
         {
             this.voteService.ChangeCard(voteId, cardId);
         }

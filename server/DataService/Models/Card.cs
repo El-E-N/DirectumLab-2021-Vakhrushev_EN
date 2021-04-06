@@ -13,7 +13,7 @@ namespace DataService.Models
         /// <param name="id">Id карты, которы задает создатель.</param>
         /// <param name="value">Значение.</param>
         /// <param name="name">Название (для нечисловых).</param>
-        public Card(Guid id, int? value, string name)
+        public Card(Guid id, double? value, string name)
         {
             this.Id = id;
             this.Value = value;

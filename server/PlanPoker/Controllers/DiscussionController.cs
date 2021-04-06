@@ -2,7 +2,6 @@
 using PlanPoker.DTO;
 using PlanPoker.DTO.Builders;
 using PlanPoker.Services;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -50,7 +49,7 @@ namespace PlanPoker.Controllers
         /// <param name="name">Название обсуждения.</param>
         /// <returns>Объект DTO этого обсуждения.</returns>
         [HttpGet]
-        public DiscussionDTO Create(Guid roomId, string name = "")
+        public DiscussionDTO Create(string roomId, string name = "")
         {
             return DiscussionDTOBuilder.Build(
                 this.discussionService.Create(roomId, name),
@@ -63,7 +62,7 @@ namespace PlanPoker.Controllers
         /// </summary>
         /// <param name="discussionId">Id этого обсуждения.</param>
         [HttpPost]
-        public void Close(Guid discussionId)
+        public void Close(string discussionId)
         {
             this.discussionService.Close(discussionId);
         }
@@ -74,7 +73,7 @@ namespace PlanPoker.Controllers
         /// <param name="discussionId">Id обсуждения.</param>
         /// <param name="voteId">Id голоса.</param>
         [HttpPost]
-        public void AddVote(Guid discussionId, Guid voteId)
+        public void AddVote(string discussionId, string voteId)
         {
             this.discussionService.AddVote(discussionId, voteId);
         }
@@ -85,10 +84,10 @@ namespace PlanPoker.Controllers
         /// <param name="discussionId">Id обсуждения.</param>
         /// <returns>Список оценок.</returns>
         [HttpGet]
-        public IEnumerable<VoteDTO> GetAllVote(Guid discussionId)
+        public IEnumerable<VoteDTO> GetAllVote(string discussionId)
         {
             var discussion = this.discussionService.GetDiscussion(discussionId);
-            return VoteDTOBuilder.BuildList(discussion.VoteIds.Select(id => this.voteService.GetVote(id)), this.cardService);
+            return VoteDTOBuilder.BuildList(discussion.VoteIds.Select(id => this.voteService.GetVote(id.ToString())), this.cardService);
         }
 
         /// <summary>

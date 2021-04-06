@@ -42,7 +42,7 @@ namespace PlanPoker.Controllers
         /// <param name="creatorId">Id создателя.</param>
         /// <returns>Объект DTO созданной комнаты.</returns>
         [HttpGet]
-        public RoomDTO Create(string name, Guid creatorId)
+        public RoomDTO Create(string name, string creatorId)
         {
             return RoomDTOBuilder.Build(this.roomService.Create(name, creatorId), this.playerService);
         }
@@ -53,7 +53,7 @@ namespace PlanPoker.Controllers
         /// <param name="roomId">Id комнаты.</param>
         /// <param name="playerId">Id добавляемого игрока.</param>
         [HttpPost]
-        public void AddPlayer(Guid roomId, Guid playerId)
+        public void AddPlayer(string roomId, string playerId)
         {
             this.roomService.AddPlayer(roomId, playerId);
         }
@@ -64,7 +64,7 @@ namespace PlanPoker.Controllers
         /// <param name="roomId">Id комнаты.</param>
         /// <param name="playerId">Id игрока.</param>
         [HttpPost]
-        public void RemovePlayer(Guid roomId, Guid playerId)
+        public void RemovePlayer(string roomId, string playerId)
         {
             this.roomService.RemovePlayer(roomId, playerId);
         }
@@ -75,7 +75,7 @@ namespace PlanPoker.Controllers
         /// <param name="roomId">Id комнаты.</param>
         /// <param name="hostId">Id ведущего.</param>
         [HttpPost]
-        public void ChangeHost(Guid roomId, Guid hostId)
+        public void ChangeHost(string roomId, string hostId)
         {
             this.roomService.ChangeHost(roomId, hostId);
         }

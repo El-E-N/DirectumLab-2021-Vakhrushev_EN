@@ -13,13 +13,13 @@ namespace PlanPoker.Services
         /// <summary>
         /// Репозиторий комнат.
         /// </summary>
-        private readonly IRepository<Room> repository;
+        private readonly RoomMemoryRepository repository;
 
         /// <summary>
         /// Конструктор.
         /// </summary>
         /// <param name="repository">Репозиторий комнта.</param>
-        public RoomService(IRepository<Room> repository)
+        public RoomService(RoomMemoryRepository repository)
         {
             this.repository = repository;
         }
@@ -30,13 +30,12 @@ namespace PlanPoker.Services
         /// <param name="name">Название комнаты.</param>
         /// <param name="creatorId">Id создателя комнаты.</param>
         /// <returns>Созданная комната.</returns>
-        public Room Create(string name, Guid creatorId) 
+        public Room Create(string name, string creatorId) 
         {
             var id = Guid.NewGuid();
             var hash = Guid.NewGuid();
-            var room = new Room(name, creatorId, id, hash);
-            this.repository.Create(room);
-            this.repository.Save();
+            var creatorGuid = Guid.Parse(creatorId);
+            this.repository.Create(name, creatorGuid, creatorGuid, id, hash);
             return this.repository.Get(id);
         }
 
@@ -45,10 +44,10 @@ namespace PlanPoker.Services
         /// </summary>
         /// <param name="roomId">Id комнаты.</param>
         /// <param name="playerId">Id игрока.</param>
-        public void AddPlayer(Guid roomId, Guid playerId) 
+        public void AddPlayer(string roomId, string playerId)
         {
-            this.repository.Get(roomId).PlayersIds.Add(playerId);
-            this.repository.Save();
+            this.repository.Get(Guid.Parse(roomId.Replace(" ", string.Empty))).PlayersIds.Add(Guid.Parse(playerId.Replace(" ", string.Empty)));
+            this.repository.SaveChanges();
         }
 
         /// <summary>
@@ -56,10 +55,10 @@ namespace PlanPoker.Services
         /// </summary>
         /// <param name="roomId">Id комнаты.</param>
         /// <param name="playerId">Id игрока.</param>
-        public void RemovePlayer(Guid roomId, Guid playerId) 
+        public void RemovePlayer(string roomId, string playerId) 
         {
-            this.repository.Get(roomId).PlayersIds.Remove(playerId);
-            this.repository.Save();
+            this.repository.Get(Guid.Parse(roomId.Replace(" ", string.Empty))).PlayersIds.Remove(Guid.Parse(playerId.Replace(" ", string.Empty)));
+            this.repository.SaveChanges();
         }
 
         /// <summary>
@@ -67,10 +66,12 @@ namespace PlanPoker.Services
         /// </summary>
         /// <param name="roomId">Id комнаты.</param>
         /// <param name="hostId">Id ведущего.</param>
-        public void ChangeHost(Guid roomId, Guid hostId)
+        public void ChangeHost(string roomId, string hostId)
         {
-            this.repository.Get(roomId).HostId = hostId;
-            this.repository.Save();
+            var name = this.repository.Get(Guid.Parse(roomId.Replace(" ", string.Empty))).Name;
+            var hash = this.repository.Get(Guid.Parse(roomId.Replace(" ", string.Empty))).Hash;
+            var creatorId = this.repository.Get(Guid.Parse(roomId.Replace(" ", string.Empty))).CreatorId;
+            this.repository.Save(new Room(name, Guid.Parse(hostId.Replace(" ", string.Empty)), creatorId, Guid.Parse(roomId.Replace(" ", string.Empty)), hash));
         }
 
         /// <summary>
@@ -79,7 +80,7 @@ namespace PlanPoker.Services
         /// <returns>Все комнаты из базы данных.</returns>
         public IQueryable<Room> GetRooms()
         {
-            return this.repository.GetAll();
+            return this.repository.GetItems();
         }
     }
 }

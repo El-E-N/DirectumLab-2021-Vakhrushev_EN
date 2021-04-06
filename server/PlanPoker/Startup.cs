@@ -50,11 +50,11 @@ namespace PlanPoker
             services.AddDbContext<CardContext>(opt =>
                                                opt.UseInMemoryDatabase("VoteDb"));
 
-            services.AddTransient<IRepository<Discussion>, DiscussionMemoryRepository>();
-            services.AddTransient<IRepository<Player>, PlayerMemoryRepository>();
-            services.AddTransient<IRepository<Vote>, VoteMemoryRepository>();
-            services.AddTransient<IRepository<Room>, RoomMemoryRepository>();
-            services.AddTransient<IRepository<Card>, CardMemoryRepository>();
+            services.AddTransient<DiscussionMemoryRepository>();
+            services.AddTransient<PlayerMemoryRepository>();
+            services.AddTransient<VoteMemoryRepository>();
+            services.AddTransient<RoomMemoryRepository>();
+            services.AddTransient<CardMemoryRepository>();
 
             services.AddTransient<DiscussionService>();
             services.AddTransient<PlayerService>();

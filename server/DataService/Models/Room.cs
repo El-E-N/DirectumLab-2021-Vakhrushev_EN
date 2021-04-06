@@ -12,15 +12,17 @@ namespace DataService.Models
         /// Конструктор с параметрами.
         /// </summary>
         /// <param name="name">Название.</param>
+        /// <param name="hostId">Id ведущего.</param>
         /// <param name="creatorId">Id создателя.</param>
         /// <param name="id">Id комнаты.</param>
         /// <param name="hash">Hash комнаты.</param>
-        public Room(string name, Guid creatorId, Guid id, Guid hash)
+        public Room(string name, Guid hostId, Guid creatorId, Guid id, Guid hash)
         {
             this.CreatorId = creatorId;
+            this.PlayersIds = new List<Guid>() { hostId };
             this.Id = id;
             this.Hash = hash;
-            this.HostId = creatorId;
+            this.HostId = hostId;
             if (name != string.Empty)
                 this.Name = name;
             else
@@ -40,7 +42,7 @@ namespace DataService.Models
         /// <summary>
         /// Id игроков.
         /// </summary>
-        public List<Guid> PlayersIds { get; set; }
+        public ICollection<Guid> PlayersIds { get; }
 
         /// <summary>
         /// ID управляющего комнатой.

@@ -1,5 +1,6 @@
 ﻿using DataService.Models;
 using DataService.Models.Contexts;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 
@@ -15,7 +16,7 @@ namespace DataService.Repositories
         /// <summary>
         /// Контекст объекта.
         /// </summary>
-        private ItemContext<T> db;
+        protected ItemContext<T> Db { get; set; }
 
         /// <summary>
         /// Конструктор.
@@ -23,24 +24,24 @@ namespace DataService.Repositories
         /// <param name="context">Контекст.</param>
         public MemoryRepository(ItemContext<T> context)
         {
-            this.db = context;
-        }
-
-        /// <summary>
-        /// Создание.
-        /// </summary>
-        /// <param name="item">Объект.</param>
-        public void Create(T item)
-        {
-            this.db.Items.Add(item);
+            this.Db = context;
         }
 
         /// <summary>
         /// Сохранение.
         /// </summary>
-        public void Save()
+        /// <param name="item">Экзмепляр сущности.</param>
+        public void Save(T item)
         {
-            this.db.SaveChanges();
+            if (!this.Db.Items.Any(o => o.Id == item.Id))
+                this.Db.Items.Add(item);
+            else
+            {
+                var dbItem = this.Db.Find(item.GetType(), item.Id);
+                dbItem = item;
+                this.Db.Entry(dbItem).State = EntityState.Modified;
+            }
+            this.Db.SaveChanges();
         }
 
         /// <summary>
@@ -48,13 +49,13 @@ namespace DataService.Repositories
         /// </summary>
         /// <param name="id">Id объекта.</param>
         /// <returns>Объект из БД.</returns>
-        public T Get(Guid id) => this.db.Items.Find(id);
+        public T Get(Guid id) => this.Db.Items.Find(id);
 
         /// <summary>
         /// Получить все объекты.
         /// </summary>
         /// <returns>Объекты из БД.</returns>
-        public IQueryable<T> GetAll() => this.db.Items;
+        public IQueryable<T> GetItems() => this.Db.Items;
 
         /// <summary>
         /// Удаление объекта.
@@ -62,9 +63,18 @@ namespace DataService.Repositories
         /// <param name="id">Id объекта.</param>
         public void Delete(Guid id)
         {
-            T item = this.db.Items.Find(id);
+            T item = this.Db.Items.Find(id);
             if (item != null)
-                this.db.Items.Remove(item);
+                this.Db.Items.Remove(item);
+            this.Db.SaveChanges();
+        }
+
+        /// <summary>
+        /// Сохранение изменений.
+        /// </summary>
+        public void SaveChanges()
+        {
+            this.Db.SaveChanges();
         }
 
         /// <summary>
@@ -80,7 +90,7 @@ namespace DataService.Repositories
         {
             if (!this.disposed)
                 if (disposing)
-                    this.db.Dispose();
+                    this.Db.Dispose();
 
             this.disposed = true;
         }
