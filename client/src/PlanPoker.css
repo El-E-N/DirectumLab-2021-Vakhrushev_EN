@@ -15,6 +15,7 @@
   align-items: center;
   justify-content: space-between;
   background-color: white;
+  flex-wrap: wrap;
 }
 
 .header__link {
@@ -39,6 +40,7 @@
   margin: 0 0 0 21px;
   font-size: 48px;
   line-height: 56px;
+  font-weight: normal;
 }
 
 .header__app-a {
@@ -56,6 +58,7 @@
 .header__user-name {
   font-size: 18px;
   line-height: 21px;
+  font-weight: normal;
   color: #131B23
 }
 
@@ -93,6 +96,7 @@
   justify-content: center;
   font-size: 30px;
   line-height: 35px;
+  font-weight: normal;
   margin: 55px auto 0 auto;
 }
 
@@ -101,12 +105,16 @@
   color: #808284;
   font-size: 14px;
   line-height: 16px;
+  font-weight: normal;
 }
 
 .main__label {
   margin: 10px auto 0 auto;
   width: 400px;
   color: #808284;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
 }
 
 .label__input {
@@ -117,6 +125,7 @@
   border-radius: 4px;
   font-size: 14px;
   line-height: 16px;
+  font-weight: normal;
   padding: 10px 18px 13px 18px;
   outline: none;
 }
@@ -150,6 +159,7 @@
   line-height: 30px;
   color: #131B23;
   text-align: center;
+  font-weight: normal;
 }
 
 .main__room-content {
@@ -169,6 +179,21 @@
 }
 
 .main__card {
+  position: absolute;
+  visibility: hidden;
+  padding: 0;
+  width: 132px;
+  margin: 6px;
+  height: 174px;
+}
+
+.main__card-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 46px;
+  line-height: 54px;
+  font-weight: normal;
   width: 132px;
   height: 174px;
   background: #ffffff;
@@ -176,12 +201,26 @@
   border-radius: 4px;
   border: none;
   padding: 0;
+  fill: black;
+  stroke: none;
 }
 
-.main__card-content {
-  font-size: 46px;
-  line-height: 54px;
-  text-align: center;
+.main__card-svg {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  margin: 0;
+}
+
+.main__card-content:hover {
+  box-shadow: 0 0 6px 3px rgba(1, 1, 1, 0.25);
+}
+
+.main__card:checked + .main__card-content {
+  background: #4B9AE8;
+  box-shadow: 0 0 6px 1px rgba(1, 1, 1, 0.05);
+  color: white;
+  fill: white;
 }
 
 .menu {
@@ -205,19 +244,26 @@
   font-size: 18px;
   line-height: 21px;
   color: #ffffff;
+  font-weight: normal;
 }
 
 .menu__ul-name {
   margin: 16px 0 23px 24px;
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: normal;
 }
 
-.menu__li {
+.menu__user-button {
   display: flex;
   flex-direction: row;
   height: 67px;
+  background: transparent;
+  width: 100%;
   border: 1px solid #F2F3F4;
   align-items: center;
   justify-content: space-between;
+  outline: none;
 }
 
 .menu__ul {
@@ -262,12 +308,25 @@
   border-radius: 4px;
   font-size: 14px;
   line-height: 16px;
+  outline: none;
+  font-weight: normal;
+}
+
+.menu__button:hover {
+  color: #418CD6;
+  border-color: #418CD6;
+}
+
+.menu__button:active {
+  color: #3069A1;
+  border-color: #3069A1;
 }
 
 .menu__span {
   padding: 0 0 0 22px;
   font-size: 20px;
   line-height: 23px;
+  font-weight: normal;
 }
 
 .menu__span-div {
@@ -284,6 +343,8 @@
   font-size: 14px;
   line-height: 16px;
   border-radius: 4px;
+  outline: none;
+  font-weight: normal;
 }
 
 .footer {
@@ -297,6 +358,7 @@
   color: #808284;
   margin-top: 43px;
   flex-shrink: 0;
+  font-weight: normal;
 }
 
 .footer__a {
