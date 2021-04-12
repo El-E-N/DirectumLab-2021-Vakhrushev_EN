@@ -1,41 +1,39 @@
 <!DOCTYPE HTML>
 <html lang="ru">
 <head>
-	<meta charset="utf-8">
-	<title>Invite Page</title>
+  <meta charset="utf-8">
+  <title>Invite Page</title>
+  <link rel="stylesheet" href="../../PlanPoker.css">
 </head>
-<body link="black" alink="#E5E5E5" vlink="black">
+<body link="black" alink="black" vlink="black" class="body">
 
-<center>
-	<header style="height: 93px; display: flex; flex-direction: row;">
-		<a href="#" style="text-decoration: none; padding-left: 10%;">
-			<img style="padding: 0 10px 0 0; width: 80px; height: 80px;" src="../images/headerIcon.svg">
-		</a>
-		<a href="#" style="text-decoration: none;">
-			<h1 style="font-size: 400%; padding: -10px 0 0 0; margin: 0;">PlanPoker</h1>
-		</a>
-	</header>
-	<main style="background: #E5E5E5; height: 450px; padding-top: 100px;">
-		<div style="width: 450px; height: 300px; background: #ffffff;">
-			<h2 style="padding-top: 55px; margin: 0;">Let's start!</h2>
-			<span style="padding-top: 14px; margin: 0; color: #808284;">Join the room:</span>
-			<div style="margin: 20px 0 0 -200px; width: 100%;">
-				<label style="margin: 0; color: #808284;">
-					<span style="margin: 0 0 0 -120px;">
-					User name
-					</span>
-					<input style="padding-top: 9px; margin: 10px 0 0 130px; width: 84%; color: #808284;" type="text" name="userName" placeholder="Enter your name">
-				</label>
-			</div>
-			<button style="padding-top: 0px; background-color: #4B9AE8; height: 39px; margin: 36px 0 0 0; width: 80%; border-radius: 5px;">Enter</button>
-		</div>
-	</main>
-	<footer style="height: 70px; display: flex; align-items: center; justify-content: center">
-		<p>
-			Copyright 2021   <a href="#" link="blue" alink="#E5E5E5" vlink="blue" style="color: blue;">PlanPoker</a>
-		</p>
-	</footer>
-</center>
+<header class="header">
+  <div class="header__link">
+    <a href="#" class="header__icon-a">
+      <img class="header__icon-img" src="../images/headerIcon.svg">
+    </a>
+    <h1 class="header__app">
+      <a href="#" class="header__app-a">PlanPoker</a>
+    </h1>
+  </div>
+</header>
+<main class="main">
+  <div class="main__content main__content-invite">
+    <span class="main__span">Let's start!</span>
+    <h2 class="main__head">Join the room:</h2>
+    <label class="main__label">
+      User name
+      <input class="label__input" type="text" name="userName" placeholder="Enter your name">
+    </label>
+    <button class="main__button">Enter</button>
+  </div>
+</main>
+<footer class="footer">
+  <p>
+    Copyright 2021
+    <a href="#" link="blue" alink="#E5E5E5" vlink="blue" class="footer__a">PlanPoker</a>
+  </p>
+</footer>
 
 </body>
 </html>
