@@ -501,7 +501,7 @@
 }
 
 .story__td-delete {
-  width: 28px;
+  width: 25px;
   height: 67px;
   margin: 0;
   padding: 0;
@@ -519,8 +519,8 @@
 }
 
 .story__img {
-  width: 20px;
-  height: 26px;
+  width: 14px;
+  height: 18px;
   margin: 0;
   padding: 0;
 }
@@ -562,7 +562,8 @@
   height: 67px;
   background: transparent;
   width: 100%;
-  border: 1px solid #F2F3F4;
+  border-bottom: 1px solid #F2F3F4;
+  border-top: 1px solid #F2F3F4;
   align-items: center;
   justify-content: space-between;
   outline: none;
@@ -594,7 +595,7 @@
 
 .menu__ul {
   margin: 0;
-  width: calc(100% - 10px);
+  width: 100%;
   padding: 0;
   list-style-type: none;
 }
