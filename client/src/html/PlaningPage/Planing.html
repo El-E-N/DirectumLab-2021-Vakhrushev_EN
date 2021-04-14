@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+	<title>Planing page</title>
+  <link rel="stylesheet" href="../../PlanPoker.css">
+  <script src="../../setupTests.js"></script>
+</head>
+<body link="black" alink="#E5E5E5" vlink="black" class="body">
+
+<header class="header">
+  <a href="#" class="header__link">
+    <img class="header__icon-img" src="../images/headerIcon.svg">
+    <h1 class="header__app">PlanPoker</h1>
+  </a>
+  <div class="header__user">
+    <button class="header__button">
+      test
+      <img class="header__user-img" src="../images/userIcon.svg">
+    </button>
+    <div class="header__menu">
+      <div class="rhombus"></div>
+      <div class="rectangle">
+        <a href="#" class="sign-out">Sign Out</a>
+      </div>
+    </div>
+  </div>
+</header>
+<main class="main">
+  <h2 class="main__room-name">Story</h2>
+  <div class="main__room-content">
+    <div class="main__deck">
+      <label>
+        <input class="main__card" type="radio" name="cards" value="0">
+        <div class="main__card-content">0</div>
+      </label>
+      <label>
+        <input class="main__card" type="radio" name="cards" value="0.5">
+        <div class="main__card-content">0.5</div>
+      </label>
+      <label>
+        <input class="main__card" type="radio" name="cards" value="1">
+        <div class="main__card-content">1</div>
+      </label>
+      <label>
+        <input class="main__card" type="radio" name="cards" value="2">
+        <div class="main__card-content">2</div>
+      </label>
+      <label>
+        <input class="main__card" type="radio" name="cards" value="3">
+        <div class="main__card-content">3</div>
+      </label>
+      <label>
+        <input class="main__card" type="radio" name="cards" value="5">
+        <div class="main__card-content">5</div>
+      </label>
+      <label>
+        <input class="main__card" type="radio" name="cards" value="8">
+        <div class="main__card-content">8</div>
+      </label>
+      <label>
+        <input class="main__card" type="radio" name="cards" value="13">
+        <div class="main__card-content">13</div>
+      </label>
+      <label>
+        <input class="main__card" type="radio" name="cards" value="20">
+        <div class="main__card-content">20</div>
+      </label>
+      <label>
+        <input class="main__card" type="radio" name="cards" value="40">
+        <div class="main__card-content">40</div>
+      </label>
+      <label>
+        <input class="main__card" type="radio" name="cards" value="100">
+        <div class="main__card-content">100</div>
+      </label>
+      <label>
+        <input class="main__card" type="radio" name="cards" value="?">
+        <div class="main__card-content">?</div>
+      </label>
+      <label>
+        <input class="main__card" type="radio" name="cards" value="coffee">
+        <div class="main__card-content">
+          <svg class="main__card-svg" width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M36.6667 5.5H7.33333V23.8333C7.33333 27.885 10.615 31.1667 14.6667 31.1667H25.6667C29.7183 31.1667 33 27.885 33 23.8333V18.3333H36.6667C38.7017 18.3333 40.3333 16.7017 40.3333 14.6667V9.16667C40.3333 7.13167 38.7017 5.5 36.6667 5.5ZM36.6667 14.6667H33V9.16667H36.6667V14.6667ZM36.6667 38.5H3.66667V34.8333H36.6667V38.5Z"/>
+          </svg>
+        </div>
+      </label>
+    </div>
+    <div class="menu">
+      <span class="menu__header">Story voting completed</span>
+      <div style="width: 100%;">
+        <h3 class="menu__ul-name">Players:</h3>
+      </div>
+      <ul class="menu__ul">
+        <li class="menu__li">
+          <div class="menu__user-info">
+            <img class="menu__user-icon" src="../images/userIcon.svg">
+            <span class="menu__user-name">test</span>
+          </div>
+          <img class="menu__user-checked" src="../images/check.svg">
+        </li>
+        <li class="menu__li">
+          <div class="menu__user-info">
+            <img class="menu__user-icon" src="../images/userIcon.svg">
+            <span class="menu__user-name">test 2</span>
+          </div>
+          <img class="menu__user-checked" src="../images/check.svg">
+        </li>
+        <li class="menu__li">
+          <div class="menu__user-info">
+            <img class="menu__user-icon" src="../images/userIcon.svg">
+            <span class="menu__user-name">test 3</span>
+          </div>
+          <img class="menu__user-checked" src="../images/check.svg">
+        </li>
+        <li class="menu__li">
+          <div class="menu__user-info">
+            <img class="menu__user-icon" src="../images/userIcon.svg">
+            <span class="menu__user-name">test 4</span>
+          </div>
+          <img class="menu__user-checked" src="../images/check.svg">
+        </li>
+        <li class="menu__li">
+          <div class="menu__user-info">
+            <img class="menu__user-icon" src="../images/userIcon.svg">
+            <span class="menu__user-name">test 5</span>
+          </div>
+          <img class="menu__user-checked" src="../images/check.svg">
+        </li>
+      </ul>
+      <button class="menu__button">Finish voting</button>
+      <span class="menu__span">Invite a teammate</span>
+      <input class="menu__link" type="text" readonly="readonly" value="https://www.planitpoker.com/board">
+    </div>
+  </div>
+</main>
+<footer class="footer">
+  <p>
+    Copyright 2021
+    <a href="#" link="blue" alink="#E5E5E5" vlink="blue" class="footer__a">PlanPoker</a>
+  </p>
+</footer>
+
+</body>
+</html>
