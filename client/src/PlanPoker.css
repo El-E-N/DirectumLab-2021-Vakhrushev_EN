@@ -6,6 +6,7 @@
   display: flex;
   flex-direction: column;
   background: #EDF2F7;
+  min-height: 100vh;
 }
 
 .header {
@@ -15,7 +16,8 @@
   flex-direction: row;
   justify-content: space-between;
   background-color: white;
-  flex-wrap: wrap;
+  min-width: 1030px;
+  align-items: end;
 }
 
 .header__link {
@@ -40,27 +42,23 @@
 }
 
 .header__user {
-  margin: 0 125px 0 0;
-  padding: 17px 0 0 0;
-  justify-content: center;
-  align-items: center;
-  display: flex;
+  margin: 17px 0 0 0;
+  padding: 0;
   flex-direction: column;
 }
 
 .header__button {
   display: flex;
   padding: 0;
-  flex-direction: row;
-  justify-content: center;
+  margin: 0 125px 0 0;
   align-items: center;
   font-size: 18px;
   line-height: 21px;
   font-weight: normal;
   color: #131B23;
   border: none;
-  outline: none;
   background-color: transparent;
+  cursor: pointer;
 }
 
 .header__user-img {
@@ -70,8 +68,8 @@
 }
 
 .header__menu {
-  margin: 5px 0 0 0;
-  padding: 0 20px 0 0;
+  margin: 5px 0 0 -25px;
+  padding: 0;
 }
 
 .rhombus {
@@ -89,11 +87,14 @@
 .rectangle {
   display: flex;
   width: 130px;
-  height: 40px;
+  min-height: 40px;
   background-color: #FFFFFF;
   box-shadow: 0 0 3px #D5D9DE;
   border-radius: 4px;
-  align-items: center;
+  align-items: baseline;
+  flex-direction: column;
+  height: fit-content;
+  justify-content: left;
 }
 
 .sign-out {
@@ -103,6 +104,7 @@
   line-height: 16px;
   color: #4B9AE8;
   margin: 15px;
+  cursor: pointer;
 }
 
 .main {
@@ -160,7 +162,6 @@
   line-height: 16px;
   font-weight: normal;
   padding: 10px 18px 13px 18px;
-  outline: none;
 }
 
 .main__button {
@@ -174,7 +175,7 @@
   border-radius: 4px;
   color: white;
   border: none;
-  outline: none;
+  cursor: pointer;
 }
 
 .main__button:hover {
@@ -187,11 +188,10 @@
 
 .main__room-name {
   margin: 0 0 31px 0;
-  padding: 54px 0 0 0;
+  padding: 54px 0 0 40px;
   font-size: 26px;
   line-height: 30px;
   color: #131B23;
-  text-align: center;
   font-weight: normal;
 }
 
@@ -199,7 +199,8 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
-  flex-wrap: wrap;
+  margin: 0 auto;
+  padding: 0 40px;
 }
 
 .main__deck {
@@ -214,7 +215,8 @@
 
 .main__card {
   position: absolute;
-  visibility: hidden;
+  opacity: 0;
+  z-index: -1;
   padding: 0;
   width: 132px;
   margin: 6px;
@@ -237,6 +239,8 @@
   padding: 0;
   fill: black;
   stroke: none;
+  cursor: pointer;
+  outline: black;
 }
 
 .main__card-svg {
@@ -405,6 +409,7 @@
   height: 17px;
   padding: 0;
   margin: 0;
+  cursor: pointer;
 }
 
 .completed__download {
@@ -414,7 +419,6 @@
   margin: 0 21px 0 0;
   background-color: transparent;
   border: none;
-  outline: none;
 }
 
 .completed__table {
@@ -442,6 +446,7 @@
   font-size: 18px;
   line-height: 21px;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .story__count {
@@ -467,7 +472,7 @@
   padding: 0;
   background-color: transparent;
   border: none;
-  outline: none;
+  cursor: pointer;
 }
 
 .story__img {
@@ -517,7 +522,6 @@
   border-top: 1px solid #F2F3F4;
   align-items: center;
   justify-content: space-between;
-  outline: none;
 }
 
 .menu__ul {
@@ -562,8 +566,8 @@
   border-radius: 4px;
   font-size: 14px;
   line-height: 16px;
-  outline: none;
   font-weight: normal;
+  cursor: pointer;
 }
 
 .menu__button:hover {
@@ -589,7 +593,6 @@
 .enter-story__input {
   height: 100%;
   width: 184px;
-  outline: none;
   border: 1px solid #D5D9DE;
   border-radius: 4px 0 0 4px;
   font-weight: normal;
@@ -605,9 +608,9 @@
   width: 68px;
   height: calc(100% + 2px);
   border-radius: 0 4px 4px 0;
-  outline: none;
   border: none;
   padding: 0;
+  cursor: pointer;
 }
 
 .enter-story__button:hover {
@@ -636,7 +639,6 @@
   font-size: 14px;
   line-height: 16px;
   border-radius: 4px;
-  outline: none;
   font-weight: normal;
 }
 
@@ -758,7 +760,7 @@
   text-align: center;
   border: 1px solid #4B9AE8;
   border-radius: 4px;
-  outline: none;
+  cursor: pointer;
 }
 
 .modal__button:hover {
