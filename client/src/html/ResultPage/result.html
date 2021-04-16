@@ -9,141 +9,145 @@
 <body link="black" alink="#E5E5E5" vlink="black" class="body">
 
 <header class="header">
-  <a href="#" class="header__link">
-    <img class="header__icon-img" src="../images/headerIcon.svg">
-    <h1 class="header__app">PlanPoker</h1>
-  </a>
-  <div class="header__user">
-    <button class="header__button">
-      test
-      <img class="header__user-img" src="../images/userIcon.svg">
-    </button>
-    <div class="header__menu">
-      <div class="rhombus"></div>
-      <div class="rectangle">
-        <a href="#" class="sign-out">Sign Out</a>
+  <div class="header__content">
+    <a href="#" class="logo">
+      <img class="logo__icon" src="../images/headerIcon.svg">
+      <h1 class="logo__name">PlanPoker</h1>
+    </a>
+    <div class="user">
+      <button class="user__button">
+        <span class="user__name">test</span>
+        <img class="user__image" src="../images/userIcon.svg">
+      </button>
+      <div class="user__menu-wrapper">
+        <div class="rhombus"></div>
+        <div class="user__menu">
+          <a href="#" class="sign-out">Sign Out</a>
+        </div>
       </div>
     </div>
   </div>
 </header>
 <main class="main">
-  <h2 class="main__room-name">Story</h2>
-  <div class="main__room-content">
-    <div class="main__results">
-      <div class="briefly-info">
-        <div class="average">
-          <span class="average__count-players">5 Players</span>
-          <span class="average__voted">voted</span>
-          <span class="average__avg">Avg: 4</span>
-        </div>
-        <ul class="briefly-info__ul">
-          <li class="briefly-info__li">
-            <div class="ul__count-box">
-              <div class="ul__round yellow"></div>
-              <span class="ul__count">3</span>
-            </div>
-            <span class="ul__percents">50% (1 player)</span>
-          </li>
-          <li class="briefly-info__li">
-            <div class="ul__count-box">
-              <div class="ul__round blue"></div>
-              <span class="ul__count">5</span>
-            </div>
-            <span class="ul__percents">50% (1 player)</span>
-          </li>
-          <li class="briefly-info__li">
-            <div class="ul__count-box">
-              <div class="ul__round yellow"></div>
-              <span class="ul__count">3</span>
-            </div>
-            <span class="ul__percents">50% (1 player)</span>
-          </li>
-          <li class="briefly-info__li">
-            <div class="ul__count-box">
-              <div class="ul__round yellow"></div>
-              <span class="ul__count">3</span>
-            </div>
-            <span class="ul__percents">50% (1 player)</span>
-          </li>
-          <li class="briefly-info__li">
-            <div class="ul__count-box">
-              <div class="ul__round yellow"></div>
-              <span class="ul__count">3</span>
-            </div>
-            <span class="ul__percents">50% (1 player)</span>
-          </li>
-          <li class="briefly-info__li">
-            <div class="ul__count-box">
-              <div class="ul__round blue"></div>
-              <span class="ul__count">5</span>
-            </div>
-            <span class="ul__percents">50% (1 player)</span>
-          </li>
-        </ul>
-      </div>
-      <div class="completed">
-        <div class="completed__header">
-          <div class="completed__header-div">
-            <h3 class="completed__h3">Completed Stories</h3>
-            <div class="completed__count">5</div>
+  <h2 class="room-name">Story</h2>
+  <div class="room-content">
+    <div class="results">
+      <div class="briefly-results__wrapper">
+        <div class="briefly-results">
+          <div class="average-values">
+            <span class="average-values__count-players">5 Players</span>
+            <span class="average-values__word-voted">voted</span>
+            <span class="average-values__avg">Avg: 4</span>
           </div>
-          <button class="completed__download">
-            <img class="completed__download-img" src="../images/download.svg">
+          <ul class="vote__wrapper">
+            <li class="vote">
+              <div class="vote__info-wrapper">
+                <div class="vote__round yellow"></div>
+                <span class="vote__count">3</span>
+              </div>
+              <span class="vote__percents">50% (1 player)</span>
+            </li>
+            <li class="vote">
+              <div class="vote__info-wrapper">
+                <div class="vote__round blue"></div>
+                <span class="vote__count">5</span>
+              </div>
+              <span class="vote__percents">50% (1 player)</span>
+            </li>
+            <li class="vote">
+              <div class="vote__info-wrapper">
+                <div class="vote__round yellow"></div>
+                <span class="vote__count">3</span>
+              </div>
+              <span class="vote__percents">50% (1 player)</span>
+            </li>
+            <li class="vote">
+              <div class="vote__info-wrapper">
+                <div class="vote__round yellow"></div>
+                <span class="vote__count">3</span>
+              </div>
+              <span class="vote__percents">50% (1 player)</span>
+            </li>
+            <li class="vote">
+              <div class="vote__info-wrapper">
+                <div class="vote__round yellow"></div>
+                <span class="vote__count">3</span>
+              </div>
+              <span class="vote__percents">50% (1 player)</span>
+            </li>
+            <li class="vote">
+              <div class="vote__info-wrapper">
+                <div class="vote__round blue"></div>
+                <span class="vote__count">5</span>
+              </div>
+              <span class="vote__percents">50% (1 player)</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="history">
+        <div class="history__header">
+          <div class="history__header-wrapper">
+            <h3 class="history__title">Completed Stories</h3>
+            <div class="history__count">5</div>
+          </div>
+          <button class="history__button">
+            <img class="history__download" src="../images/download.svg">
           </button>
         </div>
-        <table class="completed__table">
-          <tr class="completed__tr">
+        <table class="stories">
+          <tr class="story">
             <td class="story__name">
-              <a href="#" class="story__a">Story</a>
+              <a href="#" class="story__link">Story</a>
             </td>
             <td class="story__count">14</td>
-            <td class="story__td-delete">
-              <button class="story__delete">
-                <img class="story__img" src="../images/delete.svg">
+            <td class="story__delete-cell">
+              <button class="story__delete-wrapper">
+                <img class="story__delete" src="../images/delete.svg">
               </button>
             </td>
           </tr>
-          <tr class="completed__tr">
+          <tr class="story">
             <td class="story__name">
-              <a href="#" class="story__a">Story</a>
+              <a href="#" class="story__link">Story</a>
             </td>
             <td class="story__count">14</td>
-            <td class="story__td-delete">
-              <button class="story__delete">
-                <img class="story__img" src="../images/delete.svg">
+            <td class="story__delete-cell">
+              <button class="story__delete-wrapper">
+                <img class="story__delete" src="../images/delete.svg">
               </button>
             </td>
           </tr>
-          <tr class="completed__tr">
+          <tr class="story">
             <td class="story__name">
-              <a href="#" class="story__a">Story</a>
+              <a href="#" class="story__link">Story</a>
             </td>
             <td class="story__count">14</td>
-            <td class="story__td-delete">
-              <button class="story__delete">
-                <img class="story__img" src="../images/delete.svg">
+            <td class="story__delete-cell">
+              <button class="story__delete-wrapper">
+                <img class="story__delete" src="../images/delete.svg">
               </button>
             </td>
           </tr>
-          <tr class="completed__tr">
+          <tr class="story">
             <td class="story__name">
-              <a href="#" class="story__a">Story</a>
+              <a href="#" class="story__link">Story</a>
             </td>
             <td class="story__count">14</td>
-            <td class="story__td-delete">
-              <button class="story__delete">
-                <img class="story__img" src="../images/delete.svg">
+            <td class="story__delete-cell">
+              <button class="story__delete-wrapper">
+                <img class="story__delete" src="../images/delete.svg">
               </button>
             </td>
           </tr>
-          <tr class="completed__tr">
+          <tr class="story">
             <td class="story__name">
-              <a href="#" class="story__a">Story</a>
+              <a href="#" class="story__link">Story</a>
             </td>
             <td class="story__count">14</td>
-            <td class="story__td-delete">
-              <button class="story__delete">
-                <img class="story__img" src="../images/delete.svg">
+            <td class="story__delete-cell">
+              <button class="story__delete-wrapper">
+                <img class="story__delete" src="../images/delete.svg">
               </button>
             </td>
           </tr>
@@ -152,48 +156,46 @@
     </div>
     <div class="menu">
       <span class="menu__header">Story voting completed</span>
-      <div style="width: 100%;">
-        <h3 class="menu__ul-name">Players:</h3>
-      </div>
-      <ul class="menu__ul">
-        <li class="menu__li">
-          <div class="menu__user-info">
-            <img class="menu__user-icon" src="../images/userIcon.svg">
-            <span class="menu__user-name">test</span>
+      <h3 class="menu__title">Players:</h3>
+      <ul class="players">
+        <li class="player">
+          <div class="player__wrapper">
+            <img class="player__icon" src="../images/userIcon.svg">
+            <span class="player__name">test</span>
           </div>
-          <img class="menu__user-checked" src="../images/check.svg">
+          <img class="checked" src="../images/check.svg">
         </li>
-        <li class="menu__li">
-          <div class="menu__user-info">
-            <img class="menu__user-icon" src="../images/userIcon.svg">
-            <span class="menu__user-name">test 2</span>
+        <li class="player">
+          <div class="player__wrapper">
+            <img class="player__icon" src="../images/userIcon.svg">
+            <span class="player__name">test 2</span>
           </div>
-          <img class="menu__user-checked" src="../images/check.svg">
+          <img class="checked" src="../images/check.svg">
         </li>
-        <li class="menu__li">
-          <div class="menu__user-info">
-            <img class="menu__user-icon" src="../images/userIcon.svg">
-            <span class="menu__user-name">test 3</span>
+        <li class="player">
+          <div class="player__wrapper">
+            <img class="player__icon" src="../images/userIcon.svg">
+            <span class="player__name">test 3</span>
           </div>
-          <img class="menu__user-checked" src="../images/check.svg">
+          <img class="checked" src="../images/check.svg">
         </li>
-        <li class="menu__li">
-          <div class="menu__user-info">
-            <img class="menu__user-icon" src="../images/userIcon.svg">
-            <span class="menu__user-name">test 4</span>
+        <li class="player">
+          <div class="player__wrapper">
+            <img class="player__icon" src="../images/userIcon.svg">
+            <span class="player__name">test 4</span>
           </div>
-          <img class="menu__user-checked" src="../images/check.svg">
+          <img class="checked" src="../images/check.svg">
         </li>
-        <li class="menu__li">
-          <div class="menu__user-info">
-            <img class="menu__user-icon" src="../images/userIcon.svg">
-            <span class="menu__user-name">test 5</span>
+        <li class="player">
+          <div class="player__wrapper">
+            <img class="player__icon" src="../images/userIcon.svg">
+            <span class="player__name">test 5</span>
           </div>
-          <img class="menu__user-checked" src="../images/check.svg">
+          <img class="checked" src="../images/check.svg">
         </li>
       </ul>
       <button class="menu__button">Finish voting</button>
-      <span class="menu__span">Invite a teammate</span>
+      <span class="menu__link-name">Invite a teammate</span>
       <input class="menu__link" type="text" readonly="readonly" value="https://www.planitpoker.com/board">
     </div>
   </div>
@@ -201,7 +203,7 @@
 <footer class="footer">
   <p>
     Copyright 2021
-    <a href="#" link="blue" alink="#E5E5E5" vlink="blue" class="footer__a">PlanPoker</a>
+    <a href="#" link="blue" alink="#E5E5E5" vlink="blue" class="footer__link">PlanPoker</a>
   </p>
 </footer>
 
