@@ -1,0 +1,22 @@
+.footer {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  height: 70px;
+  margin-top: 43px;
+
+  color: #808284;
+  font-weight: normal;
+  font-size: 12px;
+
+  background: white;
+}
+
+.footer__link:visited,
+.footer__link:link,
+.footer__link:active,
+.footer__link {
+  color: #4b9ae8;
+  text-decoration: none;
+}
