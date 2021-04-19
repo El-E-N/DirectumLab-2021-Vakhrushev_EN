@@ -3,7 +3,15 @@ import Header from '../header/header';
 import Main from '../main/main';
 import Footer from '../footer/footer';
 
-export const values = [['User name', 'Enter your name']];
+interface IArrayElement {
+  label: string;
+  placeHolder: string;
+  name: string;
+}
+
+const values: Array<IArrayElement> = [
+  {label: 'User name', placeHolder: 'Enter your name', name: 'userName'}
+];
 
 const Invite: React.FunctionComponent = () => {
   return <React.Fragment>

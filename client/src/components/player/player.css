@@ -1,0 +1,38 @@
+.player {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 67px;
+
+  background: transparent;
+  border-top: 1px solid #f2f3f4;
+  border-bottom: 1px solid #f2f3f4;
+}
+
+.player__wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.player__icon {
+  width: 42px;
+  height: 42px;
+  margin: 0 16px 0 24px;
+}
+
+.player__name {
+  max-width: 150px;
+  overflow: hidden;
+
+  font-size: 18px;
+  text-overflow: ellipsis;
+}
+
+.checked {
+  width: 20px;
+  height: 20px;
+  margin-right: 23px;
+}

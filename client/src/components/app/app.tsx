@@ -1,8 +1,8 @@
 import * as React from 'react';
-import First from '../first/first';
+import Planning from '../planning/planning';
 
 const App: React.FunctionComponent = () => {
-  return <First/>;
+  return <Planning/>;
 };
 
 export default App;

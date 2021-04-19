@@ -3,7 +3,16 @@ import Header from '../header/header';
 import Main from '../main/main';
 import Footer from '../footer/footer';
 
-const values = [['User name', 'Enter your name'], ['Room name', 'Enter room name']];
+interface IArrayElement {
+  label: string;
+  placeHolder: string;
+  name: string;
+}
+
+const values: Array<IArrayElement> = [
+  {label: 'User name', placeHolder: 'Enter your name', name: 'userName'},
+  {label: 'Room name', placeHolder: 'Enter room name', name: 'roomName'}
+];
 
 const First: React.FunctionComponent = () => {
   return <React.Fragment>
