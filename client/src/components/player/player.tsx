@@ -10,10 +10,10 @@ interface IProps {
 const Player: React.FunctionComponent<IProps> = (props) => {
   return <li className="player">
     <div className="player__wrapper">
-      <img className="player__icon" src={playerIcon}/>
+      <img className="player__icon" alt={'playerIcon'} src={playerIcon}/>
       <span className="player__name">{props.name}</span>
     </div>
-    <img className="checked" src={check}/>
+    <img className="checked" alt={'checked'} src={check}/>
   </li>;
 };
 

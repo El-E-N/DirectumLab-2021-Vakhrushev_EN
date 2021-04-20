@@ -1,0 +1,16 @@
+.briefly-results__wrapper {
+  width: 100%;
+  min-height: 433px;
+
+  background-color: #ffffff;
+}
+
+.briefly-results {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  min-width: max-content;
+  max-width: 525px;
+  margin: 0 auto;
+}

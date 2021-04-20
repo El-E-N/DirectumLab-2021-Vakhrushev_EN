@@ -8,19 +8,12 @@ interface IProps {
 }
 
 const Header: React.FunctionComponent<IProps> = (props) => {
-  return (props.addUser || false) ?
-    <header className="header">
-      <div className="header__content">
-        <Logo />
-        <User/>
-      </div>
-    </header>
-    :
-    <header className="header">
-      <div className="header__content">
-        <Logo />
-      </div>
-    </header>;
+  return <header className="header">
+    <div className="header__content">
+      <Logo />
+      {(props.addUser || false) && <User/>}
+    </div>
+  </header>;
 };
 
 export default Header;
