@@ -17,7 +17,7 @@ const Card: React.FunctionComponent<ICard> = (props) => {
   return <label className="card">
     <Input type={'radio'} name={'cards'} value={props.value} className={'card__input'}/>
     <div className="card__content">
-      {(props.isSvg || false) ? coffeeIcon : props.value}
+      {props.isSvg ? coffeeIcon : props.value}
     </div>
   </label>;
 };

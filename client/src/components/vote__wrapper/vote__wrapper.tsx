@@ -8,8 +8,13 @@ interface IProps {
 
 const VoteWrapper: React.FunctionComponent<IProps> = (props) => {
   return <ul className="vote__wrapper">
-    {props.allVote.map((vote) => {
-      return <Vote key={vote.count} count={vote.count} percents={vote.percents} color={vote.color}/>;
+    {props.allVote.map((vote, index) => {
+      return <Vote
+        key={index}
+        count={vote.count}
+        percents={vote.percents}
+        color={vote.color}
+      />;
     })}
   </ul>;
 };

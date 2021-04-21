@@ -3,11 +3,11 @@ import * as React from 'react';
 // import ResultEnterStory from '../result-enter-story/result-enter-story';
 // import Result from '../result/result';
 // import Invite from '../invite/invite';
-// import Planning from '../planning/planning';
-import First from '../first/first';
+import Planning from '../planning/planning';
+// import First from '../first/first';
 
 const App: React.FunctionComponent = () => {
-  return <First/>;
+  return <Planning/>;
 };
 
 export default App;

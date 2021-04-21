@@ -31,7 +31,7 @@ const Room: React.FunctionComponent<IProps> = (props) => {
   return <main className="room">
     <h2 className="room-name">Story</h2>
     <div className="room-content">
-      {props.isPlanning || false ? <Deck values={deck}/> : <Results/>}
+      {props.isPlanning ? <Deck values={deck}/> : <Results/>}
       <Menu addEnter={props.addEnterStory}/>
     </div>
   </main>;

@@ -11,7 +11,7 @@ const Header: React.FunctionComponent<IProps> = (props) => {
   return <header className="header">
     <div className="header__content">
       <Logo />
-      {(props.addUser || false) && <User/>}
+      {props.addUser && <User/>}
     </div>
   </header>;
 };

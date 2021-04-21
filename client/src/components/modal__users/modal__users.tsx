@@ -9,7 +9,11 @@ interface IProps {
 const ModalUsers: React.FunctionComponent<IProps> = (props) => {
   return <ul className="modal__users">
     {props.users.map((user) => {
-      return <ModalUser key={user.name + user.number} name={user.name} number={user.number}/>;
+      return <ModalUser
+        key={user.name + user.number}
+        name={user.name}
+        number={user.number}
+      />;
     })}
   </ul>;
 };

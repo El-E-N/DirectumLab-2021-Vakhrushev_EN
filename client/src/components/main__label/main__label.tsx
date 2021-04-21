@@ -11,7 +11,12 @@ interface IProps {
 const MainLabel: React.FunctionComponent<IProps> = (props) => {
   return <label className="main__label">
     {props.title}
-    <Input className={'main__input'} type={'text'} name={props.name} placeHolder={props.placeHolder} />
+    <Input
+      className={'main__input'}
+      type={'text'}
+      name={props.name}
+      placeHolder={props.placeHolder}
+    />
   </label>;
 };
 

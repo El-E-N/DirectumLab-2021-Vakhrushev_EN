@@ -16,7 +16,7 @@ interface IProps {
 }
 
 const Main: React.FunctionComponent<IProps> = (props) => {
-  const className = `main__content ${props.className || ''}`;
+  const className = `main__content ${props.className}`;
 
   return <main className="main">
     <div className={className}>

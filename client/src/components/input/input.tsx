@@ -11,7 +11,14 @@ interface IInput {
 }
 
 const Input: React.FunctionComponent<IInput> = (props) => {
-  return <input className={props.className || ''} type={props.type} name={props.name} readOnly={props.readOnly || false} defaultValue={props.value || ''} placeholder={props.placeHolder || ''} />;
+  return <input
+    className={props.className}
+    type={props.type}
+    name={props.name}
+    readOnly={props.readOnly}
+    defaultValue={props.value}
+    placeholder={props.placeHolder}
+  />;
 };
 
 export default Input;
