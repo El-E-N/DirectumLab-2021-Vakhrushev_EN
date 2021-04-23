@@ -1,0 +1,36 @@
+.average-values {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 310px;
+  height: 310px;
+  padding: 0;
+
+  background-image: url("../../images/ellipse.svg");
+}
+
+.average-values__count-players {
+  margin: 0;
+  padding: 0;
+
+  font-weight: normal;
+  font-size: 26px;
+  white-space: nowrap;
+}
+
+.average-values__word-voted {
+  margin: 4px 0;
+
+  color: #808284;
+  font-weight: normal;
+  font-size: 14px;
+}
+
+.average-values__avg {
+  margin: 0;
+
+  font-weight: normal;
+  font-size: 26px;
+  white-space: nowrap;
+}

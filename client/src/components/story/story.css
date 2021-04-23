@@ -1,0 +1,64 @@
+.story {
+  width: 100%;
+  height: 67px;
+
+  border-bottom: 1px solid #f2f3f4;
+}
+
+.story__name {
+  padding: 0 0 0 21px;
+
+  font-weight: normal;
+  font-size: 18px;
+  text-align: left;
+}
+
+.story__link {
+  max-width: 500px;
+  overflow: hidden;
+
+  font-weight: normal;
+  font-size: 18px;
+  text-decoration: none;
+  text-overflow: ellipsis;
+
+  cursor: pointer;
+}
+
+.story__count {
+  width: 150px;
+  max-width: 100px;
+  overflow: hidden;
+
+  font-weight: normal;
+  font-size: 18px;
+  text-align: left;
+  text-overflow: ellipsis;
+}
+
+.story__delete-cell {
+  width: 34px;
+  height: 67px;
+  margin: 0;
+  padding: 0;
+
+  border-bottom: 1px solid #f2f3f4;
+}
+
+.story__delete-wrapper {
+  width: 14px;
+  height: 18px;
+  margin: 0;
+  padding: 0;
+
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.story__delete {
+  width: 14px;
+  height: 18px;
+  margin: 0;
+  padding: 0;
+}

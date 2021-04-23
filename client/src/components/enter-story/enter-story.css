@@ -1,0 +1,43 @@
+.enter-story {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 252px;
+  height: 39px;
+  margin: 45px 0 0 0;
+}
+
+.enter-story__input {
+  width: 184px;
+  height: 100%;
+  padding: 0 0 0 14px;
+
+  color: #131b23;
+  font-weight: normal;
+  font-size: 14px;
+
+  border: 1px solid #d5d9de;
+  border-radius: 4px 0 0 4px;
+}
+
+.enter-story__button {
+  width: 68px;
+  height: calc(100% + 2px);
+  padding: 0;
+
+  color: #ffffff;
+
+  background: #4b9ae8;
+  border: none;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+}
+
+.enter-story__button:hover {
+  background: #418cd6;
+}
+
+.enter-story__button:active {
+  background: #3069a1;
+}
