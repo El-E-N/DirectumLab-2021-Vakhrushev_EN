@@ -6,7 +6,7 @@ import './results.css';
 const Results: React.FunctionComponent = () => {
   return <div className="results">
     <BrieflyResults/>
-    <History count={5}/>
+    <History/>
   </div>;
 };
 
