@@ -5,7 +5,7 @@ import Footer from '../footer/footer';
 
 const Result: React.FunctionComponent = () => {
   return <React.Fragment>
-    <Header addUser={true}/>
+    <Header userVisibility={true}/>
     <Room isPlanning={false}/>
     <Footer />
   </React.Fragment>;

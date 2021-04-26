@@ -4,14 +4,15 @@ import User from './../user/user';
 import './header.css';
 
 interface IProps {
-  addUser?: boolean;
+  userVisibility?: boolean;
+  onClick?(): void;
 }
 
 const Header: React.FunctionComponent<IProps> = (props) => {
   return <header className="header">
     <div className="header__content">
-      <Logo />
-      {props.addUser && <User/>}
+      <Logo onClick={props.onClick}/>
+      {props.userVisibility && <User/>}
     </div>
   </header>;
 };

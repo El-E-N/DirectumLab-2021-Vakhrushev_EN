@@ -1,23 +1,109 @@
 import * as React from 'react';
-import ResultWithModal from '../result-with-modal/result-with-modal';
-import ResultEnterStory from '../result-enter-story/result-enter-story';
-import Result from '../result/result';
-import Invite from '../invite/invite';
-import Planning from '../planning/planning';
-import First from '../first/first';
+import {Switch, Route, Router} from 'react-router-dom';
+import InvitePage from '../invite-page/invite-page';
+import MainPage from '../main-page/main-page';
+import CreatePage from '../create-page/create-page';
+import Header from '../header/header';
+import Footer from '../footer/footer';
+import {RoutePath} from '../../routes';
+import {history} from '../../index';
+import MiddleOpacity from '../middle-opacity/middle-opacity';
+import Modal from '../modal/modal';
 
-const PageMap: { [key: string]: React.ReactElement } = {
-  '1': <First/>,
-  '2': <Invite/>,
-  '3': <Planning/>,
-  '4': <Result/>,
-  '5': <ResultEnterStory/>,
-  '6': <ResultWithModal/>
+export const App: React.FunctionComponent<any> = (props) => {
+  props = {
+    roomName: 'Room',
+    name: 'User',
+  };
+  return <Router history={history}>
+    <Header />
+    <Switch>
+      <Route path={RoutePath.INDEX} exact={true} render={() => <CreatePage roomName={props.roomName} name={props.name}/>}/>
+      <Route path={`${RoutePath.MAIN}/:id`} exact={true} render={() => <MainPage roomName={props.roomName} name={props.name}/>}/>
+      <Route path={`${RoutePath.INVITE}/:id`} exact={true} component={InvitePage}/>
+    </Switch>
+    <Footer />
+  </Router>;
 };
 
-const App: React.FunctionComponent = () => {
-  const [page] = React.useState(6);
-  return PageMap[`${page}`];
-};
+interface IProps {
+  roomName: string,
+  name: string,
+}
 
-export default App;
+interface IState {
+  userVisibility: boolean;
+  viewModal: boolean;
+}
+
+export class MyApp extends React.Component<IProps, IState> {
+  constructor(props: IProps) {
+    super(props);
+    this.state = {
+      userVisibility: false,
+      viewModal: false,
+    };
+    this.handleUserVisibilityTrue = this.handleUserVisibilityTrue.bind(this);
+    this.handleUserVisibilityFalse = this.handleUserVisibilityFalse.bind(this);
+    this.handleShowModal = this.handleShowModal.bind(this);
+    this.handleHideModal = this.handleHideModal.bind(this);
+  }
+
+  public handleUserVisibilityTrue() {
+    this.setState({
+      userVisibility: true,
+    });
+  }
+
+  public handleUserVisibilityFalse() {
+    this.setState({
+      userVisibility: false,
+    });
+  }
+
+  public handleShowModal() {
+    this.setState({
+      viewModal: true,
+    });
+  }
+
+  public handleHideModal() {
+    this.setState({
+      viewModal: false,
+    });
+  }
+
+  render() {
+    return <React.Fragment>
+      <Header userVisibility={this.state.userVisibility} onClick={this.handleUserVisibilityFalse}/>
+      <Switch>
+        <Route path={RoutePath.INDEX} exact={true} render={() =>
+          <CreatePage
+            roomName={this.props.roomName}
+            name={this.props.name}
+            onClick={this.handleUserVisibilityTrue}
+          />
+        }/>
+        <Route path={`${RoutePath.MAIN}/:id`} exact={true} render={() =>
+          <MainPage
+            roomName={this.props.roomName}
+            name={this.props.name}
+            onShowModal={this.handleShowModal}
+          />
+        }/>
+        <Route path={`${RoutePath.INVITE}/:id`} exact={true} render={() =>
+          <InvitePage
+            onClick={this.handleUserVisibilityTrue}
+          />
+        }/>
+      </Switch>
+      <Footer onClick={this.handleUserVisibilityFalse}/>
+      {this.state.viewModal && <React.Fragment>
+        <MiddleOpacity/>
+        <Modal onHideModal={this.handleHideModal}/>
+      </React.Fragment>}
+    </React.Fragment>;
+  }
+}
+
+export default MyApp;

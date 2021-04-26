@@ -1,0 +1,25 @@
+.room {
+  flex: 1 0 auto;
+  min-height: calc(100vh - 214px);
+  margin: 0 auto;
+}
+
+.room-name {
+  max-width: 700px;
+  margin: 0 0 31px 0;
+  padding: 54px 0 0 0;
+  overflow: hidden;
+
+  color: #131b23;
+  font-weight: normal;
+  font-size: 26px;
+  text-overflow: ellipsis;
+}
+
+.room-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 0 auto;
+  padding: 0;
+}

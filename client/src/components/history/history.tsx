@@ -13,7 +13,11 @@ const stories: Array<IStory> = [
   {name: 'Story', count: 14},
 ];
 
-const History: React.FunctionComponent = () => {
+interface IProps {
+  onShowModal?(): void;
+}
+
+const History: React.FunctionComponent<IProps> = (props) => {
   const downloadImg = <img className="history__download" alt={'historyDownload'} src={download}/>;
   return <div className="history">
     <div className="history__header">
@@ -23,7 +27,7 @@ const History: React.FunctionComponent = () => {
       </div>
       <Button value={downloadImg} className={'history__button'}/>
     </div>
-    <Stories stories={stories}/>
+    <Stories stories={stories} onShowModal={props.onShowModal}/>
   </div>;
 };
 

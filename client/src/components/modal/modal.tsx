@@ -9,12 +9,16 @@ const users: Array<IUser> = [
   {name: 'test 2', number: 8},
 ];
 
-const Modal: React.FunctionComponent = () => {
+interface IProps {
+  onHideModal?(): void;
+}
+
+const Modal: React.FunctionComponent<IProps> = (props) => {
   return <div className="modal">
     <div className="modal__header">Story Details</div>
     <h3 className="modal__title">Players:</h3>
     <ModalUsers users={users}/>
-    <Button className={'modal__button'} value={'Close'}/>
+    <Button className={'modal__button'} onClick={props.onHideModal} value={'Close'}/>
   </div>;
 };
 

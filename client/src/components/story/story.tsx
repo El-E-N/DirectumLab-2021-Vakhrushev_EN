@@ -6,13 +6,14 @@ import './story.css';
 export interface IStory {
   name: string;
   count: number;
+  onShowModal?(): void;
 }
 
 const Story: React.FunctionComponent<IStory> = (props) => {
   const storyDeleteImg = <img className="story__delete" alt={'storyDelete'} src={deleteImg}/>;
   return <tr className="story">
     <td className="story__name">
-      <a href="/#" className="story__link">{props.name}</a>
+      <a href={void (0)} className="story__link" onClick={props.onShowModal}>{props.name}</a>
     </td>
     <td className="story__count">{props.count}</td>
     <td className="story__delete-cell">

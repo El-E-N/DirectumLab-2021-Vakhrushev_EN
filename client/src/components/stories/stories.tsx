@@ -4,6 +4,7 @@ import './stories.css';
 
 interface IProps {
   stories: Array<IStory>;
+  onShowModal?(): void;
 }
 
 const Stories: React.FunctionComponent<IProps> = (props) => {
@@ -13,6 +14,7 @@ const Stories: React.FunctionComponent<IProps> = (props) => {
         key={story.name + story.count}
         name={story.name}
         count={story.count}
+        onShowModal={props.onShowModal}
       />;
     })}
   </table>;
