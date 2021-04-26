@@ -3,15 +3,11 @@ import {Link} from 'react-router-dom';
 import {RoutePath} from '../../routes';
 import './footer.css';
 
-interface IProps {
-  onClick?(): void;
-}
-
-const Footer: React.FunctionComponent<IProps> = (props) => {
+const Footer: React.FunctionComponent = () => {
   return <footer className="footer">
     <p>
       {'Copyright 2021 '}
-      <Link to={RoutePath.INDEX} className="footer__link" onClick={props.onClick}>PlanPoker</Link>
+      <Link to={RoutePath.INDEX} className="footer__link">PlanPoker</Link>
     </p>
   </footer>;
 };

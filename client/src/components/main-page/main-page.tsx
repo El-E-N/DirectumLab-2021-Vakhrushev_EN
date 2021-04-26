@@ -30,26 +30,30 @@ interface IProps extends RouteComponentProps<IMatchParams> {
   roomName?: string;
   name?: string;
   onShowModal?(): void;
+  onShowUser?(): void;
 }
 
 interface IState {
-  view: string;
+  isPlanning: boolean;
   addEnterStory: boolean;
+  cardSelected: boolean;
 }
 
 export class MainPage extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      view: 'planning',
+      isPlanning: true,
       addEnterStory: false,
+      cardSelected: false,
     };
     this.handleClick = this.handleClick.bind(this);
+    this.props.onShowUser && this.props.onShowUser();
   }
 
   public handleClick() {
     this.setState({
-      view: 'result',
+      isPlanning: false,
       addEnterStory: true,
     });
   }
@@ -58,8 +62,8 @@ export class MainPage extends React.Component<IProps, IState> {
     return <main className="room">
       <h2 className="room-name">{this.props.roomName}</h2>
       <div className="room-content">
-        {this.state.view === 'planning' && <Deck values={deck}/>}
-        {this.state.view === 'result' && <Results onShowModal={this.props.onShowModal}/>}
+        {this.state.isPlanning && <Deck values={deck}/>}
+        {!this.state.isPlanning && <Results onShowModal={this.props.onShowModal}/>}
         <Menu addEnter={this.state.addEnterStory} onClick={this.handleClick}/>
       </div>
     </main>;

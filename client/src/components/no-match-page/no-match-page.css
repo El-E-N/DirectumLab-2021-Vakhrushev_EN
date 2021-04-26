@@ -1,0 +1,7 @@
+.no-match-page {
+  display: flex;
+  align-items: center;
+
+  color: #4b9ae8;
+  font-size: 100px;
+}

@@ -10,10 +10,15 @@ export interface IStory {
 }
 
 const Story: React.FunctionComponent<IStory> = (props) => {
+  const onClick = (event: React.FormEvent) => {
+    event.preventDefault();
+    props.onShowModal && props.onShowModal();
+  };
+
   const storyDeleteImg = <img className="story__delete" alt={'storyDelete'} src={deleteImg}/>;
   return <tr className="story">
     <td className="story__name">
-      <a href={void (0)} className="story__link" onClick={props.onShowModal}>{props.name}</a>
+      <a href={'/#'} className="story__link" onClick={onClick}>{props.name}</a>
     </td>
     <td className="story__count">{props.count}</td>
     <td className="story__delete-cell">

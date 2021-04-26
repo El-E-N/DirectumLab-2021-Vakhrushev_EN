@@ -5,7 +5,7 @@ import Input from '../input/input';
 import EnterStory from '../enter-story/enter-story';
 import './menu.css';
 
-const names = ['test',
+export const names = ['test',
   'test 2',
   'test 3',
   'test 4'

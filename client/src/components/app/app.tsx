@@ -1,30 +1,14 @@
 import * as React from 'react';
-import {Switch, Route, Router} from 'react-router-dom';
+import {Switch, Route} from 'react-router-dom';
 import InvitePage from '../invite-page/invite-page';
 import MainPage from '../main-page/main-page';
 import CreatePage from '../create-page/create-page';
+import NoMatchPage from '../no-match-page/no-match-page';
 import Header from '../header/header';
 import Footer from '../footer/footer';
 import {RoutePath} from '../../routes';
-import {history} from '../../index';
 import MiddleOpacity from '../middle-opacity/middle-opacity';
 import Modal from '../modal/modal';
-
-export const App: React.FunctionComponent<any> = (props) => {
-  props = {
-    roomName: 'Room',
-    name: 'User',
-  };
-  return <Router history={history}>
-    <Header />
-    <Switch>
-      <Route path={RoutePath.INDEX} exact={true} render={() => <CreatePage roomName={props.roomName} name={props.name}/>}/>
-      <Route path={`${RoutePath.MAIN}/:id`} exact={true} render={() => <MainPage roomName={props.roomName} name={props.name}/>}/>
-      <Route path={`${RoutePath.INVITE}/:id`} exact={true} component={InvitePage}/>
-    </Switch>
-    <Footer />
-  </Router>;
-};
 
 interface IProps {
   roomName: string,
@@ -36,7 +20,7 @@ interface IState {
   viewModal: boolean;
 }
 
-export class MyApp extends React.Component<IProps, IState> {
+export class App extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
@@ -75,13 +59,12 @@ export class MyApp extends React.Component<IProps, IState> {
 
   render() {
     return <React.Fragment>
-      <Header userVisibility={this.state.userVisibility} onClick={this.handleUserVisibilityFalse}/>
+      <Header userVisibility={this.state.userVisibility}/>
       <Switch>
         <Route path={RoutePath.INDEX} exact={true} render={() =>
           <CreatePage
-            roomName={this.props.roomName}
-            name={this.props.name}
-            onClick={this.handleUserVisibilityTrue}
+            onHideUser={this.handleUserVisibilityFalse}
+            isShowUser={this.state.userVisibility}
           />
         }/>
         <Route path={`${RoutePath.MAIN}/:id`} exact={true} render={() =>
@@ -89,15 +72,18 @@ export class MyApp extends React.Component<IProps, IState> {
             roomName={this.props.roomName}
             name={this.props.name}
             onShowModal={this.handleShowModal}
+            onShowUser={this.handleUserVisibilityTrue}
           />
         }/>
         <Route path={`${RoutePath.INVITE}/:id`} exact={true} render={() =>
           <InvitePage
-            onClick={this.handleUserVisibilityTrue}
+            onHideUser={this.handleUserVisibilityTrue}
+            isShowUser={this.state.userVisibility}
           />
         }/>
+        <Route component={NoMatchPage}/>
       </Switch>
-      <Footer onClick={this.handleUserVisibilityFalse}/>
+      <Footer/>
       {this.state.viewModal && <React.Fragment>
         <MiddleOpacity/>
         <Modal onHideModal={this.handleHideModal}/>
@@ -106,4 +92,4 @@ export class MyApp extends React.Component<IProps, IState> {
   }
 }
 
-export default MyApp;
+export default App;

@@ -11,9 +11,8 @@ const values = [
 ];
 
 interface IProps extends RouteComponentProps {
-  name?: string;
-  roomName?: string;
-  onClick?(): void;
+  onHideUser?(): void;
+  isShowUser?: boolean;
 }
 
 const CreatePage: React.FunctionComponent<IProps> = (props) => {
@@ -24,8 +23,9 @@ const CreatePage: React.FunctionComponent<IProps> = (props) => {
   const handleClick = () => {
     const roomId = Math.round(Math.random() * (1000 - 1) + 1);
     props.history.push(`${RoutePath.MAIN}/${roomId}`);
-    props.onClick !== undefined && props.onClick();
   };
+
+  props.isShowUser && props.onHideUser && props.onHideUser();
 
   return <main className="main">
     <form action={'POST'} onSubmit={handleSubmit} className={'main__content'}>

@@ -15,15 +15,17 @@ const values = [
 ];
 
 interface IProps extends RouteComponentProps<IMatchParams> {
-  onClick?(): void;
+  onHideUser?(): void;
+  isShowUser?: boolean;
 }
 
 const InvitePage: React.FunctionComponent<IProps> = (props) => {
   const handleSubmit = (evt: React.FormEvent) => {
     evt.preventDefault();
     props.history.push(`${RoutePath.MAIN}/${props.match.params.id}`);
-    props.onClick && props.onClick();
   };
+
+  props.isShowUser && props.onHideUser && props.onHideUser();
 
   return <main className="main">
     <form action={'POST'} onSubmit={handleSubmit} className={'main__content invite'}>
