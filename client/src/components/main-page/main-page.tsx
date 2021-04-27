@@ -27,10 +27,11 @@ interface IMatchParams {
 }
 
 interface IProps extends RouteComponentProps<IMatchParams> {
-  roomName?: string;
-  name?: string;
+  roomName: string;
+  name: string;
   onShowModal?(): void;
   onShowUser?(): void;
+  isAuthentication: boolean;
 }
 
 interface IState {
@@ -52,19 +53,29 @@ export class MainPage extends React.Component<IProps, IState> {
   }
 
   public handleClick() {
-    this.setState({
+    // eslint-disable-next-line no-console
+    console.log(this.MainDeck.state.selectedItem);
+    /* this.setState({
       isPlanning: false,
       addEnterStory: true,
-    });
+    });*/
   }
 
+  MainDeck: Deck = new Deck({values: deck})
+
   public render() {
+    !this.props.isAuthentication && this.props.history.push(`/invite/${this.props.match.params.id}`);
     return <main className="room">
       <h2 className="room-name">{this.props.roomName}</h2>
       <div className="room-content">
-        {this.state.isPlanning && <Deck values={deck}/>}
+        {this.state.isPlanning && this.MainDeck.render()}
         {!this.state.isPlanning && <Results onShowModal={this.props.onShowModal}/>}
-        <Menu addEnter={this.state.addEnterStory} onClick={this.handleClick}/>
+        <Menu
+          addEnter={this.state.addEnterStory}
+          onClick={this.handleClick}
+          newName={this.props.name}
+          cardSelected={true}
+        />
       </div>
     </main>;
   }

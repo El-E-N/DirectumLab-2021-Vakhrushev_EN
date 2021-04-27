@@ -5,23 +5,28 @@ import Input from '../input/input';
 import EnterStory from '../enter-story/enter-story';
 import './menu.css';
 
-export const names = ['test',
-  'test 2',
-  'test 3',
-  'test 4'
+export const names = [
+  {name: 'test', active: true},
+  {name: 'test 2', active: true},
+  {name: 'test 3', active: true},
 ];
 
 interface IProps {
   addEnter?: boolean;
   onClick?(): void;
+  newName: string;
+  cardSelected: boolean;
 }
 
 const Menu: React.FunctionComponent<IProps> = (props) => {
+  names.find((item) => item.name === props.newName) === undefined && props.newName !== '' && names.push({name: props.newName, active: false});
   return <div className="menu">
     <span className="menu__header">Story voting completed</span>
     <h3 className="menu__title">Players:</h3>
     <Players names={names}/>
-    {props.addEnter ? <EnterStory/> : <Button className={'menu__button'} value={'Finish voting'} onClick={props.onClick}/>}
+    {props.addEnter ?
+      <EnterStory/> :
+      props.cardSelected && <Button className={'menu__button'} value={'Finish voting'} onClick={props.onClick}/>}
     <span className="menu__link-name">Invite a teammate</span>
     <Input
       className={'menu__link'}

@@ -6,12 +6,14 @@ interface IProps {
   title: string;
   placeHolder: string;
   name: string;
+  id?: string;
 }
 
 const MainLabel: React.FunctionComponent<IProps> = (props) => {
   return <label className="main__label">
     {props.title}
     <Input
+      id={props.id}
       className={'main__input'}
       type={'text'}
       name={props.name}

@@ -5,6 +5,7 @@ import './player.css';
 
 interface IProps {
   name: string;
+  active: boolean;
 }
 
 const Player: React.FunctionComponent<IProps> = (props) => {
@@ -13,7 +14,7 @@ const Player: React.FunctionComponent<IProps> = (props) => {
       <img className="player__icon" alt={'playerIcon'} src={playerIcon}/>
       <span className="player__name">{props.name}</span>
     </div>
-    <img className="checked" alt={'checked'} src={check}/>
+    {props.active && <img className="checked" alt={'checked'} src={check}/>}
   </li>;
 };
 

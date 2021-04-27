@@ -9,7 +9,7 @@ export const history = createBrowserHistory();
 
 render(
     <Router history={history}>
-      <App roomName={'Room'} name={'User'}/>
+      <App/>
     </Router>,
     document.body
 );

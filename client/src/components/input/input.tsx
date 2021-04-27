@@ -8,10 +8,12 @@ interface IInput {
   placeHolder?: string;
   readOnly?: boolean;
   onChange?: boolean;
+  id?: string;
 }
 
 const Input: React.FunctionComponent<IInput> = (props) => {
   return <input
+    id={props.id}
     className={props.className}
     type={props.type}
     name={props.name}
