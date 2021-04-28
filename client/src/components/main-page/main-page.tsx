@@ -36,7 +36,7 @@ interface IProps extends RouteComponentProps<IMatchParams> {
 interface IState {
   isPlanning: boolean;
   addEnterStory: boolean;
-  cardSelected: boolean;
+  cardSelected: string | null;
 }
 
 export class MainPage extends React.Component<IProps, IState> {
@@ -45,10 +45,10 @@ export class MainPage extends React.Component<IProps, IState> {
     this.state = {
       isPlanning: true,
       addEnterStory: false,
-      cardSelected: false,
+      cardSelected: null,
     };
     this.handleClick = this.handleClick.bind(this);
-    this.handleSelectedCardTrue = this.handleSelectedCardTrue.bind(this);
+    this.handleSelectedCard = this.handleSelectedCard.bind(this);
   }
 
   public handleClick() {
@@ -58,9 +58,9 @@ export class MainPage extends React.Component<IProps, IState> {
     });
   }
 
-  public handleSelectedCardTrue() {
+  public handleSelectedCard(value: string | null) {
     this.setState({
-      cardSelected: true,
+      cardSelected: value,
     });
   }
 
@@ -68,7 +68,9 @@ export class MainPage extends React.Component<IProps, IState> {
     return <main className="room">
       <h2 className="room-name">{this.props.roomName}</h2>
       <div className="room-content">
-        {this.state.isPlanning ? <Deck values={deck} onSetSelectedCard={this.handleSelectedCardTrue}/> : <Results onShowModal={this.props.onShowModal}/>}
+        {this.state.isPlanning ?
+          <Deck values={deck} onSetSelectedCard={this.handleSelectedCard}/> :
+          <Results onShowModal={this.props.onShowModal}/>}
         <Menu
           addEnter={this.state.addEnterStory}
           onClick={this.handleClick}

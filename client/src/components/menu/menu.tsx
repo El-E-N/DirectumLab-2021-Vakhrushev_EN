@@ -3,28 +3,28 @@ import Players from '../players/players';
 import Button from '../button/button';
 import Input from '../input/input';
 import EnterStory from '../enter-story/enter-story';
-import Player from '../player/player';
+import Player, {IPlayer} from '../player/player';
 import './menu.css';
 
-export const players = [
-  {name: 'test', active: true},
-  {name: 'test 2', active: true},
-  {name: 'test 3', active: true},
+export const players: Array<IPlayer> = [
+  {name: 'test', cardSelected: '8'},
+  {name: 'test 2', cardSelected: '2'},
+  {name: 'test 3', cardSelected: '0.5'},
 ];
 
 interface IProps {
-  addEnter?: boolean;
+  addEnter: boolean;
   onClick?(): void;
   newName?: string;
-  cardSelected: boolean;
+  cardSelected: string | null;
 }
 
 const Menu: React.FunctionComponent<IProps> = (props) => {
   return <div className="menu">
     <span className="menu__header">Story voting completed</span>
     <h3 className="menu__title">Players:</h3>
-    <Players players={players}/>
-    <Player name={props.newName!} active={props.cardSelected}/>
+    <Players players={players} showResult={props.addEnter}/>
+    <Player name={props.newName!} cardSelected={props.cardSelected} showResult={props.addEnter}/>
     {props.addEnter ?
       <EnterStory/> :
       <Button className={'menu__button'} value={'Finish voting'} onClick={props.onClick}/>}

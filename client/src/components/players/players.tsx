@@ -1,15 +1,17 @@
 import * as React from 'react';
 import Player from '../player/player';
+import {IPlayer} from '../player/player';
 import './players.css';
 
 interface IProps {
-  players: {name: string, active: boolean}[];
+  players: Array<IPlayer>;
+  showResult: boolean;
 }
 
 const Players: React.FunctionComponent<IProps> = (props) => {
   return <ul className="players">
     {props.players.map((player) => {
-      return <Player key={player.name} name={player.name} active={player.active}/>;
+      return <Player key={player.name} name={player.name} cardSelected={player.cardSelected} showResult={props.showResult}/>;
     })}
   </ul>;
 };
