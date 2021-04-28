@@ -1,14 +1,19 @@
 import * as React from 'react';
 import userImage from '../../images/userIcon.svg';
 import Button from '../button/button';
-import {Link} from 'react-router-dom';
+import {withRouter, RouteComponentProps, Link} from 'react-router-dom';
+import {RoutePath} from '../../routes';
 import './user.css';
+
+interface IMatchParams {
+  id: string;
+}
 
 interface IState {
   showUserMenu: boolean;
 }
 
-interface IProps {
+interface IProps extends RouteComponentProps<IMatchParams> {
   name?: string;
 }
 
@@ -35,17 +40,16 @@ class User extends React.Component<IProps, IState> {
   }
 
   render() {
-    const hrefArray = window.location.href.split('/');
     return <div className="user">
       <Button className={'user__button'} value={this.userButton(this.props.name || '')} onClick={this.handleShowOrHide}/>
       {this.state.showUserMenu && <div className="user__menu-wrapper">
         <div className="rhombus"/>
         <div className="user__menu">
-          <Link to={`/invite/${hrefArray[hrefArray.length - 1]}`} className="sign-out">Sign Out</Link>
+          <Link to={`${RoutePath.INVITE}/${this.props.match.params.id}`} className="sign-out">Sign Out</Link>
         </div>
       </div>}
     </div>;
   }
 }
 
-export default User;
+export default withRouter(User);

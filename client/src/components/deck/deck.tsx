@@ -4,6 +4,7 @@ import './deck.css';
 
 interface ICards {
   values: Array<ICard>;
+  onSetSelectedCard(): void;
 }
 
 interface IState {
@@ -20,6 +21,7 @@ class Deck extends React.Component<ICards, IState> {
   }
 
   public handleCardChange(value: string | number) {
+    this.props.onSetSelectedCard();
     this.setState({
       selectedItem: value,
     });
@@ -33,7 +35,7 @@ class Deck extends React.Component<ICards, IState> {
             key={v.value}
             value={v.value}
             isSvg={v.isSvg}
-            onChange={() => this.handleCardChange(v.value)}
+            onClick={this.handleCardChange}
             isChecked={v.value === this.state.selectedItem}
           />
         );

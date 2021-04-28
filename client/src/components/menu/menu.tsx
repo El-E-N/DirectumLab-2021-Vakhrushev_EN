@@ -3,9 +3,10 @@ import Players from '../players/players';
 import Button from '../button/button';
 import Input from '../input/input';
 import EnterStory from '../enter-story/enter-story';
+import Player from '../player/player';
 import './menu.css';
 
-export const names = [
+export const players = [
   {name: 'test', active: true},
   {name: 'test 2', active: true},
   {name: 'test 3', active: true},
@@ -14,19 +15,19 @@ export const names = [
 interface IProps {
   addEnter?: boolean;
   onClick?(): void;
-  newName: string;
+  newName?: string;
   cardSelected: boolean;
 }
 
 const Menu: React.FunctionComponent<IProps> = (props) => {
-  names.find((item) => item.name === props.newName) === undefined && props.newName !== '' && names.push({name: props.newName, active: false});
   return <div className="menu">
     <span className="menu__header">Story voting completed</span>
     <h3 className="menu__title">Players:</h3>
-    <Players names={names}/>
+    <Players players={players}/>
+    <Player name={props.newName!} active={props.cardSelected}/>
     {props.addEnter ?
       <EnterStory/> :
-      props.cardSelected && <Button className={'menu__button'} value={'Finish voting'} onClick={props.onClick}/>}
+      <Button className={'menu__button'} value={'Finish voting'} onClick={props.onClick}/>}
     <span className="menu__link-name">Invite a teammate</span>
     <Input
       className={'menu__link'}

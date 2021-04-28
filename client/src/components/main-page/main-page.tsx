@@ -6,20 +6,20 @@ import Menu from '../menu/menu';
 import './main-page.css';
 
 const deck = [
-  {value: '0', isChecked: false, onChange() {}},
-  {value: '0.5', isChecked: false, onChange() {}},
-  {value: '1', isChecked: false, onChange() {}},
-  {value: '2', isChecked: false, onChange() {}},
-  {value: '3', isChecked: false, onChange() {}},
-  {value: '5', isChecked: false, onChange() {}},
-  {value: '8', isChecked: false, onChange() {}},
-  {value: '13', isChecked: false, onChange() {}},
-  {value: '20', isChecked: false, onChange() {}},
-  {value: '40', isChecked: false, onChange() {}},
-  {value: '100', isChecked: false, onChange() {}},
-  {value: '?', isChecked: false, onChange() {}},
-  {value: '∞', isChecked: false, onChange() {}},
-  {value: 'coffee', isSvg: true, isChecked: false, onChange() {}}
+  {value: '0', isChecked: false},
+  {value: '0.5', isChecked: false},
+  {value: '1', isChecked: false},
+  {value: '2', isChecked: false},
+  {value: '3', isChecked: false},
+  {value: '5', isChecked: false},
+  {value: '8', isChecked: false},
+  {value: '13', isChecked: false},
+  {value: '20', isChecked: false},
+  {value: '40', isChecked: false},
+  {value: '100', isChecked: false},
+  {value: '?', isChecked: false},
+  {value: '∞', isChecked: false},
+  {value: 'coffee', isSvg: true, isChecked: false}
 ];
 
 interface IMatchParams {
@@ -28,9 +28,8 @@ interface IMatchParams {
 
 interface IProps extends RouteComponentProps<IMatchParams> {
   roomName: string;
-  name: string;
+  name?: string;
   onShowModal?(): void;
-  onShowUser?(): void;
   isAuthentication: boolean;
 }
 
@@ -49,35 +48,39 @@ export class MainPage extends React.Component<IProps, IState> {
       cardSelected: false,
     };
     this.handleClick = this.handleClick.bind(this);
-    this.props.onShowUser && this.props.onShowUser();
+    this.handleSelectedCardTrue = this.handleSelectedCardTrue.bind(this);
   }
 
   public handleClick() {
-    // eslint-disable-next-line no-console
-    console.log(this.MainDeck.state.selectedItem);
-    /* this.setState({
+    this.setState({
       isPlanning: false,
       addEnterStory: true,
-    });*/
+    });
   }
 
-  MainDeck: Deck = new Deck({values: deck})
+  public handleSelectedCardTrue() {
+    this.setState({
+      cardSelected: true,
+    });
+  }
 
   public render() {
-    !this.props.isAuthentication && this.props.history.push(`/invite/${this.props.match.params.id}`);
     return <main className="room">
       <h2 className="room-name">{this.props.roomName}</h2>
       <div className="room-content">
-        {this.state.isPlanning && this.MainDeck.render()}
-        {!this.state.isPlanning && <Results onShowModal={this.props.onShowModal}/>}
+        {this.state.isPlanning ? <Deck values={deck} onSetSelectedCard={this.handleSelectedCardTrue}/> : <Results onShowModal={this.props.onShowModal}/>}
         <Menu
           addEnter={this.state.addEnterStory}
           onClick={this.handleClick}
           newName={this.props.name}
-          cardSelected={true}
+          cardSelected={this.state.cardSelected}
         />
       </div>
     </main>;
+  }
+
+  componentDidMount() {
+    !this.props.isAuthentication && this.props.history.push(`/invite/${this.props.match.params.id}`);
   }
 }
 

@@ -9,6 +9,7 @@ interface IInput {
   readOnly?: boolean;
   onChange?: boolean;
   id?: string;
+  onClick?(): void;
 }
 
 const Input: React.FunctionComponent<IInput> = (props) => {
@@ -20,6 +21,7 @@ const Input: React.FunctionComponent<IInput> = (props) => {
     readOnly={props.readOnly}
     defaultValue={props.value}
     placeholder={props.placeHolder}
+    onClick={props.onClick}
   />;
 };
 

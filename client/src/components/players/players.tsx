@@ -3,13 +3,13 @@ import Player from '../player/player';
 import './players.css';
 
 interface IProps {
-  names: {name: string, active: boolean}[];
+  players: {name: string, active: boolean}[];
 }
 
 const Players: React.FunctionComponent<IProps> = (props) => {
   return <ul className="players">
-    {props.names.map((array) => {
-      return <Player key={array.name} name={array.name} active={array.active}/>;
+    {props.players.map((player) => {
+      return <Player key={player.name} name={player.name} active={player.active}/>;
     })}
   </ul>;
 };

@@ -11,34 +11,32 @@ interface IMatchParams {
 }
 
 const values = [
-  {label: 'User name', placeHolder: 'Enter your name', name: 'userName', id: 'invite-name'}
+  {label: 'User name', placeHolder: 'Enter your name', name: 'userName'}
 ];
 
 interface IProps extends RouteComponentProps<IMatchParams> {
-  onHideUser?(): void;
-  isShowUser?: boolean;
-  onAddAuthentication?(): void;
   // eslint-disable-next-line no-unused-vars
-  onAddName?(value: string): void;
+  onSubmit(name: string): void;
+  onClear(): void;
+  name?: string;
 }
 
 const InvitePage: React.FunctionComponent<IProps> = (props) => {
   const handleSubmit = (evt: React.FormEvent) => {
     evt.preventDefault();
-    let name: string = (document.getElementById('invite-name') as HTMLInputElement).value;
-    props.onAddAuthentication && props.onAddAuthentication();
-    props.onAddName && props.onAddName(name);
-    props.history.push(`${RoutePath.MAIN}/${props.match.params.id}`);
+    let name = ((evt.target as Element).children.item(2)!.children.namedItem('userName') as HTMLInputElement).value;
+    props.onSubmit(name);
+    name !== undefined && name !== '' && props.history.push(`${RoutePath.MAIN}/${props.match.params.id}`);
   };
 
-  props.isShowUser && props.onHideUser && props.onHideUser();
+  props.name && props.onClear();
 
   return <main className="main">
     <form action={'POST'} onSubmit={handleSubmit} className={'main__content invite'}>
       <span className="main__tagline">{'Let\'s start!'}</span>
       <h2 className="main__title">{'Join the room:'}</h2>
-      {values.map((array) => {
-        return <MainLabel key={array.name} name={array.name} title={array.label} placeHolder={array.placeHolder} id={array.id}/>;
+      {values.map((value) => {
+        return <MainLabel key={value.name} name={value.name} title={value.label} placeHolder={value.placeHolder}/>;
       })}
       <Button className={'main__button'} value={'Enter'}/>
     </form>

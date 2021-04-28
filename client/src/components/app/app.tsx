@@ -11,10 +11,9 @@ import MiddleOpacity from '../middle-opacity/middle-opacity';
 import Modal from '../modal/modal';
 
 interface IState {
-  userVisibility: boolean;
   viewModal: boolean;
   roomName: string;
-  name: string;
+  name?: string;
   isAuthentication: boolean;
 }
 
@@ -22,31 +21,16 @@ export class App extends React.Component<any, IState> {
   constructor(props: any) {
     super(props);
     this.state = {
-      userVisibility: false,
       viewModal: false,
       roomName: '',
-      name: '',
       isAuthentication: false,
     };
-    this.handleUserVisibilityTrue = this.handleUserVisibilityTrue.bind(this);
-    this.handleUserVisibilityFalse = this.handleUserVisibilityFalse.bind(this);
     this.handleShowModal = this.handleShowModal.bind(this);
     this.handleHideModal = this.handleHideModal.bind(this);
-    this.handleAddAuthentication = this.handleAddAuthentication.bind(this);
-    this.handleSetName = this.handleSetName.bind(this);
-    this.handleSetRoomName = this.handleSetRoomName.bind(this);
-  }
-
-  public handleUserVisibilityTrue() {
-    this.setState({
-      userVisibility: true,
-    });
-  }
-
-  public handleUserVisibilityFalse() {
-    this.setState({
-      userVisibility: false,
-    });
+    this.handleAddCreateStates = this.handleAddCreateStates.bind(this);
+    this.handleAddInviteStates = this.handleAddInviteStates.bind(this);
+    this.handleClearCreate = this.handleClearCreate.bind(this);
+    this.handleClearInvite = this.handleClearInvite.bind(this);
   }
 
   public handleShowModal() {
@@ -61,35 +45,43 @@ export class App extends React.Component<any, IState> {
     });
   }
 
-  public handleAddAuthentication() {
+  public handleAddCreateStates(newName: string, rName: string) {
     this.setState({
+      roomName: rName,
+      name: newName,
       isAuthentication: true,
     });
   }
 
-  public handleSetName(newName: string) {
+  public handleAddInviteStates(newName: string) {
     this.setState({
       name: newName,
+      isAuthentication: true,
     });
   }
 
-  public handleSetRoomName(rName: string) {
+  public handleClearCreate() {
     this.setState({
-      roomName: rName,
+      name: undefined,
+      roomName: '',
+    });
+  }
+
+  public handleClearInvite() {
+    this.setState({
+      name: undefined,
     });
   }
 
   render() {
     return <React.Fragment>
-      <Header userVisibility={this.state.userVisibility} name={this.state.name}/>
+      <Header name={this.state.name}/>
       <Switch>
         <Route path={RoutePath.INDEX} exact={true} render={() =>
           <CreatePage
-            onHideUser={this.handleUserVisibilityFalse}
-            isShowUser={this.state.userVisibility}
-            onAddAuthentication={this.handleAddAuthentication}
-            onAddName={this.handleSetName}
-            onAddRoomName={this.handleSetRoomName}
+            onSubmit={this.handleAddCreateStates}
+            name={this.state.name}
+            onClear={this.handleClearCreate}
           />
         }/>
         <Route path={`${RoutePath.MAIN}/:id`} exact={true} render={() =>
@@ -97,16 +89,14 @@ export class App extends React.Component<any, IState> {
             roomName={this.state.roomName}
             name={this.state.name}
             onShowModal={this.handleShowModal}
-            onShowUser={this.handleUserVisibilityTrue}
             isAuthentication={this.state.isAuthentication}
           />
         }/>
         <Route path={`${RoutePath.INVITE}/:id`} exact={true} render={() =>
           <InvitePage
-            onHideUser={this.handleUserVisibilityFalse}
-            isShowUser={this.state.userVisibility}
-            onAddAuthentication={this.handleAddAuthentication}
-            onAddName={this.handleSetName}
+            onSubmit={this.handleAddInviteStates}
+            name={this.state.name}
+            onClear={this.handleClearInvite}
           />
         }/>
         <Route component={NoMatchPage}/>
