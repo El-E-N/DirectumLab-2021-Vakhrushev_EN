@@ -1,15 +1,17 @@
 import * as React from 'react';
 import Player from '../player/player';
+import {IPlayer} from '../player/player';
 import './players.css';
 
 interface IProps {
-  names: Array<string>;
+  players: Array<IPlayer>;
+  showResult: boolean;
 }
 
 const Players: React.FunctionComponent<IProps> = (props) => {
   return <ul className="players">
-    {props.names.map((name) => {
-      return <Player key={name} name={name}/>;
+    {props.players.map((player) => {
+      return <Player key={player.name} name={player.name} cardSelected={player.cardSelected} showResult={props.showResult}/>;
     })}
   </ul>;
 };

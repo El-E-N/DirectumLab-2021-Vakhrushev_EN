@@ -36,3 +36,16 @@
   height: 20px;
   margin-right: 23px;
 }
+
+.player__card {
+  width: 20px;
+  height: 20px;
+  margin-right: 23px;
+}
+
+.player__coffee {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}

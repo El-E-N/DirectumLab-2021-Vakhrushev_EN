@@ -4,10 +4,12 @@ import './deck.css';
 
 interface ICards {
   values: Array<ICard>;
+  // eslint-disable-next-line no-unused-vars
+  onSetSelectedCard(value: string | null): void;
 }
 
 interface IState {
-  selectedItem: string | number | null;
+  selectedItem: string | null;
 }
 
 class Deck extends React.Component<ICards, IState> {
@@ -19,7 +21,8 @@ class Deck extends React.Component<ICards, IState> {
     this.handleCardChange = this.handleCardChange.bind(this);
   }
 
-  public handleCardChange(value: string | number) {
+  public handleCardChange(value: string | null) {
+    this.props.onSetSelectedCard(value);
     this.setState({
       selectedItem: value,
     });
@@ -33,7 +36,7 @@ class Deck extends React.Component<ICards, IState> {
             key={v.value}
             value={v.value}
             isSvg={v.isSvg}
-            onChange={() => this.handleCardChange(v.value)}
+            onClick={this.handleCardChange}
             isChecked={v.value === this.state.selectedItem}
           />
         );

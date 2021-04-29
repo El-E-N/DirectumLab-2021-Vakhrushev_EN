@@ -4,14 +4,14 @@ import User from './../user/user';
 import './header.css';
 
 interface IProps {
-  addUser?: boolean;
+  name?: string;
 }
 
 const Header: React.FunctionComponent<IProps> = (props) => {
   return <header className="header">
     <div className="header__content">
-      <Logo />
-      {props.addUser && <User/>}
+      <Logo/>
+      {props.name && <User name={props.name}/>}
     </div>
   </header>;
 };

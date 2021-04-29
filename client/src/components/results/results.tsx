@@ -3,10 +3,14 @@ import BrieflyResults from '../briefly-results/briefly-results';
 import History from '../history/history';
 import './results.css';
 
-const Results: React.FunctionComponent = () => {
+interface IProps {
+  onShowModal?(): void;
+}
+
+const Results: React.FunctionComponent<IProps> = (props) => {
   return <div className="results">
     <BrieflyResults/>
-    <History/>
+    <History onShowModal={props.onShowModal}/>
   </div>;
 };
 
