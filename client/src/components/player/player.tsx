@@ -34,3 +34,4 @@ const Player: React.FunctionComponent<IProps> = (props) => {
 };
 
 export default Player;
+

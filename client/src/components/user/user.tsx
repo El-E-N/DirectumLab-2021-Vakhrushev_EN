@@ -3,6 +3,7 @@ import userImage from '../../images/userIcon.svg';
 import Button from '../button/button';
 import {withRouter, RouteComponentProps, Link} from 'react-router-dom';
 import {RoutePath} from '../../routes';
+import {IUser} from '../../store/types';
 import './user.css';
 
 interface IMatchParams {
@@ -14,7 +15,7 @@ interface IState {
 }
 
 interface IProps extends RouteComponentProps<IMatchParams> {
-  name?: string;
+  user: IUser;
 }
 
 class User extends React.Component<IProps, IState> {
@@ -41,7 +42,7 @@ class User extends React.Component<IProps, IState> {
 
   render() {
     return <div className="user">
-      <Button className={'user__button'} value={this.userButton(this.props.name || '')} onClick={this.handleShowOrHide}/>
+      <Button className={'user__button'} value={this.userButton(this.props.user.name || '')} onClick={this.handleShowOrHide}/>
       {this.state.showUserMenu && <div className="user__menu-wrapper">
         <div className="rhombus"/>
         <div className="user__menu">

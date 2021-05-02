@@ -12,9 +12,7 @@ import Modal from '../modal/modal';
 
 interface IState {
   viewModal: boolean;
-  roomName: string;
-  name?: string;
-  isAuthentication: boolean;
+  roomId: string | null;
 }
 
 export class App extends React.Component<any, IState> {
@@ -22,15 +20,15 @@ export class App extends React.Component<any, IState> {
     super(props);
     this.state = {
       viewModal: false,
-      roomName: '',
-      isAuthentication: false,
+      roomId: null,
     };
     this.handleShowModal = this.handleShowModal.bind(this);
     this.handleHideModal = this.handleHideModal.bind(this);
-    this.handleAddCreateStates = this.handleAddCreateStates.bind(this);
-    this.handleAddInviteStates = this.handleAddInviteStates.bind(this);
+    // this.handleAddCreateStates = this.handleAddCreateStates.bind(this);
+    // this.handleAddInviteStates = this.handleAddInviteStates.bind(this);
     this.handleClearCreate = this.handleClearCreate.bind(this);
-    this.handleClearInvite = this.handleClearInvite.bind(this);
+    this.handleCreateRoom = this.handleCreateRoom.bind(this);
+    // this.handleClearInvite = this.handleClearInvite.bind(this);
   }
 
   public handleShowModal() {
@@ -45,59 +43,51 @@ export class App extends React.Component<any, IState> {
     });
   }
 
-  public handleAddCreateStates(newName: string, rName: string) {
+  /* public handleAddCreateStates(newName: string, rName: string) {
     this.setState({
       roomName: rName,
       name: newName,
       isAuthentication: true,
     });
-  }
+  }*/
 
-  public handleAddInviteStates(newName: string) {
+  /* public handleAddInviteStates(newName: string) {
     this.setState({
       name: newName,
       isAuthentication: true,
     });
-  }
+  }*/
 
   public handleClearCreate() {
     this.setState({
-      name: undefined,
-      roomName: '',
+      roomId: null,
     });
   }
 
-  public handleClearInvite() {
+  /* public handleClearInvite() {
     this.setState({
       name: undefined,
+    });
+  }*/
+
+  public handleCreateRoom(id: string) {
+    this.setState({
+      roomId: id,
     });
   }
 
   render() {
     return <React.Fragment>
-      <Header name={this.state.name}/>
+      <Header/>
       <Switch>
         <Route path={RoutePath.INDEX} exact={true} render={() =>
-          <CreatePage
-            onSubmit={this.handleAddCreateStates}
-            name={this.state.name}
-            onClear={this.handleClearCreate}
-          />
+          <CreatePage addRoomId={this.handleCreateRoom}/>
         }/>
         <Route path={`${RoutePath.MAIN}/:id`} exact={true} render={() =>
-          <MainPage
-            roomName={this.state.roomName}
-            name={this.state.name}
-            onShowModal={this.handleShowModal}
-            isAuthentication={this.state.isAuthentication}
-          />
+          <MainPage onShowModal={this.handleShowModal}/>
         }/>
         <Route path={`${RoutePath.INVITE}/:id`} exact={true} render={() =>
-          <InvitePage
-            onSubmit={this.handleAddInviteStates}
-            name={this.state.name}
-            onClear={this.handleClearInvite}
-          />
+          <InvitePage/>
         }/>
         <Route component={NoMatchPage}/>
       </Switch>

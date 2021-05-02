@@ -4,6 +4,7 @@ import Button from '../button/button';
 import Input from '../input/input';
 import EnterStory from '../enter-story/enter-story';
 import Player, {IPlayer} from '../player/player';
+import {IRoom, IUser} from '../../store/types';
 import './menu.css';
 
 export const players: Array<IPlayer> = [
@@ -13,6 +14,8 @@ export const players: Array<IPlayer> = [
 ];
 
 interface IProps {
+  room: IRoom,
+  user: IUser | null,
   addEnter: boolean;
   onClick?(): void;
   newName?: string;
@@ -20,6 +23,8 @@ interface IProps {
 }
 
 const Menu: React.FunctionComponent<IProps> = (props) => {
+  const {user, room} = props;
+  const showButton = user && user.id === room.ownerId;
   return <div className="menu">
     <span className="menu__header">Story voting completed</span>
     <h3 className="menu__title">Players:</h3>
@@ -27,7 +32,7 @@ const Menu: React.FunctionComponent<IProps> = (props) => {
     <Player name={props.newName!} cardSelected={props.cardSelected} showResult={props.addEnter}/>
     {props.addEnter ?
       <EnterStory/> :
-      <Button className={'menu__button'} value={'Finish voting'} onClick={props.onClick}/>}
+      showButton && <Button className={'menu__button'} value={'Finish voting'} onClick={props.onClick}/>}
     <span className="menu__link-name">Invite a teammate</span>
     <Input
       className={'menu__link'}
