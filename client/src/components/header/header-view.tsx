@@ -2,18 +2,23 @@ import * as React from 'react';
 import Logo from './../logo/logo';
 import User from './../user/user';
 import {IUser} from '../../store/types';
+import {RouteComponentProps} from 'react-router-dom';
 import './header.css';
 
-interface IProps {
+interface IProps extends RouteComponentProps<IMatchParams> {
   user: IUser | null;
 }
 
-const HeaderView: React.FunctionComponent<IProps> = ({user}) => {
+interface IMatchParams {
+  id: string;
+}
+
+const HeaderView: React.FunctionComponent<IProps> = (props) => {
   return <header className="header">
     <div className="header__content">
       <Logo/>
       {/* eslint-disable-next-line no-console */}
-      {user !== null && user.id && <User user={user}/>}
+      {props.user !== null && props.user.id && <User user={props.user}/>}
     </div>
   </header>;
 };

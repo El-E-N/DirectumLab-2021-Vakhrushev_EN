@@ -41,25 +41,30 @@ export class MainPageView extends React.Component<IMainPageProps, IState> {
   }
 
   public render() {
-    return <main className="room">
-      <h2 className="room-name">{this.props.room.name}</h2>
-      <div className="room-content">
-        {this.state.isPlanning ?
-          <Deck id={this.props.match.params.id}/> :
-          <Results onShowModal={this.props.onShowModal}/>}
-        <Menu
-          addEnter={!this.state.isPlanning}
-          onClick={this.handleClick}
-          cardSelected={this.props.room.selectedCard}
-          room={this.props.room}
-          user={this.props.user}
-        />
-      </div>
-    </main>;
+    if (this.props.room === undefined) {
+      this.props.history.push('/error-nonexistent-room');
+      return null;
+    } else {
+      return <main className="room">
+        <h2 className="room-name">{this.props.room.name}</h2>
+        <div className="room-content">
+          {this.state.isPlanning ?
+            <Deck id={this.props.match.params.id}/> :
+            <Results onShowModal={this.props.onShowModal}/>}
+          <Menu
+            addEnter={!this.state.isPlanning}
+            onClick={this.handleClick}
+            cardSelected={this.props.room.selectedCard}
+            room={this.props.room}
+            user={this.props.user}
+          />
+        </div>
+      </main>;
+    }
   }
 
   componentDidMount() {
-    this.props.user === null && this.props.history.push(`${RoutePath.INVITE}/${this.props.match.params.id}`);
+    this.props.user === null && this.props.room && this.props.history.push(`${RoutePath.INVITE}/${this.props.match.params.id}`);
   }
 }
 

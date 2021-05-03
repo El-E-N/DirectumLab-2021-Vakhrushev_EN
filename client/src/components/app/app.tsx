@@ -27,7 +27,6 @@ export class App extends React.Component<any, IState> {
     // this.handleAddCreateStates = this.handleAddCreateStates.bind(this);
     // this.handleAddInviteStates = this.handleAddInviteStates.bind(this);
     this.handleClearCreate = this.handleClearCreate.bind(this);
-    this.handleCreateRoom = this.handleCreateRoom.bind(this);
     // this.handleClearInvite = this.handleClearInvite.bind(this);
   }
 
@@ -70,25 +69,16 @@ export class App extends React.Component<any, IState> {
     });
   }*/
 
-  public handleCreateRoom(id: string) {
-    this.setState({
-      roomId: id,
-    });
-  }
-
   render() {
     return <React.Fragment>
-      <Header/>
+      <Route path={[`/:something/:id`, '/']} render={() =>
+        <Header/>}/>
       <Switch>
-        <Route path={RoutePath.INDEX} exact={true} render={() =>
-          <CreatePage addRoomId={this.handleCreateRoom}/>
-        }/>
+        <Route path={RoutePath.INDEX} exact={true} component={CreatePage}/>
         <Route path={`${RoutePath.MAIN}/:id`} exact={true} render={() =>
           <MainPage onShowModal={this.handleShowModal}/>
         }/>
-        <Route path={`${RoutePath.INVITE}/:id`} exact={true} render={() =>
-          <InvitePage/>
-        }/>
+        <Route path={`${RoutePath.INVITE}/:id`} exact={true} component={InvitePage}/>
         <Route component={NoMatchPage}/>
       </Switch>
       <Footer/>

@@ -1,7 +1,7 @@
 import {combineReducers} from 'redux';
 import {IRootState} from './types';
-import {reducer as roomReducer, createReducer as createRoomReducer, addUserReducer as addUserIntoRoomReducer} from './room/room-reducer';
-import {reducer as userReducer, removeReducer as removeUserReducer, usersReducer} from './user/user-reducer';
+import {reducer as roomReducer} from './room/room-reducer';
+import {reducer as userReducer, usersReducer} from './user/user-reducer';
 import {reducer as storiesReducer} from './stories/stories-reducer';
 
 export const ActionType = {
@@ -16,8 +16,8 @@ export const ActionType = {
 };
 
 export const reducer = combineReducers<IRootState>({
-  rooms: roomReducer || createRoomReducer || addUserIntoRoomReducer,
+  rooms: roomReducer,
   stories: storiesReducer,
-  user: userReducer || removeUserReducer,
+  user: userReducer,
   users: usersReducer,
 });

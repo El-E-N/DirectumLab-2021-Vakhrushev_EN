@@ -13,7 +13,7 @@ const initState = [
   },
 ];
 
-export function reducer(state: Array<IRoom> = initState, action: IVoteAction): Array<IRoom> {
+export function reducer(state: Array<IRoom> = initState, action: IVoteAction | IRoomAction | IAddUserAction): Array<IRoom> {
   switch (action.type) {
     case ActionType.VOTE:
       const voteAction = action as IVoteAction;
@@ -21,35 +21,22 @@ export function reducer(state: Array<IRoom> = initState, action: IVoteAction): A
         if (voteAction.roomId === r.id) {
           return {
             ...r,
-            selectedCard: action.value,
+            selectedCard: voteAction.value,
           };
         }
         return r;
       });
-    default:
-      return state;
-  }
-}
-
-export function createReducer(state: Array<IRoom> = initState, action: IRoomAction): Array<IRoom> {
-  switch (action.type) {
     case ActionType.CREATE_ROOM:
+      const roomAction = action as IRoomAction;
       return [...state,
         {
-          id: action.id,
-          name: action.name,
-          cards: action.cards,
-          selectedCard: action.selectedCard,
-          usersId: [action.ownerId],
-          ownerId: action.ownerId
+          id: roomAction.id,
+          name: roomAction.name,
+          cards: roomAction.cards,
+          selectedCard: roomAction.selectedCard,
+          usersId: [roomAction.ownerId],
+          ownerId: roomAction.ownerId
         }];
-    default:
-      return state;
-  }
-}
-
-export function addUserReducer(state: Array<IRoom> = initState, action: IAddUserAction): Array<IRoom> {
-  switch (action.type) {
     case ActionType.ADD_USER_INTO_ROOM:
       const addUserAction = action as IAddUserAction;
       return state.map((r) => {

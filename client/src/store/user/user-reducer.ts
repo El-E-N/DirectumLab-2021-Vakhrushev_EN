@@ -2,23 +2,17 @@ import {IUser} from '../types';
 import {IUserAction, IRemoveUserAction} from './user-action-creators';
 import {ActionType} from '../reducer';
 
-const initState = {
+/* const initState = {
   id: 'test_user',
   name: 'Tester',
-};
+};*/
 
 // eslint-disable-next-line no-unused-vars
-export const reducer = (state: IUser | null = initState, action: IUserAction): IUser | null => {
+export const reducer = (state: IUser | null = null, action: IUserAction | IRemoveUserAction): IUser | null => {
   switch (action.type) {
     case ActionType.CREATE_USER:
-      return {id: action.id, name: action.name};
-    default:
-      return state;
-  }
-};
-
-export const removeReducer = (state: IUser | null, action: IRemoveUserAction): IUser | null => {
-  switch (action.type) {
+      const userAction = action as IUserAction;
+      return {id: userAction.id, name: userAction.name};
     case ActionType.REMOVE_USER:
       return null;
     default:

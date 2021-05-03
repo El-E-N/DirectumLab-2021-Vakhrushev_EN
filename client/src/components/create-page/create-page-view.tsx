@@ -12,8 +12,6 @@ const values = [
 
 export interface IProps extends RouteComponentProps {
   // eslint-disable-next-line no-unused-vars
-  addRoomId(id: string): void;
-  // eslint-disable-next-line no-unused-vars
   createRoom(roomId: string, name: string, cards: Array<string>, selectedCard: string | null, ownerId: string): void;
   // eslint-disable-next-line no-unused-vars
   createUser(id: string, name: string): void;
@@ -34,7 +32,6 @@ class CreatePageView extends React.Component<IProps, {}> {
     if (userName && roomName && userName !== '' && roomName !== '') {
       const roomId = `${Math.round(Math.random() * (1000 - 1) + 1)}`;
       const userId = `${Math.round(Math.random() * (1000 - 1) + 1)}`;
-      this.props.addRoomId(roomId);
       this.props.createUser(userId, userName);
       this.props.createRoom(roomId,
           roomName,

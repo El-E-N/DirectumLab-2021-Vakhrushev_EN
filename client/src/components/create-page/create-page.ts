@@ -6,11 +6,6 @@ import CreatePageView from './create-page-view';
 import {room} from '../../store/room/room-action-creators';
 import {removeUser, user} from '../../store/user/user-action-creators';
 
-interface ICreatorRoom {
-  // eslint-disable-next-line no-unused-vars
-  addRoomId(id: string): void;
-}
-
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     createRoom: (roomId: string, name: string, cards: Array<string>, selectedCard: string | null, ownerId: string) =>
@@ -20,4 +15,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
   };
 };
 
-export default compose<React.ComponentClass<ICreatorRoom>>(withRouter, connect(null, mapDispatchToProps))(CreatePageView);
+export default compose<React.ComponentClass>(withRouter, connect(null, mapDispatchToProps))(CreatePageView);
