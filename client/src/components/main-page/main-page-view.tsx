@@ -1,10 +1,12 @@
 import * as React from 'react';
 import Deck from '../deck/deck';
-import Results from '../results/results';
 import {RouteComponentProps} from 'react-router-dom';
 import Menu from '../menu/menu';
 import {RoutePath} from '../../routes';
 import {IRoom, IUser} from '../../store/types';
+import BrieflyResults from '../briefly-results/briefly-results';
+import History from '../history/history';
+import {mockState} from '../../mock/mock';
 import './main-page.css';
 
 export interface IMatchParams {
@@ -48,9 +50,12 @@ export class MainPageView extends React.Component<IMainPageProps, IState> {
       return <main className="room">
         <h2 className="room-name">{this.props.room.name}</h2>
         <div className="room-content">
-          {this.state.isPlanning ?
-            <Deck id={this.props.match.params.id}/> :
-            <Results onShowModal={this.props.onShowModal}/>}
+          <div className="results">
+            {this.state.isPlanning ?
+              <Deck id={this.props.match.params.id}/> :
+              <BrieflyResults/>}
+            <History stories={mockState.stories} onShowModal={this.props.onShowModal}/>
+          </div>
           <Menu
             addEnter={!this.state.isPlanning}
             onClick={this.handleClick}
