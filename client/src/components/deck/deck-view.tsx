@@ -10,10 +10,6 @@ interface IProps {
   vote(roomId: string, value: string): void;
 }
 
-/* interface IState {
-  selectedItem: string | null;
-}*/
-
 const DeckView: React.FunctionComponent<IProps> = (props) => {
   const handleCardChange = (value: string) => {
     vote(props.room.id, value);
@@ -31,30 +27,5 @@ const DeckView: React.FunctionComponent<IProps> = (props) => {
     })}
   </div>;
 };
-
-/* class DeckView extends React.Component<IProps, any> {
-  constructor(props: IProps) {
-    super(props);
-    this.handleCardChange = this.handleCardChange.bind(this);
-  }
-
-  public handleCardChange(value: string | null) {
-    this.props.room.selectedCard = value;
-  }
-
-  public render() {
-    return <div className="deck">
-      {this.props.room.cards.map((card) => {
-        return (
-          <Card
-            key={card}
-            value={card}
-            onClick={this.handleCardChange}
-          />
-        );
-      })}
-    </div>;
-  }
-}*/
 
 export default DeckView;

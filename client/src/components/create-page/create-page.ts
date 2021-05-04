@@ -5,11 +5,12 @@ import {connect} from 'react-redux';
 import CreatePageView from './create-page-view';
 import {room} from '../../store/room/room-action-creators';
 import {removeUser, user} from '../../store/user/user-action-creators';
+import {IUser} from '../../store/types';
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    createRoom: (roomId: string, name: string, cards: Array<string>, selectedCard: string | null, ownerId: string) =>
-      dispatch(room(roomId, name, cards, selectedCard, ownerId)),
+    createRoom: (roomId: string, name: string, cards: Array<string>, selectedCard: string | null, owner: IUser, storyId: string) =>
+      dispatch(room(roomId, name, cards, selectedCard, owner, storyId)),
     createUser: (id: string, name: string) => dispatch(user(id, name)),
     removeUser: () => dispatch(removeUser()),
   };

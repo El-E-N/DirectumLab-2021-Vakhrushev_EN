@@ -9,12 +9,13 @@ export interface IRoom {
   cards: Array<string>;
   selectedCard: string | null;
   ownerId: string;
-  usersId: Array<string>;
+  users: Array<IUser>;
+  storiesId: Array<string>;
 }
 
 export interface IStory {
   id: string;
-  name: string;
+  name: string | null;
   average: number | null;
   votes: { [key: string]: string }; // key - userId, value - vote
 }
@@ -22,6 +23,5 @@ export interface IStory {
 export interface IRootState {
   rooms: Array<IRoom>;
   stories: Array<IStory>;
-  users: Array<IUser>;
   user: IUser | null;
 }

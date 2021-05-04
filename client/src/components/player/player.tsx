@@ -1,6 +1,7 @@
 import * as React from 'react';
 import playerIcon from './../../images/userIcon.svg';
 import check from './../../images/check.svg';
+import {IUser} from '../../store/types';
 import './player.css';
 
 const coffeeIcon = <svg className={'player__coffee'} width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
@@ -8,7 +9,7 @@ const coffeeIcon = <svg className={'player__coffee'} width="44" height="44" view
 </svg>;
 
 export interface IPlayer {
-  name: string;
+  user: IUser | null;
   cardSelected: string | null;
 }
 
@@ -20,7 +21,7 @@ const Player: React.FunctionComponent<IProps> = (props) => {
   return <li className="player">
     <div className="player__wrapper">
       <img className="player__icon" alt={'playerIcon'} src={playerIcon}/>
-      <span className="player__name">{props.name}</span>
+      <span className="player__name">{props.user && props.user.name}</span>
     </div>
     {!props.showResult ?
       props.cardSelected !== null && <img className="checked" alt={'checked'} src={check}/> :

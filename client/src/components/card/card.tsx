@@ -28,24 +28,4 @@ const Card: React.FunctionComponent<IProps> = (props) => {
   </label>;
 };
 
-/* class Card extends React.Component<IProps, any> {
-  constructor(props: IProps) {
-    super(props);
-    this.handleSetValue = this.handleSetValue.bind(this);
-  }
-
-  public handleSetValue() {
-    this.props.onClick(this.props.value);
-  }
-
-  render() {
-    return <label className="card">
-      <Input type={'radio'} name={'cards'} value={this.props.value} className={'card__input'} onClick={this.handleSetValue}/>
-      <div className="card__content">
-        {this.props.value === 'coffee' ? coffeeIcon : this.props.value}
-      </div>
-    </label>;
-  }
-}*/
-
 export default Card;

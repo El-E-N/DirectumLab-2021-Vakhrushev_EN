@@ -24,10 +24,6 @@ export class App extends React.Component<any, IState> {
     };
     this.handleShowModal = this.handleShowModal.bind(this);
     this.handleHideModal = this.handleHideModal.bind(this);
-    // this.handleAddCreateStates = this.handleAddCreateStates.bind(this);
-    // this.handleAddInviteStates = this.handleAddInviteStates.bind(this);
-    this.handleClearCreate = this.handleClearCreate.bind(this);
-    // this.handleClearInvite = this.handleClearInvite.bind(this);
   }
 
   public handleShowModal() {
@@ -41,33 +37,6 @@ export class App extends React.Component<any, IState> {
       viewModal: false,
     });
   }
-
-  /* public handleAddCreateStates(newName: string, rName: string) {
-    this.setState({
-      roomName: rName,
-      name: newName,
-      isAuthentication: true,
-    });
-  }*/
-
-  /* public handleAddInviteStates(newName: string) {
-    this.setState({
-      name: newName,
-      isAuthentication: true,
-    });
-  }*/
-
-  public handleClearCreate() {
-    this.setState({
-      roomId: null,
-    });
-  }
-
-  /* public handleClearInvite() {
-    this.setState({
-      name: undefined,
-    });
-  }*/
 
   render() {
     return <React.Fragment>

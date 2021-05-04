@@ -3,6 +3,7 @@ import {RouteComponentProps} from 'react-router';
 import {RoutePath} from '../../routes';
 import MainLabel from '../main__label/main__label';
 import Button from '../button/button';
+import {IRoom, IUser} from '../../store/types';
 import './invite-page.css';
 
 interface IMatchParams {
@@ -13,10 +14,13 @@ const values = [
   {label: 'User name', placeHolder: 'Enter your name', name: 'userName'}
 ];
 
-interface IProps extends RouteComponentProps<IMatchParams> {
+export interface IProps extends RouteComponentProps<IMatchParams> {
+  room: IRoom;
   // eslint-disable-next-line no-unused-vars
   addNewUser(id: string, name: string): void;
   removeUser(): void;
+  // eslint-disable-next-line no-unused-vars
+  addUserIntoRoom(room: IRoom, newUser: IUser): void;
 }
 
 class InvitePageView extends React.Component<IProps, {}> {
@@ -32,6 +36,7 @@ class InvitePageView extends React.Component<IProps, {}> {
     if (name !== undefined && name !== '') {
       const userId = `${Math.round(Math.random() * (1000 - 1) + 1)}`;
       this.props.addNewUser(userId, name);
+      this.props.addUserIntoRoom(this.props.room, {id: userId, name});
       this.props.history.push(`${RoutePath.MAIN}/${this.props.match.params.id}`);
     }
   }

@@ -1,5 +1,5 @@
 import {IStory} from '../types';
-import {IRemoveStoryAction} from './stories-action-creators';
+import {IRemoveStoryAction, IStoryAction, IAddVoteAction} from './stories-action-creators';
 import {ActionType} from '../reducer';
 
 const initState = [
@@ -23,12 +23,31 @@ const initState = [
   },
 ];
 
-export function reducer(state: Array<IStory> = initState, action: IRemoveStoryAction): Array<IStory> {
+export function reducer(state: Array<IStory> = initState, action: IRemoveStoryAction | IStoryAction | IAddVoteAction): Array<IStory> {
   switch (action.type) {
     case ActionType.REMOVE_STORY:
       return state.filter((s) => s.id !== action.id);
-    case 'ADD_STORY':
-      return [...state];
+    case ActionType.ADD_STORY:
+      const storyAction = action as IStoryAction;
+      return [...state,
+        {id: storyAction.id,
+          name: storyAction.name,
+          average: storyAction.average,
+          votes: storyAction.votes}
+      ];
+    case ActionType.ADD_VOTE:
+      const addVoteAction = action as IAddVoteAction;
+      return state.map((story) => {
+        if (addVoteAction.id === story.id) {
+          story.votes[addVoteAction.userId] = addVoteAction.vote;
+          const votes = story.votes;
+          return {
+            ...story,
+            votes,
+          };
+        }
+        return story;
+      });
     case 'CHANGE_NAME':
       return state.map((s) => {
         if (s.id === 'sdafsag') {

@@ -4,14 +4,14 @@ import * as React from 'react';
 import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import MainPageView, {IMainPageProps} from './main-page-view';
+import {roomByIdSelector} from '../../store/room/room-selectors';
 
 interface IMain {
   onShowModal(): void;
 }
 
 const mapStateToProps = (state: IRootState, ownProps: IMainPageProps) => {
-  const roomId = ownProps.match.params.id;
-  const room = state.rooms.find((r) => r.id === roomId);
+  const room = roomByIdSelector(state, ownProps.match.params.id);
   return {
     room,
     user: state.user,

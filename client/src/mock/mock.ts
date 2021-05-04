@@ -8,7 +8,8 @@ export const mockState: IRootState = {
       cards: ['0', '0.5', '1', '2', '3', '5', '8', '13', '20', '40', '100', '?', '∞', 'coffee'],
       selectedCard: null,
       ownerId: 'test_user',
-      usersId: ['test_user'],
+      users: [{id: 'test_user', name: 'Tester'}],
+      storiesId: ['1'],
     },
   ],
   stories: [
@@ -35,10 +36,4 @@ export const mockState: IRootState = {
     id: 'test_user',
     name: 'Tester',
   },
-  users: [
-    {
-      id: 'test_user',
-      name: 'Tester',
-    },
-  ],
 };

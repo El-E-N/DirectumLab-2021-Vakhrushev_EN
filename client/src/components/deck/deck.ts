@@ -4,9 +4,10 @@ import {vote} from '../../store/room/room-action-creators';
 import {IRootState} from '../../store/types';
 import {IMatchParams} from '../main-page/main-page-view';
 import DeckView from './deck-view';
+import {roomByIdSelector} from '../../store/room/room-selectors';
 
 const mapStateToProps = (state: IRootState, ownProps: IMatchParams) => {
-  const room = state.rooms.find((r) => r.id === ownProps.id)!;
+  const room = roomByIdSelector(state, ownProps.id);
   return {
     room,
   };

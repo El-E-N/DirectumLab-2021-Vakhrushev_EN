@@ -54,9 +54,6 @@ export class MainPageView extends React.Component<IMainPageProps, IState> {
           <Menu
             addEnter={!this.state.isPlanning}
             onClick={this.handleClick}
-            cardSelected={this.props.room.selectedCard}
-            room={this.props.room}
-            user={this.props.user}
           />
         </div>
       </main>;

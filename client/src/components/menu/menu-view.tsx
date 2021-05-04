@@ -3,33 +3,28 @@ import Players from '../players/players';
 import Button from '../button/button';
 import Input from '../input/input';
 import EnterStory from '../enter-story/enter-story';
-import Player, {IPlayer} from '../player/player';
+import Player from '../player/player';
 import {IRoom, IUser} from '../../store/types';
 import './menu.css';
 
-export const players: Array<IPlayer> = [
-  {name: 'test', cardSelected: '8'},
-  {name: 'test 2', cardSelected: '2'},
-  {name: 'test 3', cardSelected: '0.5'},
-];
-
-interface IProps {
-  room: IRoom,
-  user: IUser | null,
+export interface IMenuProps {
   addEnter: boolean;
   onClick?(): void;
-  newName?: string;
-  cardSelected: string | null;
 }
 
-const Menu: React.FunctionComponent<IProps> = (props) => {
+interface IProps extends IMenuProps {
+  room: IRoom,
+  user: IUser | null,
+}
+
+const MenuView: React.FunctionComponent<IProps> = (props) => {
   const {user, room} = props;
   const showButton = user && user.id === room.ownerId;
   return <div className="menu">
     <span className="menu__header">Story voting completed</span>
     <h3 className="menu__title">Players:</h3>
-    <Players players={players} showResult={props.addEnter}/>
-    <Player name={props.newName!} cardSelected={props.cardSelected} showResult={props.addEnter}/>
+    <Players room={props.room} user={props.user} showResult={props.addEnter}/>
+    <Player user={props.user} cardSelected={props.room.selectedCard} showResult={props.addEnter}/>
     {props.addEnter ?
       <EnterStory/> :
       showButton && <Button className={'menu__button'} value={'Finish voting'} onClick={props.onClick}/>}
@@ -44,4 +39,4 @@ const Menu: React.FunctionComponent<IProps> = (props) => {
   </div>;
 };
 
-export default Menu;
+export default MenuView;

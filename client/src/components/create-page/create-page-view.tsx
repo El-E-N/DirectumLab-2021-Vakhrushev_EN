@@ -1,8 +1,9 @@
 import * as React from 'react';
-import {withRouter, RouteComponentProps} from 'react-router-dom';
+import {RouteComponentProps} from 'react-router-dom';
 import MainLabel from '../main__label/main__label';
 import Button from '../button/button';
 import {RoutePath} from '../../routes';
+import {IUser} from '../../store/types';
 import './create-page.css';
 
 const values = [
@@ -12,7 +13,7 @@ const values = [
 
 export interface IProps extends RouteComponentProps {
   // eslint-disable-next-line no-unused-vars
-  createRoom(roomId: string, name: string, cards: Array<string>, selectedCard: string | null, ownerId: string): void;
+  createRoom(roomId: string, name: string, cards: Array<string>, selectedCard: string | null, owner: IUser, storyId: string): void;
   // eslint-disable-next-line no-unused-vars
   createUser(id: string, name: string): void;
   removeUser(): void;
@@ -32,12 +33,14 @@ class CreatePageView extends React.Component<IProps, {}> {
     if (userName && roomName && userName !== '' && roomName !== '') {
       const roomId = `${Math.round(Math.random() * (1000 - 1) + 1)}`;
       const userId = `${Math.round(Math.random() * (1000 - 1) + 1)}`;
+      const storyId = `${Math.round(Math.random() * (1000 - 1) + 1)}`;
       this.props.createUser(userId, userName);
       this.props.createRoom(roomId,
           roomName,
           ['0', '0.5', '1', '2', '3', '5', '8', '13', '20', '40', '100', '?', '∞', 'coffee'],
           null,
-          userId);
+          {id: userId, name: userName},
+          storyId);
       this.props.history.push(`${RoutePath.MAIN}/${roomId}`);
     }
   }
@@ -56,4 +59,4 @@ class CreatePageView extends React.Component<IProps, {}> {
   }
 }
 
-export default withRouter(CreatePageView);
+export default CreatePageView;

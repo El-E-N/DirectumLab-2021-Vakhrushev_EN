@@ -1,6 +1,6 @@
 import {Action} from 'redux';
 import {ActionType} from '../reducer';
-import {IRoom} from '../types';
+import {IRoom, IUser} from '../types';
 
 export interface IVoteAction extends Action {
   roomId: string;
@@ -20,35 +20,31 @@ export interface IRoomAction extends Action {
   name: string;
   cards: Array<string>;
   selectedCard: string | null;
-  ownerId: string;
-  usersId: Array<string>;
+  owner: IUser;
+  storiesId: Array<string>;
 }
 
-export const room = (roomId: string, name: string, cards: Array<string>, selectedCard: string | null, ownerId: string): IRoomAction => {
+export const room = (roomId: string, name: string, cards: Array<string>, selectedCard: string | null, owner: IUser, storyId: string): IRoomAction => {
   return {
     type: ActionType.CREATE_ROOM,
     id: roomId,
     name,
     cards,
     selectedCard,
-    ownerId,
-    usersId: [ownerId],
+    owner,
+    storiesId: [storyId],
   };
 };
 
 export interface IAddUserAction extends Action {
-  userId: string;
+  user: IUser;
   roomId: string;
 }
 
-export const addUser = (ourRoom: IRoom, userId: string): IRoomAction => {
+export const addUser = (ourRoom: IRoom, user: IUser): IAddUserAction => {
   return {
     type: ActionType.ADD_USER_INTO_ROOM,
-    id: ourRoom.id,
-    name: ourRoom.name,
-    cards: ourRoom.cards,
-    selectedCard: ourRoom.selectedCard,
-    ownerId: ourRoom.ownerId,
-    usersId: [...ourRoom.usersId, userId],
+    roomId: ourRoom.id,
+    user
   };
 };

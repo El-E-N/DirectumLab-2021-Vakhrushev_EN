@@ -9,7 +9,8 @@ const initState = [
     cards: ['0', '0.5', '1', '2', '3', '5', '8', '13', '20', '40', '100', '?', '∞', 'coffee'],
     selectedCard: null,
     ownerId: 'test_user',
-    usersId: ['test_user'],
+    users: [{id: 'test_user', name: 'Tester'}],
+    storiesId: ['1'],
   },
 ];
 
@@ -34,8 +35,9 @@ export function reducer(state: Array<IRoom> = initState, action: IVoteAction | I
           name: roomAction.name,
           cards: roomAction.cards,
           selectedCard: roomAction.selectedCard,
-          usersId: [roomAction.ownerId],
-          ownerId: roomAction.ownerId
+          users: [roomAction.owner],
+          ownerId: roomAction.owner.id,
+          storiesId: roomAction.storiesId,
         }];
     case ActionType.ADD_USER_INTO_ROOM:
       const addUserAction = action as IAddUserAction;
@@ -43,7 +45,7 @@ export function reducer(state: Array<IRoom> = initState, action: IVoteAction | I
         if (addUserAction.roomId === r.id) {
           return {
             ...r,
-            usersId: [...r.usersId, addUserAction.userId]
+            users: [...r.users, addUserAction.user]
           };
         }
         return r;

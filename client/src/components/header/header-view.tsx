@@ -17,7 +17,6 @@ const HeaderView: React.FunctionComponent<IProps> = (props) => {
   return <header className="header">
     <div className="header__content">
       <Logo/>
-      {/* eslint-disable-next-line no-console */}
       {props.user !== null && props.user.id && <User user={props.user}/>}
     </div>
   </header>;

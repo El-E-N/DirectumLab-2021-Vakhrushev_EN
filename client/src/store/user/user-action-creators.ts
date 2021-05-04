@@ -15,21 +15,13 @@ export const user = (id: string, name: string): IUserAction => {
   };
 };
 
-export const newUser = (id: string, name: string): IUserAction => {
-  return {
-    type: ActionType.NEW_USER,
-    id,
-    name,
-  };
-};
-
 export interface IRemoveUserAction extends Action {
   user: IUser | null;
 }
 
 export const removeUser = (): IRemoveUserAction => {
   return {
-    type: ActionType.CREATE_USER,
+    type: ActionType.REMOVE_USER,
     user: null,
   };
 };

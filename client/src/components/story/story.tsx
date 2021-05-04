@@ -4,7 +4,7 @@ import Button from '../button/button';
 import './story.css';
 
 interface IStory {
-  name: string;
+  name: string | null;
   average: number | null;
   onShowModal?(): void;
 }

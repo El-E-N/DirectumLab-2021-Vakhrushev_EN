@@ -1,20 +1,26 @@
 import {compose, Dispatch} from 'redux';
-import {removeUser, user, newUser} from '../../store/user/user-action-creators';
+import {removeUser, user} from '../../store/user/user-action-creators';
 import * as React from 'react';
 import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
-import InvitePageView from './invite-page-view';
+import InvitePageView, {IProps as IInvitePage} from './invite-page-view';
+import {IRoom, IRootState, IUser} from '../../store/types';
+import {roomByIdSelector} from '../../store/room/room-selectors';
+import {addUser} from '../../store/room/room-action-creators';
 
-const mapDispatchToProps = (dispatch: Dispatch) => {
-  const addUser = (id: string, name: string) => {
-    dispatch(user(id, name));
-    dispatch(newUser(id, name));
-  };
-
+const mapStateToProps = (state: IRootState, ownProps: IInvitePage) => {
+  const room = roomByIdSelector(state, ownProps.match.params.id);
   return {
-    removeUser: () => dispatch(removeUser()),
-    addNewUser: (id: string, name: string) => addUser(id, name),
+    room,
   };
 };
 
-export default compose<React.ComponentClass>(withRouter, connect(null, mapDispatchToProps))(InvitePageView);
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return {
+    removeUser: () => dispatch(removeUser()),
+    addNewUser: (id: string, name: string) => dispatch(user(id, name)),
+    addUserIntoRoom: (room: IRoom, newUser: IUser) => dispatch(addUser(room, newUser)),
+  };
+};
+
+export default compose<React.ComponentClass>(withRouter, connect(mapStateToProps, mapDispatchToProps))(InvitePageView);
