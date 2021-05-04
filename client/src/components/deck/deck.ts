@@ -15,7 +15,7 @@ const mapStateToProps = (state: IRootState, ownProps: IMatchParams) => {
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    vote: (roomId: string, value: string) => dispatch(vote(roomId, value)),
+    updateVote: (roomId: string, value: string) => dispatch(vote(roomId, value)),
   };
 };
 

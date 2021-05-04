@@ -17,26 +17,39 @@ interface IProps extends IMenuProps {
   user: IUser | null,
 }
 
-const MenuView: React.FunctionComponent<IProps> = (props) => {
-  const {user, room} = props;
-  const showButton = user && user.id === room.ownerId;
-  return <div className="menu">
-    <span className="menu__header">Story voting completed</span>
-    <h3 className="menu__title">Players:</h3>
-    <Players room={props.room} user={props.user} showResult={props.addEnter}/>
-    <Player user={props.user} cardSelected={props.room.selectedCard} showResult={props.addEnter}/>
-    {props.addEnter ?
-      <EnterStory/> :
-      showButton && <Button className={'menu__button'} value={'Finish voting'} onClick={props.onClick}/>}
-    <span className="menu__link-name">Invite a teammate</span>
-    <Input
-      className={'menu__link'}
-      type={'text'}
-      name={'menuLink'}
-      readOnly
-      value={window.location.href}
-    />
-  </div>;
-};
+interface IState {
+  selectedCard: string | null;
+}
+
+class MenuView extends React.Component<IProps, IState> {
+  constructor(props: IProps) {
+    super(props);
+    this.state = {
+      selectedCard: props.room.selectedCard,
+    };
+  }
+
+  render() {
+    const {user, room} = this.props;
+    const showButton = user && user.id === room.ownerId;
+    return <div className="menu">
+      <span className="menu__header">Story voting completed</span>
+      <h3 className="menu__title">Players:</h3>
+      <Players room={this.props.room} user={this.props.user} showResult={this.props.addEnter}/>
+      <Player user={this.props.user} cardSelected={this.props.room.selectedCard} showResult={this.props.addEnter}/>
+      {this.props.addEnter ?
+        <EnterStory/> :
+        showButton && <Button className={'menu__button'} value={'Finish voting'} onClick={this.props.onClick}/>}
+      <span className="menu__link-name">Invite a teammate</span>
+      <Input
+        className={'menu__link'}
+        type={'text'}
+        name={'menuLink'}
+        readOnly
+        value={window.location.href}
+      />
+    </div>;
+  }
+}
 
 export default MenuView;
