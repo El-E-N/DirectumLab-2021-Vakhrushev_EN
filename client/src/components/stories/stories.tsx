@@ -1,5 +1,6 @@
 import * as React from 'react';
-import Story, {IStory} from '../story/story';
+import Story from '../story/story';
+import {IStory} from '../../store/types';
 import './stories.css';
 
 interface IProps {
@@ -9,13 +10,16 @@ interface IProps {
 
 const Stories: React.FunctionComponent<IProps> = (props) => {
   return <table className="stories">
+    {/* eslint-disable-next-line consistent-return */}
     {props.stories.map((story) => {
-      return <Story
-        key={story.name + story.count}
-        name={story.name}
-        count={story.count}
-        onShowModal={props.onShowModal}
-      />;
+      if (story.average) {
+        return <Story
+          key={story.name + story.id}
+          name={story.name}
+          average={story.average}
+          onShowModal={props.onShowModal}
+        />;
+      }
     })}
   </table>;
 };

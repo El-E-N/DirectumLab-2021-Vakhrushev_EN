@@ -3,9 +3,9 @@ import deleteImg from './../../images/delete.svg';
 import Button from '../button/button';
 import './story.css';
 
-export interface IStory {
-  name: string;
-  count: number;
+interface IStory {
+  name: string | null;
+  average: number | null;
   onShowModal?(): void;
 }
 
@@ -20,7 +20,7 @@ const Story: React.FunctionComponent<IStory> = (props) => {
     <td className="story__name">
       <a href={'/#'} className="story__link" onClick={onClick}>{props.name}</a>
     </td>
-    <td className="story__count">{props.count}</td>
+    <td className="story__count">{props.average}</td>
     <td className="story__delete-cell">
       <Button value={storyDeleteImg} className={'story__delete-wrapper'}/>
     </td>

@@ -23,3 +23,10 @@
   margin: 0 auto;
   padding: 0;
 }
+
+.results {
+  display: flex;
+  flex-direction: column;
+  max-width: 715px;
+  margin-right: 20px;
+}
