@@ -4,18 +4,18 @@ import {IRoom} from '../../store/types';
 import './deck.css';
 
 interface IProps {
-  room: IRoom;
+  room: IRoom | null;
   // eslint-disable-next-line no-unused-vars
   updateVote(roomId: string, value: string): void;
 }
 
 const DeckView: React.FunctionComponent<IProps> = (props) => {
   const handleCardChange = (value: string) => {
-    props.updateVote(props.room.id, value);
+    props.room && props.updateVote(props.room.id, value);
   };
 
   return <div className="deck">
-    {props.room.cards.map((card) => {
+    {props.room && props.room.cards.map((card) => {
       return (
         <Card
           key={card}

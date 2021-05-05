@@ -1,5 +1,6 @@
 import {Action} from 'redux';
 import {ActionType} from '../reducer';
+import {IStory} from '../types';
 
 export interface IRemoveStoryAction extends Action {
   id: string;
@@ -13,19 +14,13 @@ export const removeStory = (id: string): IRemoveStoryAction => {
 };
 
 export interface IStoryAction extends Action {
-  id: string;
-  name: string | null;
-  average: number | null;
-  votes: { [key: string]: string }; // key - userId, value - vote
+  story: IStory;
 }
 
-export const story = (id: string): IStoryAction => {
+export const createStory = (story: IStory): IStoryAction => {
   return {
     type: ActionType.ADD_STORY,
-    id,
-    name: null,
-    average: null,
-    votes: {},
+    story,
   };
 };
 

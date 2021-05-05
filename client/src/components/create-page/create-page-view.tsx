@@ -3,7 +3,7 @@ import {RouteComponentProps} from 'react-router-dom';
 import MainLabel from '../main__label/main__label';
 import Button from '../button/button';
 import {RoutePath} from '../../routes';
-import {IUser} from '../../store/types';
+import {IRoom, IUser} from '../../store/types';
 import './create-page.css';
 
 const values = [
@@ -13,17 +13,16 @@ const values = [
 
 export interface IProps extends RouteComponentProps {
   // eslint-disable-next-line no-unused-vars
-  createRoom(roomId: string, name: string, cards: Array<string>, selectedCard: string | null, owner: IUser, storyId: string): void;
+  createRoom(room: IRoom): void;
   // eslint-disable-next-line no-unused-vars
-  createUser(id: string, name: string): void;
-  removeUser(): void;
+  updateUser(user: IUser | null): void;
 }
 
 class CreatePageView extends React.Component<IProps, {}> {
   constructor(props: IProps) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.props.removeUser();
+    this.props.updateUser(null);
   }
 
   handleSubmit(evt: React.FormEvent) {
@@ -34,13 +33,16 @@ class CreatePageView extends React.Component<IProps, {}> {
       const roomId = `${Math.round(Math.random() * (1000 - 1) + 1)}`;
       const userId = `${Math.round(Math.random() * (1000 - 1) + 1)}`;
       const storyId = `${Math.round(Math.random() * (1000 - 1) + 1)}`;
-      this.props.createUser(userId, userName);
-      this.props.createRoom(roomId,
-          roomName,
-          ['0', '0.5', '1', '2', '3', '5', '8', '13', '20', '40', '100', '?', '∞', 'coffee'],
-          null,
-          {id: userId, name: userName},
-          storyId);
+      this.props.updateUser({id: userId, name: userName});
+      this.props.createRoom({
+        id: roomId,
+        name: roomName,
+        cards: ['0', '0.5', '1', '2', '3', '5', '8', '13', '20', '40', '100', '?', '∞', 'coffee'],
+        selectedCard: null,
+        ownerId: userId,
+        users: [{id: userId, name: userName}],
+        storiesId: [storyId],
+      });
       this.props.history.push(`${RoutePath.MAIN}/${roomId}`);
     }
   }

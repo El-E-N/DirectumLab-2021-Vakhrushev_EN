@@ -40,8 +40,7 @@ export class App extends React.Component<any, IState> {
 
   render() {
     return <React.Fragment>
-      <Route path={[`/:something/:id`, '/']} render={() =>
-        <Header/>}/>
+      <Header/>
       <Switch>
         <Route path={RoutePath.INDEX} exact={true} component={CreatePage}/>
         <Route path={`${RoutePath.MAIN}/:id`} exact={true} render={() =>

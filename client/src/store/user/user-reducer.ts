@@ -1,14 +1,11 @@
 import {IUser} from '../types';
-import {IUserAction, IRemoveUserAction} from './user-action-creators';
+import {IUserAction} from './user-action-creators';
 import {ActionType} from '../reducer';
 
-export const reducer = (state: IUser | null = null, action: IUserAction | IRemoveUserAction): IUser | null => {
+export const reducer = (state: IUser | null = null, action: IUserAction): IUser | null => {
   switch (action.type) {
-    case ActionType.CREATE_USER:
-      const userAction = action as IUserAction;
-      return {id: userAction.id, name: userAction.name};
-    case ActionType.REMOVE_USER:
-      return null;
+    case ActionType.UPDATE_USER:
+      return action.user;
     default:
       return state;
   }

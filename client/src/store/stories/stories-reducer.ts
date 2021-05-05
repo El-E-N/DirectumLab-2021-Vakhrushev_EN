@@ -26,14 +26,13 @@ const initState = [
 export function reducer(state: Array<IStory> = initState, action: IRemoveStoryAction | IStoryAction | IAddVoteAction): Array<IStory> {
   switch (action.type) {
     case ActionType.REMOVE_STORY:
-      return state.filter((s) => s.id !== action.id);
+      const removeAction = action as IRemoveStoryAction;
+      return state.filter((s) => s.id !== removeAction.id);
     case ActionType.ADD_STORY:
       const storyAction = action as IStoryAction;
-      return [...state,
-        {id: storyAction.id,
-          name: storyAction.name,
-          average: storyAction.average,
-          votes: storyAction.votes}
+      return [
+        ...state,
+        storyAction.story,
       ];
     case ActionType.ADD_VOTE:
       const addVoteAction = action as IAddVoteAction;

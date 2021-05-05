@@ -1,17 +1,18 @@
 import {IRootState} from '../../store/types';
-import {IMatchParams} from '../main-page/main-page-view';
-import {roomByIdSelector} from '../../store/room/room-selectors';
+import {roomSelector} from '../../store/room/room-selectors';
 import {connect} from 'react-redux';
 import MenuView, {IMenuProps} from './menu-view';
-import {RouteComponentProps, withRouter} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 import {compose} from 'redux';
 import * as React from 'react';
+import {userSelector} from '../../store/user/user-selectors';
 
-const mapStateToProps = (state: IRootState, ownProps: RouteComponentProps<IMatchParams>) => {
-  const room = roomByIdSelector(state, ownProps.match.params.id);
+const mapStateToProps = (state: IRootState) => {
+  const room = roomSelector(state);
+  const user = userSelector(state);
   return {
     room,
-    user: state.user,
+    user,
   };
 };
 

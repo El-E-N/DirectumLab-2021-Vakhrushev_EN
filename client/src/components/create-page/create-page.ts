@@ -3,16 +3,15 @@ import * as React from 'react';
 import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import CreatePageView from './create-page-view';
-import {room} from '../../store/room/room-action-creators';
-import {removeUser, user} from '../../store/user/user-action-creators';
-import {IUser} from '../../store/types';
+import {createRoom as createNewRoom} from '../../store/room/room-action-creators';
+import {updateUser as updateNewUser} from '../../store/user/user-action-creators';
+import {IRoom, IUser} from '../../store/types';
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    createRoom: (roomId: string, name: string, cards: Array<string>, selectedCard: string | null, owner: IUser, storyId: string) =>
-      dispatch(room(roomId, name, cards, selectedCard, owner, storyId)),
-    createUser: (id: string, name: string) => dispatch(user(id, name)),
-    removeUser: () => dispatch(removeUser()),
+    createRoom: (room: IRoom) =>
+      dispatch(createNewRoom(room)),
+    updateUser: (user: IUser | null) => dispatch(updateNewUser(user)),
   };
 };
 

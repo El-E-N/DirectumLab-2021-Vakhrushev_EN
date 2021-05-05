@@ -6,19 +6,14 @@ import Button from '../button/button';
 import {IRoom, IUser} from '../../store/types';
 import './invite-page.css';
 
-interface IMatchParams {
-  id: string;
-}
-
 const values = [
   {label: 'User name', placeHolder: 'Enter your name', name: 'userName'}
 ];
 
-export interface IProps extends RouteComponentProps<IMatchParams> {
+export interface IProps extends RouteComponentProps {
   room: IRoom;
   // eslint-disable-next-line no-unused-vars
-  addNewUser(id: string, name: string): void;
-  removeUser(): void;
+  updateUser(user: IUser | null): void;
   // eslint-disable-next-line no-unused-vars
   addUserIntoRoom(room: IRoom, newUser: IUser): void;
 }
@@ -27,7 +22,7 @@ class InvitePageView extends React.Component<IProps, {}> {
   constructor(props: IProps) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.props.removeUser();
+    this.props.updateUser(null);
   }
 
   handleSubmit(evt: React.FormEvent) {
@@ -35,9 +30,9 @@ class InvitePageView extends React.Component<IProps, {}> {
     let name = ((evt.target as Element).children.item(2)!.children.namedItem('userName') as HTMLInputElement).value;
     if (name !== undefined && name !== '') {
       const userId = `${Math.round(Math.random() * (1000 - 1) + 1)}`;
-      this.props.addNewUser(userId, name);
+      this.props.updateUser({id: userId, name});
       this.props.addUserIntoRoom(this.props.room, {id: userId, name});
-      this.props.history.push(`${RoutePath.MAIN}/${this.props.match.params.id}`);
+      this.props.history.push(`${RoutePath.MAIN}/${this.props.room.id}`);
     }
   }
 

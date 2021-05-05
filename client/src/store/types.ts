@@ -21,7 +21,7 @@ export interface IStory {
 }
 
 export interface IRootState {
-  rooms: Array<IRoom>;
+  room: IRoom | null;
   stories: Array<IStory>;
   user: IUser | null;
 }

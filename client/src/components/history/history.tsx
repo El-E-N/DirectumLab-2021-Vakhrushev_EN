@@ -6,14 +6,6 @@ import Button from '../button/button';
 import {mockState} from '../../mock/mock';
 import './history.css';
 
-/* const stories: Array<IStory> = [
-  {name: 'Story', count: 14},
-  {name: 'Story', count: 14},
-  {name: 'Story', count: 14},
-  {name: 'Story', count: 14},
-  {name: 'Story', count: 14},
-];*/
-
 interface IProps {
   stories: Array<IStory>;
   onShowModal?(): void;

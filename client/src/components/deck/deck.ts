@@ -1,13 +1,12 @@
 import {Dispatch} from 'redux';
 import {connect} from 'react-redux';
-import {vote} from '../../store/room/room-action-creators';
+import {updateVote as updateValueVote} from '../../store/room/room-action-creators';
 import {IRootState} from '../../store/types';
-import {IMatchParams} from '../main-page/main-page-view';
 import DeckView from './deck-view';
-import {roomByIdSelector} from '../../store/room/room-selectors';
+import {roomSelector} from '../../store/room/room-selectors';
 
-const mapStateToProps = (state: IRootState, ownProps: IMatchParams) => {
-  const room = roomByIdSelector(state, ownProps.id);
+const mapStateToProps = (state: IRootState) => {
+  const room = roomSelector(state);
   return {
     room,
   };
@@ -15,7 +14,7 @@ const mapStateToProps = (state: IRootState, ownProps: IMatchParams) => {
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    updateVote: (roomId: string, value: string) => dispatch(vote(roomId, value)),
+    updateVote: (roomId: string, value: string) => dispatch(updateValueVote(roomId, value)),
   };
 };
 

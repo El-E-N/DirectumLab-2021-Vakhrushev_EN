@@ -1,17 +1,15 @@
 import {IRootState} from '../store/types';
 
 export const mockState: IRootState = {
-  rooms: [
-    {
-      id: '777',
-      name: 'First Room',
-      cards: ['0', '0.5', '1', '2', '3', '5', '8', '13', '20', '40', '100', '?', '∞', 'coffee'],
-      selectedCard: null,
-      ownerId: 'test_user',
-      users: [{id: 'test_user', name: 'Tester'}],
-      storiesId: ['1'],
-    },
-  ],
+  room: {
+    id: '777',
+    name: 'First Room',
+    cards: ['0', '0.5', '1', '2', '3', '5', '8', '13', '20', '40', '100', '?', '∞', 'coffee'],
+    selectedCard: null,
+    ownerId: 'test_user',
+    users: [{id: 'test_user', name: 'Tester'}],
+    storiesId: ['1'],
+  },
   stories: [
     {
       id: '1',

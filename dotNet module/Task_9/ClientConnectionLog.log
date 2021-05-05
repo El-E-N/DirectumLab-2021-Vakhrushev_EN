@@ -1,4 +1,4 @@
-Date	Time	SQL Server	Database	User name	Host name	IP	Action	Client version	Client count	Available licenses	Licenses count
+Date	Time	SQL Server	Database	UserView name	Host name	IP	Action	Client version	Client count	Available licenses	Licenses count
 04.12.2007	10:31:14	ORPDNPO	ResearchDIR	Administrator	W242V.comp.npo	192.168.17.242	No free licences	7.6.1.1000	1
 04.12.2007	10:33:38	ORPDNPO	ResearchDIR	Administrator	W242V.comp.npo	192.168.17.242	No free licences	7.6.1.1000	1
 04.12.2007	14:23:56	ORPDNPO	ResearchDIR	Administrator	W242V.comp.npo	192.168.17.242	Registration	7.6.1.1000	1	98	99

@@ -13,7 +13,7 @@ export interface IMenuProps {
 }
 
 interface IProps extends IMenuProps {
-  room: IRoom,
+  room: IRoom | null,
   user: IUser | null,
 }
 
@@ -25,18 +25,18 @@ class MenuView extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      selectedCard: props.room.selectedCard,
+      selectedCard: props.room && props.room.selectedCard,
     };
   }
 
   render() {
     const {user, room} = this.props;
-    const showButton = user && user.id === room.ownerId;
+    const showButton = user && room && user.id === room.ownerId;
     return <div className="menu">
       <span className="menu__header">Story voting completed</span>
       <h3 className="menu__title">Players:</h3>
-      <Players room={this.props.room} user={this.props.user} showResult={this.props.addEnter}/>
-      <Player user={this.props.user} cardSelected={this.props.room.selectedCard} showResult={this.props.addEnter}/>
+      <Players room={room && room} user={this.props.user} showResult={this.props.addEnter}/>
+      <Player user={this.props.user} cardSelected={room && room.selectedCard} showResult={this.props.addEnter}/>
       {this.props.addEnter ?
         <EnterStory/> :
         showButton && <Button className={'menu__button'} value={'Finish voting'} onClick={this.props.onClick}/>}

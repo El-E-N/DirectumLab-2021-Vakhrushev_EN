@@ -9,18 +9,10 @@ import History from '../history/history';
 import {mockState} from '../../mock/mock';
 import './main-page.css';
 
-export interface IMatchParams {
-  id: string;
-}
-
-export interface IMainPageProps extends RouteComponentProps<IMatchParams> {
+export interface IMainPageProps extends RouteComponentProps {
   room: IRoom;
   user: IUser;
   onShowModal(): void;
-  // eslint-disable-next-line no-unused-vars
-  vote(roomId: string, value: string): void;
-  // eslint-disable-next-line no-unused-vars
-  removeStory(id: string): void;
 }
 
 interface IState {
@@ -52,7 +44,7 @@ export class MainPageView extends React.Component<IMainPageProps, IState> {
         <div className="room-content">
           <div className="results">
             {this.state.isPlanning ?
-              <Deck id={this.props.match.params.id}/> :
+              <Deck/> :
               <BrieflyResults/>}
             <History stories={mockState.stories} onShowModal={this.props.onShowModal}/>
           </div>
@@ -66,7 +58,7 @@ export class MainPageView extends React.Component<IMainPageProps, IState> {
   }
 
   componentDidMount() {
-    this.props.user === null && this.props.room && this.props.history.push(`${RoutePath.INVITE}/${this.props.match.params.id}`);
+    this.props.user === null && this.props.room && this.props.history.push(`${RoutePath.INVITE}/${this.props.room.id}`);
   }
 }
 
