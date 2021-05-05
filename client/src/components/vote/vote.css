@@ -1,0 +1,32 @@
+.vote {
+  margin: 0 0 38px 0;
+  padding: 0;
+}
+
+.vote__info-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0 0 0 0;
+}
+
+.vote__round {
+  width: 10px;
+  height: 10px;
+
+  border-radius: 50%;
+}
+
+.vote__count {
+  margin: 0 0 0 10px;
+
+  font-weight: normal;
+  font-size: 20px;
+}
+
+.vote__percents {
+  margin: 16px 0 0 0;
+
+  font-weight: normal;
+  font-size: 14px;
+}

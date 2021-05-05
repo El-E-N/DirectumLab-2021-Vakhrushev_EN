@@ -1,0 +1,17 @@
+.header {
+  justify-content: center;
+  height: 93px;
+
+  background-color: white;
+}
+
+.header__content {
+  display: flex;
+  flex-direction: row;
+  align-items: end;
+  justify-content: space-between;
+  min-width: max-content;
+  max-width: 1030px;
+  height: inherit;
+  margin: 0 auto;
+}

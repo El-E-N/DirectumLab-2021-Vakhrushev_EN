@@ -1,0 +1,67 @@
+.history {
+  margin-top: 52px;
+
+  background: #ffffff;
+}
+
+.history__header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  height: 61px;
+
+  background: #4b9ae8;
+}
+
+.history__header-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 21px;
+}
+
+.history__title {
+  padding: 0;
+
+  color: #ffffff;
+  font-weight: normal;
+  font-size: 18px;
+  white-space: nowrap;
+}
+
+.history__count {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 25px;
+  height: 20px;
+  margin: 0 0 0 13px;
+  padding: 0;
+
+  color: white;
+  font-weight: normal;
+  font-size: 10px;
+
+  background-color: #c9cfd6;
+  border-radius: 10px;
+}
+
+.history__download {
+  width: 14px;
+  height: 17px;
+  margin: 0;
+  padding: 0;
+
+  cursor: pointer;
+}
+
+.history__button {
+  width: 14px;
+  height: 17px;
+  margin: 0 21px 0 0;
+  padding: 0;
+
+  background-color: transparent;
+  border: none;
+}

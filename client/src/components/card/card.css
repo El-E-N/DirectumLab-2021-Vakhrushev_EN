@@ -1,0 +1,53 @@
+.card__input {
+  position: absolute;
+  z-index: -1;
+
+  width: 132px;
+  height: 174px;
+  margin: 6px;
+  padding: 0;
+
+  opacity: 0;
+}
+
+.card__content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 132px;
+  height: 174px;
+  margin: 6px;
+  padding: 0;
+
+  font-weight: normal;
+  font-size: 46px;
+
+  background-color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  outline: black;
+  cursor: pointer;
+
+  fill: black;
+  stroke: none;
+}
+
+.card__coffee {
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+}
+
+.card__content:hover {
+  box-shadow: 0 0 6px 3px rgba(1, 1, 1, 0.25);
+}
+
+.card__input:checked + .card__content {
+  color: white;
+
+  background: #4b9ae8;
+  box-shadow: 0 0 6px 1px rgba(1, 1, 1, 0.05);
+
+  fill: white;
+}

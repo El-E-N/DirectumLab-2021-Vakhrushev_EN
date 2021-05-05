@@ -1,0 +1,9 @@
+.deck {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 720px;
+  height: fit-content;
+  margin: 0 0 0 -6px;
+}

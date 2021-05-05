@@ -5,7 +5,7 @@ namespace Task_12
     /// <summary>
     /// Класс выполнения программы.
     /// </summary>
-    public class Program
+    public class Program1
     {
         /// <summary>
         /// Основной метод программы.
