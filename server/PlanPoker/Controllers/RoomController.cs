@@ -44,7 +44,9 @@ namespace PlanPoker.Controllers
         [HttpGet]
         public RoomDTO Create(string name, string creatorId)
         {
-            return RoomDTOBuilder.Build(this.roomService.Create(name, creatorId), this.playerService);
+            var creatorGuid = Guid.Parse(creatorId.Replace(" ", string.Empty));
+            var room = this.roomService.Create(name, creatorGuid);
+            return RoomDTOBuilder.Build(room, this.playerService);
         }
 
         /// <summary>
@@ -55,7 +57,9 @@ namespace PlanPoker.Controllers
         [HttpPost]
         public void AddPlayer(string roomId, string playerId)
         {
-            this.roomService.AddPlayer(roomId, playerId);
+            var roomGuid = Guid.Parse(roomId.Replace(" ", string.Empty));
+            var playerGuid = Guid.Parse(playerId.Replace(" ", string.Empty));
+            this.roomService.AddPlayer(roomGuid, playerGuid);
         }
 
         /// <summary>
@@ -66,7 +70,9 @@ namespace PlanPoker.Controllers
         [HttpPost]
         public void RemovePlayer(string roomId, string playerId)
         {
-            this.roomService.RemovePlayer(roomId, playerId);
+            var roomGuid = Guid.Parse(roomId.Replace(" ", string.Empty));
+            var playerGuid = Guid.Parse(playerId.Replace(" ", string.Empty));
+            this.roomService.RemovePlayer(roomGuid, playerGuid);
         }
 
         /// <summary>
@@ -77,7 +83,9 @@ namespace PlanPoker.Controllers
         [HttpPost]
         public void ChangeHost(string roomId, string hostId)
         {
-            this.roomService.ChangeHost(roomId, hostId);
+            var roomGuid = Guid.Parse(roomId.Replace(" ", string.Empty));
+            var hostGuid = Guid.Parse(hostId.Replace(" ", string.Empty));
+            this.roomService.ChangeHost(roomGuid, hostGuid);
         }
 
         /// <summary>
@@ -87,7 +95,8 @@ namespace PlanPoker.Controllers
         [HttpGet]
         public IEnumerable<RoomDTO> GetRooms()
         {
-            return RoomDTOBuilder.BuildList(this.roomService.GetRooms(), this.playerService);
+            var rooms = this.roomService.GetRooms();
+            return RoomDTOBuilder.BuildList(rooms, this.playerService);
         }
     }
 }

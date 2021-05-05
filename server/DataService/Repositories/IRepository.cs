@@ -17,11 +17,6 @@ namespace DataService.Repositories
         public void Save(T item);
 
         /// <summary>
-        /// Сохранение изменений.
-        /// </summary>
-        public void SaveChanges();
-
-        /// <summary>
         /// Получение из БД по id.
         /// </summary>
         /// <param name="id">Id объекта.</param>

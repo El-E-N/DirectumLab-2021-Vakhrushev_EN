@@ -8,16 +8,6 @@ namespace DataService.Models
     public class Player : Entity
     {
         /// <summary>
-        /// Конструктор по умолчанию.
-        /// </summary>
-        public Player()
-        {
-            this.Id = Guid.NewGuid();
-            this.Token = Guid.NewGuid().ToString();
-            this.Name = "Player" + this.Id;
-        }
-
-        /// <summary>
         /// Конструктор с параметрами.
         /// </summary>
         /// <param name="id">Id игрока.</param>

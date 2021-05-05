@@ -20,7 +20,7 @@ namespace PlanPoker.DTO.Builders
         public static DiscussionDTO Build(Discussion discussion, VoteService voteService, CardService cardService)
         {
             var voteList = VoteDTOBuilder.BuildList(
-                discussion.VoteIds.Select(id => voteService.GetVote(id.ToString())),
+                discussion.VoteIds.Select(id => voteService.GetVote(id)),
                 cardService);
             return new DiscussionDTO()
             {

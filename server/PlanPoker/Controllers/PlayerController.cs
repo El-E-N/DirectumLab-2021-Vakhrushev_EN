@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PlanPoker.DTO;
 using PlanPoker.DTO.Builders;
 using PlanPoker.Services;
+using System;
 using System.Collections.Generic;
 
 namespace PlanPoker.Controllers
@@ -35,9 +36,22 @@ namespace PlanPoker.Controllers
         /// <returns>Объект игрока.</returns>
         /// <remarks>Не DTO, так как необходим токен.</remarks>
         [HttpGet]
-        public Player Create(string name)
+        public PlayerDTO Create(string name)
         {
-            return this.service.Create(name);
+            var player = this.service.Create(name);
+            return PlayerDTOBuilder.Build(player);
+        }
+
+        /// <summary>
+        /// Получить токен игрока.
+        /// </summary>
+        /// <param name="id">Id игрока.</param>
+        /// <returns>Токен игрока.</returns>
+        [HttpGet]
+        public string GetToken(string id)
+        {
+            var guid = Guid.Parse(id.Replace(" ", string.Empty));
+            return this.service.GetToken(guid);
         }
 
         /// <summary>
@@ -49,7 +63,9 @@ namespace PlanPoker.Controllers
         [HttpGet]
         public PlayerDTO ChangeName(string playerId, string name)
         {
-            return PlayerDTOBuilder.Build(this.service.ChangeName(playerId, name));
+            var playerGuid = Guid.Parse(playerId.Replace(" ", string.Empty));
+            var updatingPlayer = this.service.ChangeName(playerGuid, name);
+            return PlayerDTOBuilder.Build(updatingPlayer);
         }
 
         /// <summary>
@@ -59,7 +75,8 @@ namespace PlanPoker.Controllers
         [HttpGet]
         public IEnumerable<PlayerDTO> GetPlayers()
         {
-            return PlayerDTOBuilder.BuildList(this.service.GetPlayers());
+            var players = this.service.GetPlayers();
+            return PlayerDTOBuilder.BuildList(players);
         }
     }
 }

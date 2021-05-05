@@ -31,10 +31,10 @@ namespace PlanPoker.Services
         /// <param name="roomId">Id комнаты.</param>
         /// <param name="name">Название комнаты.</param>
         /// <returns>Созданную комнату.</returns>
-        public Discussion Create(string roomId, string name) 
+        public Discussion Create(Guid roomId, string name) 
         {
             var id = Guid.NewGuid();
-            this.repository.Create(id, Guid.Parse(roomId.Replace(" ", string.Empty)), name);
+            this.repository.Create(id, roomId, name);
             return this.repository.Get(id);
         }
 
@@ -42,9 +42,9 @@ namespace PlanPoker.Services
         /// Закрытие обсуждения и запись окончания.
         /// </summary>
         /// <param name="discussionId">Id обсуждения.</param>
-        public void Close(string discussionId) 
+        public void Close(Guid discussionId) 
         {
-            this.repository.Get(Guid.Parse(discussionId.Replace(" ", string.Empty))).EndAt = DateTime.Now;
+            this.repository.Get(discussionId).EndAt = DateTime.Now;
         }
 
         /// <summary>
@@ -52,10 +52,9 @@ namespace PlanPoker.Services
         /// </summary>
         /// <param name="discussionId">Id обсуждения.</param>
         /// <param name="voteId">Id голоса.</param>
-        public void AddVote(string discussionId, string voteId) 
+        public void AddVote(Guid discussionId, Guid voteId) 
         {
-            this.repository.Get(Guid.Parse(discussionId.Replace(" ", string.Empty))).VoteIds.Add(Guid.Parse(voteId.Replace(" ", string.Empty)));
-            this.repository.SaveChanges();
+            this.repository.Get(discussionId).VoteIds.Add(voteId);
         }
 
         /// <summary>
@@ -63,9 +62,9 @@ namespace PlanPoker.Services
         /// </summary>
         /// <param name="discussionId">Id обсуждения.</param>
         /// <returns>Список Id оценок.</returns>
-        public ICollection<Guid> GetVoteIds(string discussionId) 
+        public ICollection<Guid> GetVoteIds(Guid discussionId) 
         {
-            return this.repository.Get(Guid.Parse(discussionId.Replace(" ", string.Empty))).VoteIds;
+            return this.repository.Get(discussionId).VoteIds;
         }
 
         /// <summary>
@@ -73,9 +72,9 @@ namespace PlanPoker.Services
         /// </summary>
         /// <param name="id">Идентификатор.</param>
         /// <returns>Обсуждение.</returns>
-        public Discussion GetDiscussion(string id)
+        public Discussion GetDiscussion(Guid id)
         {
-            return this.repository.Get(Guid.Parse(id.Replace(" ", string.Empty)));
+            return this.repository.Get(id);
         }
 
         /// <summary>

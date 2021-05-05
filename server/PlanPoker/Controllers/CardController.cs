@@ -33,7 +33,8 @@ namespace PlanPoker.Controllers
         /// <returns>Все оценки.</returns>
         public IEnumerable<CardDTO> GetCards()
         {
-            return CardDTOBuilder.BuildList(this.service.GetCards());
+            var cards = this.service.GetCards();
+            return CardDTOBuilder.BuildList(cards);
         }
     }
 }

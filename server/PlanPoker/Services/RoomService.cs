@@ -30,12 +30,11 @@ namespace PlanPoker.Services
         /// <param name="name">Название комнаты.</param>
         /// <param name="creatorId">Id создателя комнаты.</param>
         /// <returns>Созданная комната.</returns>
-        public Room Create(string name, string creatorId) 
+        public Room Create(string name, Guid creatorId) 
         {
             var id = Guid.NewGuid();
             var hash = Guid.NewGuid();
-            var creatorGuid = Guid.Parse(creatorId);
-            this.repository.Create(name, creatorGuid, creatorGuid, id, hash);
+            this.repository.Create(name, creatorId, creatorId, id, hash);
             return this.repository.Get(id);
         }
 
@@ -44,10 +43,9 @@ namespace PlanPoker.Services
         /// </summary>
         /// <param name="roomId">Id комнаты.</param>
         /// <param name="playerId">Id игрока.</param>
-        public void AddPlayer(string roomId, string playerId)
+        public void AddPlayer(Guid roomId, Guid playerId)
         {
-            this.repository.Get(Guid.Parse(roomId.Replace(" ", string.Empty))).PlayersIds.Add(Guid.Parse(playerId.Replace(" ", string.Empty)));
-            this.repository.SaveChanges();
+            this.repository.Get(roomId).PlayersIds.Add(playerId);
         }
 
         /// <summary>
@@ -55,10 +53,9 @@ namespace PlanPoker.Services
         /// </summary>
         /// <param name="roomId">Id комнаты.</param>
         /// <param name="playerId">Id игрока.</param>
-        public void RemovePlayer(string roomId, string playerId) 
+        public void RemovePlayer(Guid roomId, Guid playerId) 
         {
-            this.repository.Get(Guid.Parse(roomId.Replace(" ", string.Empty))).PlayersIds.Remove(Guid.Parse(playerId.Replace(" ", string.Empty)));
-            this.repository.SaveChanges();
+            this.repository.Get(roomId).PlayersIds.Remove(playerId);
         }
 
         /// <summary>
@@ -66,12 +63,12 @@ namespace PlanPoker.Services
         /// </summary>
         /// <param name="roomId">Id комнаты.</param>
         /// <param name="hostId">Id ведущего.</param>
-        public void ChangeHost(string roomId, string hostId)
+        public void ChangeHost(Guid roomId, Guid hostId)
         {
-            var name = this.repository.Get(Guid.Parse(roomId.Replace(" ", string.Empty))).Name;
-            var hash = this.repository.Get(Guid.Parse(roomId.Replace(" ", string.Empty))).Hash;
-            var creatorId = this.repository.Get(Guid.Parse(roomId.Replace(" ", string.Empty))).CreatorId;
-            this.repository.Save(new Room(name, Guid.Parse(hostId.Replace(" ", string.Empty)), creatorId, Guid.Parse(roomId.Replace(" ", string.Empty)), hash));
+            var name = this.repository.Get(roomId).Name;
+            var hash = this.repository.Get(roomId).Hash;
+            var creatorId = this.repository.Get(roomId).CreatorId;
+            this.repository.Save(new Room(name, hostId, creatorId, roomId, hash));
         }
 
         /// <summary>

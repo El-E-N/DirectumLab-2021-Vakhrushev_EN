@@ -42,9 +42,9 @@ namespace PlanPoker.Services
         /// </summary>
         /// <param name="id">Идентификатор.</param>
         /// <returns>Карта.</returns>
-        public Card Get(string id)
+        public Card Get(Guid id)
         {
-            return this.repository.Get(Guid.Parse(id.Replace(" ", string.Empty)));
+            return this.repository.Get(id);
         }
 
         /// <summary>

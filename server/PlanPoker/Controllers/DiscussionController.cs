@@ -2,6 +2,7 @@
 using PlanPoker.DTO;
 using PlanPoker.DTO.Builders;
 using PlanPoker.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -51,10 +52,9 @@ namespace PlanPoker.Controllers
         [HttpGet]
         public DiscussionDTO Create(string roomId, string name = "")
         {
-            return DiscussionDTOBuilder.Build(
-                this.discussionService.Create(roomId, name),
-                this.voteService, 
-                this.cardService);
+            var roomGuid = Guid.Parse(roomId.Replace(" ", string.Empty));
+            var discussion = this.discussionService.Create(roomGuid, name);
+            return DiscussionDTOBuilder.Build(discussion, this.voteService, this.cardService);
         }
 
         /// <summary>
@@ -64,7 +64,8 @@ namespace PlanPoker.Controllers
         [HttpPost]
         public void Close(string discussionId)
         {
-            this.discussionService.Close(discussionId);
+            var discussionGuid = Guid.Parse(discussionId.Replace(" ", string.Empty));
+            this.discussionService.Close(discussionGuid);
         }
 
         /// <summary>
@@ -75,7 +76,9 @@ namespace PlanPoker.Controllers
         [HttpPost]
         public void AddVote(string discussionId, string voteId)
         {
-            this.discussionService.AddVote(discussionId, voteId);
+            var discussionGuid = Guid.Parse(discussionId.Replace(" ", string.Empty));
+            var voteGuid = Guid.Parse(voteId.Replace(" ", string.Empty));
+            this.discussionService.AddVote(discussionGuid, voteGuid);
         }
 
         /// <summary>
@@ -86,8 +89,10 @@ namespace PlanPoker.Controllers
         [HttpGet]
         public IEnumerable<VoteDTO> GetAllVote(string discussionId)
         {
-            var discussion = this.discussionService.GetDiscussion(discussionId);
-            return VoteDTOBuilder.BuildList(discussion.VoteIds.Select(id => this.voteService.GetVote(id.ToString())), this.cardService);
+            var discussionGuid = Guid.Parse(discussionId.Replace(" ", string.Empty));
+            var discussion = this.discussionService.GetDiscussion(discussionGuid);
+            var voteArray = discussion.VoteIds.Select(id => this.voteService.GetVote(id));
+            return VoteDTOBuilder.BuildList(voteArray, this.cardService);
         }
 
         /// <summary>
@@ -97,7 +102,8 @@ namespace PlanPoker.Controllers
         [HttpGet]
         public IEnumerable<DiscussionDTO> GetDiscussionList()
         {
-            return DiscussionDTOBuilder.BuildList(this.discussionService.GetDiscussions(), this.voteService, this.cardService);
+            var discussions = this.discussionService.GetDiscussions();
+            return DiscussionDTOBuilder.BuildList(discussions, this.voteService, this.cardService);
         }
     }
 }

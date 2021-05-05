@@ -43,20 +43,27 @@ namespace PlanPoker.Services
         /// <param name="playerId">Id игрока.</param>
         /// <param name="name">Новое имя игрока.</param>
         /// <returns>Игрок с измененным именем.</returns>
-        public Player ChangeName(string playerId, string name)
+        public Player ChangeName(Guid playerId, string name)
         {
-            var playerGuid = Guid.Parse(playerId.Replace(" ", string.Empty));
-            var item = new Player(playerGuid, name, this.repository.Get(playerGuid).Token);
+            var token = this.repository.Get(playerId).Token;
+            var item = new Player(playerId, name, token);
             this.repository.Save(item);
-            return this.repository.Get(playerGuid);
+            return this.repository.Get(playerId);
         }
+
+        /// <summary>
+        /// Вернуть токен игрока.
+        /// </summary>
+        /// <param name="id">Id игрока.</param>
+        /// <returns>Токен.</returns>
+        public string GetToken(Guid id) => this.Get(id).Token;
 
         /// <summary>
         /// Получение игрока.
         /// </summary>
         /// <param name="id">Идентификатор.</param>
         /// <returns>Игрок.</returns>
-        public Player Get(string id) => this.repository.Get(Guid.Parse(id.Replace(" ", string.Empty)));
+        public Player Get(Guid id) => this.repository.Get(id);
 
         /// <summary>
         /// Получение всех игроков.

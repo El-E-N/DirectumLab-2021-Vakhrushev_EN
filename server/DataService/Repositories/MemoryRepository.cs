@@ -33,14 +33,9 @@ namespace DataService.Repositories
         /// <param name="item">Экзмепляр сущности.</param>
         public void Save(T item)
         {
-            if (!this.Db.Items.Any(o => o.Id == item.Id))
-                this.Db.Items.Add(item);
-            else
-            {
-                var dbItem = this.Db.Find(item.GetType(), item.Id);
-                dbItem = item;
-                this.Db.Entry(dbItem).State = EntityState.Modified;
-            }
+            if (this.Db.Items.Any(o => o.Id == item.Id))
+                this.Db.Items.Remove(item);
+            this.Db.Items.Add(item);
             this.Db.SaveChanges();
         }
 
@@ -66,14 +61,6 @@ namespace DataService.Repositories
             T item = this.Db.Items.Find(id);
             if (item != null)
                 this.Db.Items.Remove(item);
-            this.Db.SaveChanges();
-        }
-
-        /// <summary>
-        /// Сохранение изменений.
-        /// </summary>
-        public void SaveChanges()
-        {
             this.Db.SaveChanges();
         }
 
