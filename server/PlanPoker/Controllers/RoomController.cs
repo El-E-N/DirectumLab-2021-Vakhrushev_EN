@@ -50,6 +50,19 @@ namespace PlanPoker.Controllers
         }
 
         /// <summary>
+        /// Получение комнаты по хэшу.
+        /// </summary>
+        /// <param name="hash">Хэш.</param>
+        /// <returns>Комната.</returns>
+        [HttpGet]
+        public RoomDTO GetByHash(string hash)
+        {
+            var hashGuid = Guid.Parse(hash.Replace(" ", string.Empty));
+            var room = this.roomService.GetByHash(hashGuid);
+            return RoomDTOBuilder.Build(room, this.playerService);
+        }
+
+        /// <summary>
         /// Добавление игрока в комнату.
         /// </summary>
         /// <param name="roomId">Id комнаты.</param>

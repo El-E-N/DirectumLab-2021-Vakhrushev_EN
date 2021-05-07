@@ -9,10 +9,18 @@ import History from '../history/history';
 import {mockState} from '../../mock/mock';
 import './main-page.css';
 
-export interface IMainPageProps extends RouteComponentProps {
-  room: IRoom;
-  user: IUser;
+interface IMatchParams {
+  hash: string;
+}
+
+export interface IMainPageProps extends RouteComponentProps<IMatchParams> {
+  room: IRoom | null;
+  user: IUser | null;
   onShowModal(): void;
+  // eslint-disable-next-line no-unused-vars
+  getRoom(hash: string): IRoom;
+  // eslint-disable-next-line no-unused-vars
+  updateUser(name: string | null): IUser | null;
 }
 
 interface IState {
@@ -35,12 +43,12 @@ export class MainPageView extends React.Component<IMainPageProps, IState> {
   }
 
   public render() {
-    if (this.props.room === undefined) {
+    if (this.props.room === null) {
       this.props.history.push('/error-nonexistent-room');
       return null;
     } else {
       return <main className="room">
-        <h2 className="room-name">{this.props.room.name}</h2>
+        <h2 className="room-name">{this.props.room && this.props.room.name}</h2>
         <div className="room-content">
           <div className="results">
             {this.state.isPlanning ?
@@ -57,8 +65,9 @@ export class MainPageView extends React.Component<IMainPageProps, IState> {
     }
   }
 
-  componentDidMount() {
-    this.props.user === null && this.props.room && this.props.history.push(`${RoutePath.INVITE}/${this.props.room.id}`);
+  async componentDidMount() {
+    this.props.room === null && await this.props.getRoom(this.props.match.params.hash);
+    this.props.user === null && this.props.history.push(`${RoutePath.INVITE}/${this.props.room && this.props.room.hash}`);
   }
 }
 

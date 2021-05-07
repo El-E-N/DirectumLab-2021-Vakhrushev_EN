@@ -31,7 +31,7 @@ class MenuView extends React.Component<IProps, IState> {
 
   render() {
     const {user, room} = this.props;
-    const showButton = user && room && user.id === room.ownerId;
+    const showButton = user && room && user.id === room.hostId;
     return <div className="menu">
       <span className="menu__header">Story voting completed</span>
       <h3 className="menu__title">Players:</h3>

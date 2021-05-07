@@ -39,6 +39,13 @@ namespace PlanPoker.Services
         }
 
         /// <summary>
+        /// Получение комнаты по хэшу.
+        /// </summary>
+        /// <param name="hash">Хэш.</param>
+        /// <returns>Комната.</returns>
+        public Room GetByHash(Guid hash) => this.repository.GetByHash(hash);
+
+        /// <summary>
         /// Добавление игрока в комнату.
         /// </summary>
         /// <param name="roomId">Id комнаты.</param>

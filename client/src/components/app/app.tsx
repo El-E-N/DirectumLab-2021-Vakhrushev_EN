@@ -43,10 +43,10 @@ export class App extends React.Component<any, IState> {
       <Header/>
       <Switch>
         <Route path={RoutePath.INDEX} exact={true} component={CreatePage}/>
-        <Route path={`${RoutePath.MAIN}/:id`} exact={true} render={() =>
+        <Route path={`${RoutePath.MAIN}/:hash`} exact={true} render={() =>
           <MainPage onShowModal={this.handleShowModal}/>
         }/>
-        <Route path={`${RoutePath.INVITE}/:id`} exact={true} component={InvitePage}/>
+        <Route path={`${RoutePath.INVITE}/:hash`} exact={true} component={InvitePage}/>
         <Route component={NoMatchPage}/>
       </Switch>
       <Footer/>

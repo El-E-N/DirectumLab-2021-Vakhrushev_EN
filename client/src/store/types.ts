@@ -5,12 +5,13 @@ export interface IUser {
 
 export interface IRoom {
   id: string;
+  hash: string;
   name: string;
   cards: Array<string>;
   selectedCard: string | null;
-  ownerId: string;
+  hostId: string;
+  creatorId: string;
   users: Array<IUser>;
-  storiesId: Array<string>;
 }
 
 export interface IStory {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using DataService.Models;
 using DataService.Models.Contexts;
 
@@ -30,5 +31,12 @@ namespace DataService.Repositories
             this.Db.Items.Add(new Room(name, hostId, creatorId, id, hash));
             this.Db.SaveChanges();
         }
+
+        /// <summary>
+        /// Получение комнаты по хэшу.
+        /// </summary>
+        /// <param name="hash">Хэш.</param>
+        /// <returns>Комната.</returns>
+        public Room GetByHash(Guid hash) => this.Db.Items.Where(room => room.Hash == hash).First();
     }
 }
