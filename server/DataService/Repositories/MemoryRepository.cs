@@ -34,7 +34,7 @@ namespace DataService.Repositories
         public void Save(T item)
         {
             if (this.Db.Items.Any(o => o.Id == item.Id))
-                this.Db.Items.Remove(item);
+                this.Db.Items.Remove(this.Get(item.Id));
             this.Db.Items.Add(item);
             this.Db.SaveChanges();
         }

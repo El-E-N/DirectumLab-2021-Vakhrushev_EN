@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using DataService.Models;
 using DataService.Models.Contexts;
 
@@ -23,9 +24,9 @@ namespace DataService.Repositories
         /// <param name="id">Id обсуждения.</param>
         /// <param name="roomId">Id комнаты.</param>
         /// <param name="name">Название обсуждения.</param>
-        public void Create(Guid id, Guid roomId, string name)
+        public void Create(Guid id, Guid roomId, string name, ICollection<Guid> voteIds)
         {
-            this.Db.Items.Add(new Discussion(id, roomId, name));
+            this.Db.Items.Add(new Discussion(id, roomId, name, DateTime.Now, null, voteIds));
             this.Db.SaveChanges();
         }
     }

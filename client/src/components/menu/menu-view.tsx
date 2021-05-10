@@ -4,7 +4,7 @@ import Button from '../button/button';
 import Input from '../input/input';
 import EnterStory from '../enter-story/enter-story';
 import Player from '../player/player';
-import {IRoom, IUser} from '../../store/types';
+import {IRoom, IPlayer} from '../../store/types';
 import './menu.css';
 
 export interface IMenuProps {
@@ -14,7 +14,7 @@ export interface IMenuProps {
 
 interface IProps extends IMenuProps {
   room: IRoom | null,
-  user: IUser | null,
+  player: IPlayer | null,
 }
 
 interface IState {
@@ -30,13 +30,13 @@ class MenuView extends React.Component<IProps, IState> {
   }
 
   render() {
-    const {user, room} = this.props;
-    const showButton = user && room && user.id === room.hostId;
+    const {player, room} = this.props;
+    const showButton = player && room && player.id === room.hostId;
     return <div className="menu">
       <span className="menu__header">Story voting completed</span>
       <h3 className="menu__title">Players:</h3>
-      <Players room={room && room} user={this.props.user} showResult={this.props.addEnter}/>
-      <Player user={this.props.user} cardSelected={room && room.selectedCard} showResult={this.props.addEnter}/>
+      {room !== null && <Players room={room} user={this.props.player} showResult={this.props.addEnter}/>}
+      {room && <Player player={this.props.player} showResult={this.props.addEnter}/>}
       {this.props.addEnter ?
         <EnterStory/> :
         showButton && <Button className={'menu__button'} value={'Finish voting'} onClick={this.props.onClick}/>}

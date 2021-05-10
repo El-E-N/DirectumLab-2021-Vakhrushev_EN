@@ -1,4 +1,4 @@
-import {IRoom, IRootState} from '../../store/types';
+import {IRootState} from '../../store/types';
 import {compose, Dispatch} from 'redux';
 import * as React from 'react';
 import {withRouter} from 'react-router-dom';
@@ -6,9 +6,8 @@ import {connect} from 'react-redux';
 import MainPageView from './main-page-view';
 import {roomSelector} from '../../store/room/room-selectors';
 import {userSelector} from '../../store/user/user-selectors';
-import * as api from '../../api/api';
-import {createRoom as createNewRoom} from '../../store/room/room-action-creators';
-import {updateUser as updateNewUser} from '../../store/user/user-action-creators';
+import {getRoom} from '../../store/room/room-operations';
+import {updateUser} from '../../store/user/user-operations';
 
 interface IMain {
   onShowModal(): void;
@@ -26,24 +25,10 @@ const mapStateToProps = (state: IRootState) => {
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     getRoom: async (roomHash: string) => {
-      const roomApi = await api.getRoomRequest(roomHash);
-      const room: IRoom = {
-        id: roomApi.id,
-        hash: roomApi.roomHash,
-        name: roomApi.name,
-        users: roomApi.players,
-        hostId: roomApi.hostId,
-        creatorId: roomApi.creatorId,
-        cards: ['0', '0.5', '1', '2', '3', '5', '8', '13', '20', '40', '100', '?', '∞', 'coffee'],
-        selectedCard: null
-      };
-      dispatch(createNewRoom(room));
-      return room;
+      return dispatch(await getRoom(roomHash));
     },
-    updateUser: async (name: string | null) => {
-      const user = name ? await api.createUserRequest(name) : null;
-      dispatch(updateNewUser(user));
-      return user;
+    createUser: async (name: string | null) => {
+      return dispatch(await updateUser(name));
     },
   };
 };

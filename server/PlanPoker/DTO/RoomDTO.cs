@@ -26,7 +26,7 @@ namespace PlanPoker.DTO
         /// <summary>
         /// Игроки.
         /// </summary>
-        public IEnumerable<PlayerDTO> Players { get; set; }
+        public ICollection<PlayerDTO> Players { get; set; }
 
         /// <summary>
         /// Управляющий комнатой.

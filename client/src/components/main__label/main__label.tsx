@@ -16,7 +16,7 @@ class MainLabel extends React.Component<IProps, {}> {
     return <label className="main__label">
       {this.props.title}
       <Input
-        onChange={(evt) => this.props.updateValue && this.props.updateValue(evt)}
+        onBlur={(evt) => this.props.updateValue && this.props.updateValue(evt)}
         id={this.props.id}
         className={'main__input'}
         type={'text'}

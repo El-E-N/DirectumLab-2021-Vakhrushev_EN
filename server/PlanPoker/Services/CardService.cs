@@ -19,10 +19,7 @@ namespace PlanPoker.Services
         /// Конструктор.
         /// </summary>
         /// <param name="repository">Репозиторий с голосованиями.</param>
-        public CardService(CardMemoryRepository repository)
-        {
-            this.repository = repository;
-        }
+        public CardService(CardMemoryRepository repository) { this.repository = repository; }
 
         /// <summary>
         /// Создание карты.
@@ -42,18 +39,12 @@ namespace PlanPoker.Services
         /// </summary>
         /// <param name="id">Идентификатор.</param>
         /// <returns>Карта.</returns>
-        public Card Get(Guid id)
-        {
-            return this.repository.Get(id);
-        }
+        public Card Get(Guid id) => this.repository.Get(id);
 
         /// <summary>
         /// Получение всех карт.
         /// </summary>
         /// <returns>Все голоса из базы данных.</returns>
-        public IQueryable<Card> GetCards()
-        {
-            return this.repository.GetItems();
-        }
+        public IQueryable<Card> GetCards() => this.repository.GetItems();
     }
 }

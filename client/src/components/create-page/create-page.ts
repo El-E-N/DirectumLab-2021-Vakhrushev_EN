@@ -3,32 +3,20 @@ import * as React from 'react';
 import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import CreatePageView from './create-page-view';
-import {createRoom as createNewRoom} from '../../store/room/room-action-creators';
-import {updateUser as updateNewUser} from '../../store/user/user-action-creators';
-import * as api from '../../api/api';
-import {IRoom} from '../../store/types';
+import {createRoom} from '../../store/room/room-operations';
+import {updateUser} from '../../store/user/user-operations';
+import {createDiscussion} from '../../store/discussion/discussion-operations';
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     createRoom: async (roomName: string, creatorId: string) => {
-      const roomApi = await api.createRoomRequest(roomName, creatorId);
-      const room: IRoom = {
-        id: roomApi.id,
-        hash: roomApi.hash,
-        name: roomApi.name,
-        users: roomApi.players,
-        hostId: roomApi.hostId,
-        creatorId: roomApi.creatorId,
-        cards: ['0', '0.5', '1', '2', '3', '5', '8', '13', '20', '40', '100', '?', '∞', 'coffee'],
-        selectedCard: null
-      };
-      dispatch(createNewRoom(room));
-      return room;
+      return dispatch(await createRoom(roomName, creatorId));
     },
-    updateUser: async (name: string | null) => {
-      const user = name ? await api.createUserRequest(name) : null;
-      dispatch(updateNewUser(user));
-      return user;
+    createUser: async (name: string | null) => {
+      return dispatch(await updateUser(name));
+    },
+    createDiscussion: async (roomId: string) => {
+      dispatch(await createDiscussion(roomId));
     },
   };
 };

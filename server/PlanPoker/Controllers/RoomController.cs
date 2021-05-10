@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DataService.Models;
+using Microsoft.AspNetCore.Mvc;
 using PlanPoker.DTO;
 using PlanPoker.DTO.Builders;
 using PlanPoker.Services;
@@ -67,12 +68,14 @@ namespace PlanPoker.Controllers
         /// </summary>
         /// <param name="roomId">Id комнаты.</param>
         /// <param name="playerId">Id добавляемого игрока.</param>
-        [HttpPost]
-        public void AddPlayer(string roomId, string playerId)
+        /// <returns>Комната.</returns>
+        [HttpGet]
+        public RoomDTO AddPlayer(string roomId, string playerId)
         {
             var roomGuid = Guid.Parse(roomId.Replace(" ", string.Empty));
             var playerGuid = Guid.Parse(playerId.Replace(" ", string.Empty));
-            this.roomService.AddPlayer(roomGuid, playerGuid);
+            var room = this.roomService.AddPlayer(roomGuid, playerGuid);
+            return RoomDTOBuilder.Build(room, this.playerService);
         }
 
         /// <summary>
@@ -80,12 +83,14 @@ namespace PlanPoker.Controllers
         /// </summary>
         /// <param name="roomId">Id комнаты.</param>
         /// <param name="playerId">Id игрока.</param>
-        [HttpPost]
-        public void RemovePlayer(string roomId, string playerId)
+        /// <returns>Комната.</returns>
+        [HttpGet]
+        public RoomDTO RemovePlayer(string roomId, string playerId)
         {
             var roomGuid = Guid.Parse(roomId.Replace(" ", string.Empty));
             var playerGuid = Guid.Parse(playerId.Replace(" ", string.Empty));
-            this.roomService.RemovePlayer(roomGuid, playerGuid);
+            var room = this.roomService.RemovePlayer(roomGuid, playerGuid);
+            return RoomDTOBuilder.Build(room, this.playerService);
         }
 
         /// <summary>
@@ -93,12 +98,14 @@ namespace PlanPoker.Controllers
         /// </summary>
         /// <param name="roomId">Id комнаты.</param>
         /// <param name="hostId">Id ведущего.</param>
-        [HttpPost]
-        public void ChangeHost(string roomId, string hostId)
+        /// <returns>Комната.</returns>
+        [HttpGet]
+        public RoomDTO ChangeHost(string roomId, string hostId)
         {
             var roomGuid = Guid.Parse(roomId.Replace(" ", string.Empty));
             var hostGuid = Guid.Parse(hostId.Replace(" ", string.Empty));
-            this.roomService.ChangeHost(roomGuid, hostGuid);
+            var room = this.roomService.ChangeHost(roomGuid, hostGuid);
+            return RoomDTOBuilder.Build(room, this.playerService);
         }
 
         /// <summary>
@@ -108,7 +115,7 @@ namespace PlanPoker.Controllers
         [HttpGet]
         public IEnumerable<RoomDTO> GetRooms()
         {
-            var rooms = this.roomService.GetRooms();
+            var rooms = new List<Room>(this.roomService.GetRooms());
             return RoomDTOBuilder.BuildList(rooms, this.playerService);
         }
     }

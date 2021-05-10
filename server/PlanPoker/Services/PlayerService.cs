@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 using DataService.Models;
 using DataService.Repositories;
 
@@ -19,10 +19,7 @@ namespace PlanPoker.Services
         /// Конструктор.
         /// </summary>
         /// <param name="repository">Репозиторий игроков.</param>
-        public PlayerService(PlayerMemoryRepository repository)
-        {
-            this.repository = repository;
-        }
+        public PlayerService(PlayerMemoryRepository repository) { this.repository = repository; }
 
         /// <summary>
         /// Создание игрока.
@@ -36,6 +33,13 @@ namespace PlanPoker.Services
             this.repository.Create(id, name, token);
             return this.repository.Get(id);
         }
+
+        /// <summary>
+        /// Получение игрока по id.
+        /// </summary>
+        /// <param name="id">Id.</param>
+        /// <returns>Игрок.</returns>
+        public Player GetById(Guid id) => this.repository.Get(id);
 
         /// <summary>
         /// Изменение имени игрока.
@@ -56,22 +60,12 @@ namespace PlanPoker.Services
         /// </summary>
         /// <param name="id">Id игрока.</param>
         /// <returns>Токен.</returns>
-        public string GetToken(Guid id) => this.Get(id).Token;
-
-        /// <summary>
-        /// Получение игрока.
-        /// </summary>
-        /// <param name="id">Идентификатор.</param>
-        /// <returns>Игрок.</returns>
-        public Player Get(Guid id) => this.repository.Get(id);
+        public string GetToken(Guid id) => this.GetById(id).Token;
 
         /// <summary>
         /// Получение всех игроков.
         /// </summary>
         /// <returns>Все игроки из базы данных.</returns>
-        public IQueryable<Player> GetPlayers()
-        {
-            return this.repository.GetItems();
-        }
+        public ICollection<Player> GetPlayers() => new List<Player>(this.repository.GetItems());
     }
 }

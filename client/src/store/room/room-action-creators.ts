@@ -1,17 +1,6 @@
 import {Action} from 'redux';
 import {ActionType} from '../reducer';
-import {IRoom, IUser} from '../types';
-
-export interface ICardAction extends Action {
-  value: string;
-}
-
-export const updateVote = (roomId: string, value: string): ICardAction => {
-  return {
-    type: ActionType.ADD_SELECTED_CARD,
-    value,
-  };
-};
+import {IRoom, IPlayer} from '../types';
 
 export interface IRoomAction extends Action {
   room: IRoom;
@@ -25,10 +14,10 @@ export const createRoom = (room: IRoom): IRoomAction => {
 };
 
 export interface IAddUserAction extends Action {
-  user: IUser;
+  user: IPlayer;
 }
 
-export const addUser = (ourRoom: IRoom, user: IUser): IAddUserAction => {
+export const addUser = (ourRoom: IRoom, user: IPlayer): IAddUserAction => {
   return {
     type: ActionType.ADD_USER_INTO_ROOM,
     user

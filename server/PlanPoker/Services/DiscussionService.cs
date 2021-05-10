@@ -20,10 +20,7 @@ namespace PlanPoker.Services
         /// Конструктор.
         /// </summary>
         /// <param name="repository">Репозиторий обсуждения.</param>
-        public DiscussionService(DiscussionMemoryRepository repository)
-        {
-            this.repository = repository;
-        }
+        public DiscussionService(DiscussionMemoryRepository repository) { this.repository = repository; }
 
         /// <summary>
         /// Создание обсуждения.
@@ -34,17 +31,32 @@ namespace PlanPoker.Services
         public Discussion Create(Guid roomId, string name) 
         {
             var id = Guid.NewGuid();
-            this.repository.Create(id, roomId, name);
+            this.repository.Create(id, roomId, name, new List<Guid> { });
             return this.repository.Get(id);
         }
+
+        /// <summary>
+        /// Получение обсуждения по id.
+        /// </summary>
+        /// <param name="id">Id.</param>
+        /// <returns>Обсуждение.</returns>
+        public Discussion GetById(Guid id) => this.repository.Get(id);
 
         /// <summary>
         /// Закрытие обсуждения и запись окончания.
         /// </summary>
         /// <param name="discussionId">Id обсуждения.</param>
-        public void Close(Guid discussionId) 
+        public Discussion Close(Guid discussionId) 
         {
-            this.repository.Get(discussionId).EndAt = DateTime.Now;
+            var discussion = this.repository.Get(discussionId);
+            var name = discussion.Name;
+            var startAt = discussion.StartAt;
+            var roomId = discussion.RoomId;
+            var voteIds = discussion.VoteIds;
+            var listVoteIds = new List<Guid>(voteIds);
+            var item = new Discussion(discussionId, roomId, name, startAt, DateTime.Now, listVoteIds);
+            this.repository.Save(item);
+            return this.repository.Get(discussionId);
         }
 
         /// <summary>
@@ -52,9 +64,18 @@ namespace PlanPoker.Services
         /// </summary>
         /// <param name="discussionId">Id обсуждения.</param>
         /// <param name="voteId">Id голоса.</param>
-        public void AddVote(Guid discussionId, Guid voteId) 
+        public Discussion AddVote(Guid discussionId, Guid voteId) 
         {
-            this.repository.Get(discussionId).VoteIds.Add(voteId);
+            var discussion = this.repository.Get(discussionId);
+            var name = discussion.Name;
+            var startAt = discussion.StartAt;
+            var roomId = discussion.RoomId;
+            var voteIds = discussion.VoteIds;
+            voteIds.Add(voteId);
+            var listVoteIds = new List<Guid>(voteIds);
+            var item = new Discussion(discussionId, roomId, name, startAt, DateTime.Now, listVoteIds);
+            this.repository.Save(item);
+            return this.repository.Get(discussionId);
         }
 
         /// <summary>
@@ -62,28 +83,12 @@ namespace PlanPoker.Services
         /// </summary>
         /// <param name="discussionId">Id обсуждения.</param>
         /// <returns>Список Id оценок.</returns>
-        public ICollection<Guid> GetVoteIds(Guid discussionId) 
-        {
-            return this.repository.Get(discussionId).VoteIds;
-        }
-
-        /// <summary>
-        /// Получение обсуждения.
-        /// </summary>
-        /// <param name="id">Идентификатор.</param>
-        /// <returns>Обсуждение.</returns>
-        public Discussion GetDiscussion(Guid id)
-        {
-            return this.repository.Get(id);
-        }
+        public ICollection<Guid> GetVoteIds(Guid discussionId) => this.repository.Get(discussionId).VoteIds;
 
         /// <summary>
         /// Возвращает список обсуждений.
         /// </summary>
         /// <returns>Все обсуждения из базы данных.</returns>
-        public IQueryable<Discussion> GetDiscussions()
-        {
-            return this.repository.GetItems();
-        }
+        public IQueryable<Discussion> GetDiscussions() => this.repository.GetItems();
     }
 }

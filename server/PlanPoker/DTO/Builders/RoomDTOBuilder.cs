@@ -1,7 +1,9 @@
 ﻿using DataService.Models;
 using PlanPoker.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 
 namespace PlanPoker.DTO.Builders
 {
@@ -18,7 +20,9 @@ namespace PlanPoker.DTO.Builders
         /// <returns>Экземпляр DTO комнаты.</returns>
         public static RoomDTO Build(Room room, PlayerService playerService)
         {
-            var players = PlayerDTOBuilder.BuildList(room.PlayersIds.Select(el => playerService.Get(el)));
+            var players = PlayerDTOBuilder.BuildList(
+                new List<Player>(JsonSerializer.Deserialize<List<Guid>>(room.PlayersIds).Select(el => playerService.GetById(el)))
+                );
             return new RoomDTO()
             {
                 Id = room.Id,
@@ -36,9 +40,9 @@ namespace PlanPoker.DTO.Builders
         /// <param name="rooms">Комнаты.</param>
         /// <param name="playerService">Сервис игроков.</param>
         /// <returns>Список DTO комнат.</returns>
-        public static IEnumerable<RoomDTO> BuildList(IEnumerable<Room> rooms, PlayerService playerService)
+        public static ICollection<RoomDTO> BuildList(List<Room> rooms, PlayerService playerService)
         {
-            return rooms.Select(room => Build(room, playerService));
+            return new List<RoomDTO>(rooms.Select(room => Build(room, playerService)));
         }
     }
 }

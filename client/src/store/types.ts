@@ -1,4 +1,4 @@
-export interface IUser {
+export interface IPlayer {
   id: string;
   name: string;
 }
@@ -11,18 +11,30 @@ export interface IRoom {
   selectedCard: string | null;
   hostId: string;
   creatorId: string;
-  users: Array<IUser>;
+  players: Array<IPlayer>;
 }
 
-export interface IStory {
+export interface IDiscussion {
   id: string;
   name: string | null;
   average: number | null;
-  votes: { [key: string]: string }; // key - userId, value - vote
+  voteArray: { [key: string]: IVote | null }; // key - userId, value - vote
+}
+
+export interface IVote {
+  id: string;
+  card: ICard;
+}
+
+export interface ICard {
+  id: string;
+  value: string;
+  name: string;
 }
 
 export interface IRootState {
   room: IRoom | null;
-  stories: Array<IStory>;
-  user: IUser | null;
+  discussions: Array<IDiscussion> | null;
+  discussion: IDiscussion | null;
+  user: IPlayer | null;
 }

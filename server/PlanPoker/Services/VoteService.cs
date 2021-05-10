@@ -19,10 +19,7 @@ namespace PlanPoker.Services
         /// Конструктор.
         /// </summary>
         /// <param name="repository">Репозиторий с голосованиями.</param>
-        public VoteService(VoteMemoryRepository repository)
-        {
-            this.repository = repository;
-        }
+        public VoteService(VoteMemoryRepository repository) { this.repository = repository; }
 
         /// <summary>
         /// Создание голоса.
@@ -40,36 +37,31 @@ namespace PlanPoker.Services
         }
 
         /// <summary>
+        /// Получение оценки по id.
+        /// </summary>
+        /// <param name="id">Id.</param>
+        /// <returns>Оценка.</returns>
+        public Vote GetById(Guid id) => this.repository.Get(id);
+
+        /// <summary>
         /// Изменение выбора.
         /// </summary>
         /// <param name="voteId">Id оценки.</param>
         /// <param name="cardId">Id карты.</param>
-        public void ChangeCard(Guid voteId, Guid cardId)
+        public Vote ChangeCard(Guid voteId, Guid cardId)
         {
             var discussionId = this.repository.Get(voteId).DiscussionId;
             var playerId = this.repository.Get(voteId).PlayerId;
             var roomId = this.repository.Get(voteId).RoomId;
             var vote = new Vote(voteId, cardId, roomId, playerId, discussionId);
             this.repository.Save(vote);
-        }
-
-        /// <summary>
-        /// Получить оценку по id.
-        /// </summary>
-        /// <param name="id">Идентификатор.</param>
-        /// <returns>Оценка.</returns>
-        public Vote GetVote(Guid id)
-        {
-            return this.repository.Get(id);
+            return this.repository.Get(voteId);
         }
 
         /// <summary>
         /// Получение всех оценок.
         /// </summary>
         /// <returns>Все голоса из базы данных.</returns>
-        public IQueryable<Vote> GetAllVote()
-        {
-            return this.repository.GetItems();
-        }
+        public IQueryable<Vote> GetAllVote() => this.repository.GetItems();
     }
 }

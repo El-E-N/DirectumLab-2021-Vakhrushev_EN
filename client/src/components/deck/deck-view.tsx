@@ -1,17 +1,17 @@
 import * as React from 'react';
 import Card from '../card/card';
-import {IRoom} from '../../store/types';
+import {ICard, IRoom} from '../../store/types';
 import './deck.css';
 
 interface IProps {
   room: IRoom | null;
   // eslint-disable-next-line no-unused-vars
-  updateVote(roomId: string, value: string): void;
+  updateVote(voteId: string, card: ICard): void;
 }
 
 const DeckView: React.FunctionComponent<IProps> = (props) => {
-  const handleCardChange = (value: string) => {
-    props.room && props.updateVote(props.room.id, value);
+  const handleCardChange = (voteId: string, card: ICard) => {
+    props.room && props.updateVote(voteId, card);
   };
 
   return <div className="deck">

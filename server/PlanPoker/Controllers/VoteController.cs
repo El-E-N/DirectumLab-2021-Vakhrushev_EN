@@ -50,7 +50,6 @@ namespace PlanPoker.Controllers
             var roomGuid = Guid.Parse(roomId.Replace(" ", string.Empty));
             var playerGuid = Guid.Parse(playerId.Replace(" ", string.Empty));
             var discussionGuid = Guid.Parse(discussionId.Replace(" ", string.Empty));
-
             var vote = this.voteService.Create(cardGuid, roomGuid, playerGuid, discussionGuid);
             return VoteDTOBuilder.Build(vote, this.cardService);
         }
@@ -60,12 +59,14 @@ namespace PlanPoker.Controllers
         /// </summary>
         /// <param name="voteId">Id оценки.</param>
         /// <param name="cardId">Id карты.</param>
-        [HttpPost]
-        public void ChangeCard(string voteId, string cardId)
+        /// <returns>Оценка.</returns>
+        [HttpGet]
+        public VoteDTO ChangeCard(string voteId, string cardId)
         {
             var voteGuid = Guid.Parse(voteId.Replace(" ", string.Empty));
             var cardGuid = Guid.Parse(cardId.Replace(" ", string.Empty));
-            this.voteService.ChangeCard(voteGuid, cardGuid);
+            var vote = this.voteService.ChangeCard(voteGuid, cardGuid);
+            return VoteDTOBuilder.Build(vote, this.cardService);
         }
 
         /// <summary>

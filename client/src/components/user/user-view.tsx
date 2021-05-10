@@ -39,11 +39,15 @@ class UserView extends React.Component<IProps, IState> {
 
   render() {
     return <div className="user">
-      <Button className={'user__button'} value={this.userButton((this.props.user && this.props.user.name) || '')} onClick={this.handleShowOrHide}/>
+      <Button
+        className={'user__button'}
+        value={this.userButton((this.props.user && this.props.user.name) || '')}
+        onClick={this.handleShowOrHide}
+      />
       {this.state.showUserMenu && <div className="user__menu-wrapper">
         <div className="rhombus"/>
         <div className="user__menu">
-          <Link to={`${RoutePath.INVITE}/${this.props.room && this.props.room.id}`} className="sign-out">Sign Out</Link>
+          <Link to={`${RoutePath.INVITE}/${this.props.room && this.props.room.hash}`} className="sign-out">Sign Out</Link>
         </div>
       </div>}
     </div>;

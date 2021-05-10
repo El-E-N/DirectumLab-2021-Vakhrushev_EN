@@ -16,7 +16,7 @@ namespace PlanPoker.DTO
         /// <summary>
         /// Id комнаты.
         /// </summary>
-        public Guid RoomID { get; set; }
+        public Guid RoomID { get; set; } //
 
         /// <summary>
         /// Его название.

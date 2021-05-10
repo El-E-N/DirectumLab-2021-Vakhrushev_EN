@@ -1,7 +1,9 @@
 ﻿using DataService.Models;
 using DataService.Repositories;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 
 namespace PlanPoker.Services
 {
@@ -19,10 +21,7 @@ namespace PlanPoker.Services
         /// Конструктор.
         /// </summary>
         /// <param name="repository">Репозиторий комнта.</param>
-        public RoomService(RoomMemoryRepository repository)
-        {
-            this.repository = repository;
-        }
+        public RoomService(RoomMemoryRepository repository) { this.repository = repository; }
 
         /// <summary>
         /// Создание комнаты.
@@ -34,9 +33,16 @@ namespace PlanPoker.Services
         {
             var id = Guid.NewGuid();
             var hash = Guid.NewGuid();
-            this.repository.Create(name, creatorId, creatorId, id, hash);
+            this.repository.Create(name, creatorId, creatorId, id, hash, new List<Guid> { creatorId });
             return this.repository.Get(id);
         }
+
+        /// <summary>
+        /// Получение комнаты по id.
+        /// </summary>
+        /// <param name="id">Id.</param>
+        /// <returns>Комната.</returns>
+        public Room GetById(Guid id) => this.repository.Get(id);
 
         /// <summary>
         /// Получение комнаты по хэшу.
@@ -50,9 +56,18 @@ namespace PlanPoker.Services
         /// </summary>
         /// <param name="roomId">Id комнаты.</param>
         /// <param name="playerId">Id игрока.</param>
-        public void AddPlayer(Guid roomId, Guid playerId)
+        public Room AddPlayer(Guid roomId, Guid playerId)
         {
-            this.repository.Get(roomId).PlayersIds.Add(playerId);
+            var room = this.repository.Get(roomId);
+            var name = room.Name;
+            var hash = room.Hash;
+            var creatorId = room.CreatorId;
+            var hostId = room.HostId;
+            var playersIds = JsonSerializer.Deserialize<ICollection<Guid>>(room.PlayersIds);
+            playersIds = new List<Guid>(playersIds.Append(playerId));
+            var listPlayersIds = new List<Guid>(playersIds);
+            this.repository.Save(new Room(name, hostId, creatorId, roomId, hash, listPlayersIds));
+            return this.repository.Get(roomId);
         }
 
         /// <summary>
@@ -60,9 +75,17 @@ namespace PlanPoker.Services
         /// </summary>
         /// <param name="roomId">Id комнаты.</param>
         /// <param name="playerId">Id игрока.</param>
-        public void RemovePlayer(Guid roomId, Guid playerId) 
+        public Room RemovePlayer(Guid roomId, Guid playerId) 
         {
-            this.repository.Get(roomId).PlayersIds.Remove(playerId);
+            var room = this.repository.Get(roomId);
+            var name = room.Name;
+            var hash = room.Hash;
+            var creatorId = room.CreatorId;
+            var hostId = room.HostId;
+            var playersIds = JsonSerializer.Deserialize<ICollection<Guid>>(room.PlayersIds);
+            playersIds = new List<Guid>(playersIds.Where(id => id != playerId));
+            this.repository.Save(new Room(name, hostId, creatorId, roomId, hash, playersIds));
+            return this.repository.Get(roomId);
         }
 
         /// <summary>
@@ -70,21 +93,21 @@ namespace PlanPoker.Services
         /// </summary>
         /// <param name="roomId">Id комнаты.</param>
         /// <param name="hostId">Id ведущего.</param>
-        public void ChangeHost(Guid roomId, Guid hostId)
+        public Room ChangeHost(Guid roomId, Guid hostId)
         {
-            var name = this.repository.Get(roomId).Name;
-            var hash = this.repository.Get(roomId).Hash;
-            var creatorId = this.repository.Get(roomId).CreatorId;
-            this.repository.Save(new Room(name, hostId, creatorId, roomId, hash));
+            var room = this.repository.Get(roomId);
+            var name = room.Name;
+            var hash = room.Hash;
+            var creatorId = room.CreatorId;
+            var playersIds = JsonSerializer.Deserialize<ICollection<Guid>>(room.PlayersIds);
+            this.repository.Save(new Room(name, hostId, creatorId, roomId, hash, playersIds));
+            return this.repository.Get(roomId);
         }
 
         /// <summary>
         /// Получение всех комнат.
         /// </summary>
         /// <returns>Все комнаты из базы данных.</returns>
-        public IQueryable<Room> GetRooms()
-        {
-            return this.repository.GetItems();
-        }
+        public IQueryable<Room> GetRooms() => this.repository.GetItems();
     }
 }

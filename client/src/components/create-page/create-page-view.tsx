@@ -2,7 +2,7 @@ import * as React from 'react';
 import {RouteComponentProps} from 'react-router-dom';
 import MainLabel from '../main__label/main__label';
 import Button from '../button/button';
-import {IUser, IRoom} from '../../store/types';
+import {IPlayer, IRoom} from '../../store/types';
 import {RoutePath} from '../../routes';
 import './create-page.css';
 
@@ -10,7 +10,9 @@ export interface IProps extends RouteComponentProps {
   // eslint-disable-next-line no-unused-vars
   createRoom(roomName: string, creatorId: string): IRoom;
   // eslint-disable-next-line no-unused-vars
-  updateUser(name: string | null): IUser | null;
+  createUser(name: string | null): IPlayer | null;
+  // eslint-disable-next-line no-unused-vars
+  createDiscussion(roomId: string): void;
 }
 
 interface IState {
@@ -28,14 +30,15 @@ class CreatePageView extends React.Component<IProps, IState> {
       userName: '',
       roomName: '',
     };
-    this.props.updateUser(null);
+    this.props.createUser(null);
   }
 
   async handleSubmit(evt: React.FormEvent) {
     evt.preventDefault();
     if (this.state.roomName !== '' && this.state.userName !== '') {
-      const user = await this.props.updateUser(this.state.userName);
+      const user = await this.props.createUser(this.state.userName);
       const room = user && await this.props.createRoom(this.state.roomName, user.id);
+      room && await this.props.createDiscussion(room.id);
       room && this.props.history.push(`${RoutePath.MAIN}/${room.hash}`);
     }
   }

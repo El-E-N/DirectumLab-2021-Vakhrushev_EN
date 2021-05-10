@@ -26,6 +26,7 @@ class InvitePageView extends React.Component<IProps, IState> {
     this.state = {
       userName: '',
     };
+    this.props.updateUser(null);
   }
 
   updateUserValue(evt: React.ChangeEvent<HTMLInputElement>) {

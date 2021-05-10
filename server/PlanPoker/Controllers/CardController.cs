@@ -31,6 +31,7 @@ namespace PlanPoker.Controllers
         /// Получение всех оценок.
         /// </summary>
         /// <returns>Все оценки.</returns>
+        [HttpGet]
         public IEnumerable<CardDTO> GetCards()
         {
             var cards = this.service.GetCards();

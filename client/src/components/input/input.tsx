@@ -9,7 +9,7 @@ interface IProps {
   readOnly?: boolean;
   id?: string;
   // eslint-disable-next-line no-unused-vars
-  onChange?(evt: React.ChangeEvent<HTMLInputElement>): void;
+  onBlur?(evt: React.ChangeEvent<HTMLInputElement>): void;
   onClick?(): void;
 }
 
@@ -23,7 +23,7 @@ class Input extends React.Component<IProps, {}> {
       readOnly={this.props.readOnly}
       defaultValue={this.props.value}
       placeholder={this.props.placeHolder}
-      onChange={this.props.onChange}
+      onBlur={this.props.onBlur}
       onClick={this.props.onClick}
     />;
   }

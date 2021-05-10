@@ -1,14 +1,13 @@
 import * as React from 'react';
 import Input from '../input/input';
 import './card.css';
+import {IVote, ICard} from '../../store/types';
 
-interface ICard {
-  value: string;
-}
-
-interface IProps extends ICard {
+interface IProps {
   // eslint-disable-next-line no-unused-vars
-  onClick(value: string): void;
+  onClick(vote: IVote): void;
+  card: ICard;
+  vote: IVote;
 }
 
 const coffeeIcon = <svg className={'card__coffee'} width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
@@ -17,7 +16,7 @@ const coffeeIcon = <svg className={'card__coffee'} width="44" height="44" viewBo
 
 const Card: React.FunctionComponent<IProps> = (props) => {
   const handleSetValue = () => {
-    props.onClick(props.value);
+    props.onClick(props.vote.id, props.card);
   };
 
   return <label className="card">

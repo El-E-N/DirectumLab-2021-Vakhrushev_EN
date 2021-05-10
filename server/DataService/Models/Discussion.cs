@@ -9,12 +9,22 @@ namespace DataService.Models
     public class Discussion : Entity
     {
         /// <summary>
+        /// Пустой конструктор.
+        /// </summary>
+        public Discussion()
+        {
+        }
+
+        /// <summary>
         /// Конструктор обсуждения.
         /// </summary>
         /// <param name="id">Его id.</param>
         /// <param name="roomId">Id комнаты.</param>
         /// <param name="name">Название обсуждения.</param>
-        public Discussion(Guid id, Guid roomId, string name)
+        /// <param name="startAt">Начало обсуждения.</param>
+        /// <param name="endAt">Конец обсуждения.</param>
+        /// <param name="voteIds">Голосования обсуждения.</param>
+        public Discussion(Guid id, Guid roomId, string name, DateTime? startAt, DateTime? endAt, ICollection<Guid> voteIds)
         {
             this.Id = id;
             this.RoomId = roomId;
@@ -22,8 +32,9 @@ namespace DataService.Models
                 this.Name = name;
             else
                 this.Name = "Discussion" + this.Id;
-            this.StartAt = DateTime.Now;
-            this.VoteIds = new List<Guid>();
+            this.StartAt = startAt;
+            this.EndAt = endAt;
+            this.VoteIds = voteIds;
         }
 
         /// <summary>

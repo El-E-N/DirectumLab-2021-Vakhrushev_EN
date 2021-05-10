@@ -61,11 +61,13 @@ namespace PlanPoker.Controllers
         /// Закрытие обсуждения.
         /// </summary>
         /// <param name="discussionId">Id этого обсуждения.</param>
-        [HttpPost]
-        public void Close(string discussionId)
+        /// <returns>Обсуждение.</returns>
+        [HttpGet]
+        public DiscussionDTO Close(string discussionId)
         {
             var discussionGuid = Guid.Parse(discussionId.Replace(" ", string.Empty));
-            this.discussionService.Close(discussionGuid);
+            var discussion = this.discussionService.Close(discussionGuid);
+            return DiscussionDTOBuilder.Build(discussion, this.voteService, this.cardService);
         }
 
         /// <summary>
@@ -73,12 +75,14 @@ namespace PlanPoker.Controllers
         /// </summary>
         /// <param name="discussionId">Id обсуждения.</param>
         /// <param name="voteId">Id голоса.</param>
-        [HttpPost]
-        public void AddVote(string discussionId, string voteId)
+        /// <returns>Обсуждение.</returns>
+        [HttpGet]
+        public DiscussionDTO AddVote(string discussionId, string voteId)
         {
             var discussionGuid = Guid.Parse(discussionId.Replace(" ", string.Empty));
             var voteGuid = Guid.Parse(voteId.Replace(" ", string.Empty));
-            this.discussionService.AddVote(discussionGuid, voteGuid);
+            var discussion =  this.discussionService.AddVote(discussionGuid, voteGuid);
+            return DiscussionDTOBuilder.Build(discussion, this.voteService, this.cardService);
         }
 
         /// <summary>
@@ -90,8 +94,8 @@ namespace PlanPoker.Controllers
         public IEnumerable<VoteDTO> GetAllVote(string discussionId)
         {
             var discussionGuid = Guid.Parse(discussionId.Replace(" ", string.Empty));
-            var discussion = this.discussionService.GetDiscussion(discussionGuid);
-            var voteArray = discussion.VoteIds.Select(id => this.voteService.GetVote(id));
+            var discussion = this.discussionService.GetById(discussionGuid);
+            var voteArray = discussion.VoteIds.Select(id => this.voteService.GetById(id));
             return VoteDTOBuilder.BuildList(voteArray, this.cardService);
         }
 

@@ -3,10 +3,9 @@ import Deck from '../deck/deck';
 import {RouteComponentProps} from 'react-router-dom';
 import Menu from '../menu/menu';
 import {RoutePath} from '../../routes';
-import {IRoom, IUser} from '../../store/types';
+import {IRoom, IPlayer} from '../../store/types';
 import BrieflyResults from '../briefly-results/briefly-results';
 import History from '../history/history';
-import {mockState} from '../../mock/mock';
 import './main-page.css';
 
 interface IMatchParams {
@@ -15,12 +14,12 @@ interface IMatchParams {
 
 export interface IMainPageProps extends RouteComponentProps<IMatchParams> {
   room: IRoom | null;
-  user: IUser | null;
+  player: IPlayer | null;
   onShowModal(): void;
   // eslint-disable-next-line no-unused-vars
   getRoom(hash: string): IRoom;
   // eslint-disable-next-line no-unused-vars
-  updateUser(name: string | null): IUser | null;
+  createUser(name: string | null): IPlayer | null;
 }
 
 interface IState {
@@ -43,18 +42,16 @@ export class MainPageView extends React.Component<IMainPageProps, IState> {
   }
 
   public render() {
-    if (this.props.room === null) {
-      this.props.history.push('/error-nonexistent-room');
-      return null;
-    } else {
-      return <main className="room">
+    return this.props.room === null ?
+      null :
+      <main className="room">
         <h2 className="room-name">{this.props.room && this.props.room.name}</h2>
         <div className="room-content">
           <div className="results">
             {this.state.isPlanning ?
               <Deck/> :
               <BrieflyResults/>}
-            <History stories={mockState.stories} onShowModal={this.props.onShowModal}/>
+            <History stories={[]} onShowModal={this.props.onShowModal}/>
           </div>
           <Menu
             addEnter={!this.state.isPlanning}
@@ -62,12 +59,11 @@ export class MainPageView extends React.Component<IMainPageProps, IState> {
           />
         </div>
       </main>;
-    }
   }
 
   async componentDidMount() {
     this.props.room === null && await this.props.getRoom(this.props.match.params.hash);
-    this.props.user === null && this.props.history.push(`${RoutePath.INVITE}/${this.props.room && this.props.room.hash}`);
+    this.props.room !== null && this.props.player === null && this.props.history.push(`${RoutePath.INVITE}/${this.props.room.hash}`);
   }
 }
 
