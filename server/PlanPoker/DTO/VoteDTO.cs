@@ -1,5 +1,4 @@
-﻿using DataService.Models;
-using System;
+﻿using System;
 
 namespace PlanPoker.DTO
 {
@@ -16,12 +15,12 @@ namespace PlanPoker.DTO
         /// <summary>
         /// Карта.
         /// </summary>
-        public Card Card { get; set; } // CardDTO
+        public CardDTO Card { get; set; } // CardDTO
 
         /// <summary>
         /// Id комнаты.
         /// </summary>
-        public Guid RoomId { get; set; } //
+        // public Guid RoomId { get; set; } //
 
         /// <summary>
         /// Id игрока.
@@ -31,6 +30,6 @@ namespace PlanPoker.DTO
         /// <summary>
         /// Id обсуждения.
         /// </summary>
-        public Guid DiscussionId { get; set; } //
+        // public Guid DiscussionId { get; set; } //
     }
 }

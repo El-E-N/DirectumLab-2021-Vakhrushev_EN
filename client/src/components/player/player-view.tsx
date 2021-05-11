@@ -30,7 +30,7 @@ const PlayerView: React.FunctionComponent<IProps> = (props) => {
     {!props.showResult ?
       vote !== null && <img className="checked" alt={'checked'} src={check}/> :
       <span className={'player__card'}>
-        {vote && vote.card.name !== 'coffee' ?
+        {vote && vote.card.value !== 'coffee' ?
           vote.card.value :
           coffeeIcon
         }

@@ -3,15 +3,15 @@ import {RouteComponentProps} from 'react-router';
 import {RoutePath} from '../../routes';
 import MainLabel from '../main__label/main__label';
 import Button from '../button/button';
-import {IRoom, IUser} from '../../store/types';
+import {IRoom, IPlayer} from '../../store/types';
 import './invite-page.css';
 
 export interface IProps extends RouteComponentProps {
   room: IRoom | null;
   // eslint-disable-next-line no-unused-vars
-  updateUser(name: string | null): IUser | null;
+  updateUser(name: string | null): IPlayer | null;
   // eslint-disable-next-line no-unused-vars
-  addUserIntoRoom(room: IRoom, newUser: IUser): void;
+  addUserIntoRoom(room: IRoom, newUser: IPlayer): void;
 }
 
 interface IState {

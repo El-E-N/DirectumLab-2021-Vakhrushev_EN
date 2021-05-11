@@ -24,8 +24,8 @@ export interface IVoteDto {
   card: ICardDto;
 }
 
-interface ICardDto {
+export interface ICardDto {
   id: string;
-  value: string;
+  value: string | null;
   name: string;
 }

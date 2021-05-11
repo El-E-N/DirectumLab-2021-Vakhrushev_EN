@@ -25,10 +25,10 @@ namespace PlanPoker.DTO.Builders
             return new DiscussionDTO()
             {
                 Id = discussion.Id,
-                RoomID = discussion.RoomId,
+                // RoomID = discussion.RoomId,
                 Name = discussion.Name,
-                StartAt = discussion.StartAt,
-                EndAt = discussion.EndAt,
+                // StartAt = discussion.StartAt,
+                // EndAt = discussion.EndAt,
                 VoteList = voteList
             };
         }

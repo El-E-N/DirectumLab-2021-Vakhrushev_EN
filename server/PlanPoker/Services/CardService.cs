@@ -45,6 +45,11 @@ namespace PlanPoker.Services
         /// Получение всех карт.
         /// </summary>
         /// <returns>Все голоса из базы данных.</returns>
-        public IQueryable<Card> GetCards() => this.repository.GetItems();
+        public IQueryable<Card> GetCards()
+        {
+            var tempCard = this.Create(1234435321234, "qwep[ewkrlq,dqw;foiw");
+            this.repository.Delete(tempCard.Id);
+            return this.repository.GetItems();
+        }
     }
 }

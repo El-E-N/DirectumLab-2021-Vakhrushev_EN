@@ -7,8 +7,8 @@ export interface IRoom {
   id: string;
   hash: string;
   name: string;
-  cards: Array<string>;
-  selectedCard: string | null;
+  cards: Array<ICard>;
+  selectedCard: ICard | null;
   hostId: string;
   creatorId: string;
   players: Array<IPlayer>;
@@ -29,7 +29,6 @@ export interface IVote {
 export interface ICard {
   id: string;
   value: string;
-  name: string;
 }
 
 export interface IRootState {

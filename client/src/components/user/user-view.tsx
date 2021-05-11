@@ -3,7 +3,7 @@ import userImage from '../../images/userIcon.svg';
 import Button from '../button/button';
 import {Link} from 'react-router-dom';
 import {RoutePath} from '../../routes';
-import {IRoom, IUser} from '../../store/types';
+import {IRoom, IPlayer} from '../../store/types';
 import './user.css';
 
 interface IState {
@@ -11,7 +11,7 @@ interface IState {
 }
 
 interface IProps {
-  user: IUser | null;
+  user: IPlayer | null;
   room: IRoom | null;
 }
 

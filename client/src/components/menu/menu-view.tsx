@@ -4,7 +4,7 @@ import Button from '../button/button';
 import Input from '../input/input';
 import EnterStory from '../enter-story/enter-story';
 import Player from '../player/player';
-import {IRoom, IPlayer} from '../../store/types';
+import {IRoom, IPlayer, ICard} from '../../store/types';
 import './menu.css';
 
 export interface IMenuProps {
@@ -18,7 +18,7 @@ interface IProps extends IMenuProps {
 }
 
 interface IState {
-  selectedCard: string | null;
+  selectedCard: ICard | null;
 }
 
 class MenuView extends React.Component<IProps, IState> {

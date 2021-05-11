@@ -22,10 +22,10 @@ namespace PlanPoker.DTO.Builders
             return new VoteDTO()
             {
                 Id = vote.Id,
-                Card = card,
-                RoomId = vote.RoomId,
+                Card = CardDTOBuilder.Build(card),
+                //RoomId = vote.RoomId,
                 PlayerId = vote.PlayerId,
-                DiscussionId = vote.DiscussionId
+                // DiscussionId = vote.DiscussionId
             };
         }
 

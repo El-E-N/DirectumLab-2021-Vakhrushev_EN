@@ -1,11 +1,11 @@
 import * as React from 'react';
 import Logo from './../logo/logo';
 import User from '../user/user';
-import {IUser, IRoom} from '../../store/types';
+import {IPlayer, IRoom} from '../../store/types';
 import './header.css';
 
 interface IProps {
-  user: IUser | null;
+  user: IPlayer | null;
   room: IRoom | null;
 }
 

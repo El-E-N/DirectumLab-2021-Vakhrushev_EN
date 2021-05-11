@@ -1,10 +1,10 @@
 import * as React from 'react';
 import Story from '../story/story';
-import {IStory} from '../../store/types';
+import {IDiscussion} from '../../store/types';
 import './stories.css';
 
 interface IProps {
-  stories: Array<IStory>;
+  stories: Array<IDiscussion>;
   onShowModal?(): void;
 }
 

@@ -4,7 +4,7 @@ import * as React from 'react';
 import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import InvitePageView from './invite-page-view';
-import {IRoom, IRootState, IUser} from '../../store/types';
+import {IRoom, IRootState, IPlayer} from '../../store/types';
 import {roomSelector} from '../../store/room/room-selectors';
 import {addUser} from '../../store/room/room-action-creators';
 import * as roomApi from '../../api/room-api';
@@ -19,7 +19,7 @@ const mapStateToProps = (state: IRootState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    addUserIntoRoom: async (room: IRoom, newUser: IUser) => {
+    addUserIntoRoom: async (room: IRoom, newUser: IPlayer) => {
       await roomApi.addPlayerIntoRoomRequest(room.id, newUser.id);
       dispatch(addUser(room, newUser));
     },
