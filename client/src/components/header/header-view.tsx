@@ -13,7 +13,11 @@ const HeaderView: React.FunctionComponent<IProps> = (props) => {
   return <header className="header">
     <div className="header__content">
       <Logo/>
-      {props.user !== null && props.room !== null && props.user.id && <User/>}
+      {props.user !== null && props.room !== null && props.user.id &&
+      <User
+        room={props.room}
+        user={props.user}
+      />}
     </div>
   </header>;
 };

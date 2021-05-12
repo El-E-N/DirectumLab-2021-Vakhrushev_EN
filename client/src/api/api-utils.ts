@@ -1,3 +1,12 @@
+﻿export const baseUrl = 'http://localhost:3030/api';
+
+export const options = {
+  GET: {
+    method: 'GET',
+    headers: {'Content-Type': 'application/json'}
+  }
+};
+
 export interface IRoomDto {
   id: string;
   hash: string;
@@ -15,7 +24,7 @@ export interface IPlayerDto {
 export interface IDiscussionDto {
   id: string;
   name: string;
-  voteArray: Array<IVoteDto>;
+  voteList: Array<IVoteDto>;
 }
 
 export interface IVoteDto {

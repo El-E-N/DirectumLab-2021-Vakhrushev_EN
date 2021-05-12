@@ -1,4 +1,4 @@
-import {IDiscussion, IVote} from '../types';
+import {IDiscussion} from '../types';
 import {ICreateDiscussionAction, IUpdateVoteAction} from './discussion-action-creators';
 import {ActionType} from '../reducer';
 
@@ -9,19 +9,17 @@ export function reducer(
   switch (action.type) {
     case ActionType.UPDATE_VOTE:
       const voteAction = action as IUpdateVoteAction;
-      const voteArray: {[p: string]: IVote | null} = {};
-      for (let playerId in state && state.voteArray) {
-        // @ts-ignore
-        if (state && state.voteArray[playerId] !== null && state.voteArray[playerId].id === voteAction.voteId) {
-          voteArray[playerId] = {id: voteAction.voteId, card: voteAction.card};
-        } else {
-          voteArray[playerId] = state && state.voteArray[playerId];
-        }
+      if (state) {
+        const voteArray = {
+          ...state.voteArray,
+          [voteAction.voteId]: {id: voteAction.voteId, card: voteAction.card},
+        };
+        return {
+          ...state,
+          voteArray,
+        };
       }
-      return state && {
-        ...state,
-        voteArray,
-      };
+      return null;
     case ActionType.CREATE_DISCUSSION:
       const createAction = action as ICreateDiscussionAction;
       return createAction.discussion;

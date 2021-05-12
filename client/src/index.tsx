@@ -10,7 +10,6 @@ import {reducer} from './store/reducer';
 import thunk from 'redux-thunk';
 import './index.css';
 
-
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
 
 render(

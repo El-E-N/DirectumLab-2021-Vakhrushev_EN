@@ -1,5 +1,6 @@
-import {IVoteDto} from './types';
-import {baseUrl, options} from './api';
+import {baseUrl, options, IVoteDto} from './api-utils';
+
+const voteApi = `${baseUrl}/vote`;
 
 export const createVoteRequest = async (
     cardId: string,
@@ -8,7 +9,7 @@ export const createVoteRequest = async (
     discussionId: string,
 ): Promise<IVoteDto> => {
   const response = await fetch(
-      `${baseUrl}/vote/create?cardId=${cardId}&roomId=${roomId}&playerId=${playerId}&discussionId=${discussionId}`,
+      `${voteApi}/create?cardId=${cardId}&roomId=${roomId}&playerId=${playerId}&discussionId=${discussionId}`,
       options.GET);
   return response.json();
 };
@@ -18,7 +19,7 @@ export const changeCardRequest = async (
     cardId: string,
 ): Promise<IVoteDto> => {
   const response = await fetch(
-      `${baseUrl}/vote/changeCard?voteId=${voteId}&cardId=${cardId}`,
+      `${voteApi}/changeCard?voteId=${voteId}&cardId=${cardId}`,
       options.GET);
   return response.json();
 };

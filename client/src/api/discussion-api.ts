@@ -1,12 +1,13 @@
-import {IDiscussionDto, IVoteDto} from './types';
-import {baseUrl, options} from './api';
+import {IDiscussionDto, IVoteDto, baseUrl, options} from './api-utils';
+
+const discussionUrl = `${baseUrl}/discussion`;
 
 export const createDiscussionRequest = async (
     roomId: string,
     name: string,
 ): Promise<IDiscussionDto> => {
   const response = await fetch(
-      `${baseUrl}/discussion/create?roomId=${roomId}&name=${name}`,
+      `${discussionUrl}/create?roomId=${roomId}&name=${name}`,
       options.GET);
   return response.json();
 };
@@ -15,7 +16,7 @@ export const closeDiscussionRequest = async (
     discussionId: string,
 ): Promise<IDiscussionDto> => {
   const response = await fetch(
-      `${baseUrl}/discussion/close?discussionId=${discussionId}`,
+      `${discussionUrl}/close?discussionId=${discussionId}`,
       options.GET);
   return response.json();
 };
@@ -25,7 +26,7 @@ export const addVoteRequest = async (
     voteId: string
 ): Promise<IDiscussionDto> => {
   const response = await fetch(
-      `${baseUrl}/discussion/addVote?discussionId=${discussionId}&voteId=${voteId}`,
+      `${discussionUrl}/addVote?discussionId=${discussionId}&voteId=${voteId}`,
       options.GET);
   return response.json();
 };
@@ -34,7 +35,7 @@ export const getAllVoteRequest = async (
     discussionId: string,
 ): Promise<Array<IVoteDto>> => {
   const response = await fetch(
-      `${baseUrl}/discussion/getAllVote?discussionId=${discussionId}`,
+      `${discussionUrl}/getAllVote?discussionId=${discussionId}`,
       options.GET);
   return response.json();
 };

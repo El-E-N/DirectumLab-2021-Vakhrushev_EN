@@ -1,12 +1,13 @@
-import {IRoomDto} from './types';
-import {baseUrl, options} from './api';
+import {baseUrl, options, IRoomDto} from './api-utils';
+
+const roomUrl = `${baseUrl}/room`;
 
 export const createRoomRequest = async (
     roomName: string,
     creatorId: string,
 ): Promise<IRoomDto> => {
   const response = await fetch(
-      `${baseUrl}/room/create?name=${roomName}&creatorId=${creatorId}`,
+      `${roomUrl}/create?name=${roomName}&creatorId=${creatorId}`,
       options.GET);
   return response.json();
 };
@@ -15,7 +16,7 @@ export const getRoomRequest = async (
     hash: string,
 ): Promise<IRoomDto> => {
   const response = await fetch(
-      `${baseUrl}/room/getByHash?hash=${hash}`,
+      `${roomUrl}/getByHash?hash=${hash}`,
       options.GET
   );
   return response.json();
@@ -26,7 +27,7 @@ export const addPlayerIntoRoomRequest = async (
     playerId: string,
 ): Promise<IRoomDto> => {
   const response = await fetch(
-      `${baseUrl}/room/addPlayer?roomId=${roomId}&playerId=${playerId}`,
+      `${roomUrl}/addPlayer?roomId=${roomId}&playerId=${playerId}`,
       options.GET
   );
   return response.json();
@@ -37,7 +38,7 @@ export const removePlayerIntoRoomRequest = async (
     playerId: string,
 ): Promise<IRoomDto> => {
   const response = await fetch(
-      `${baseUrl}/room/removePlayer?roomId=${roomId}&playerId=${playerId}`,
+      `${roomUrl}/removePlayer?roomId=${roomId}&playerId=${playerId}`,
       options.GET
   );
   return response.json();
@@ -48,7 +49,7 @@ export const changeHostRequest = async (
     hostId: string,
 ): Promise<IRoomDto> => {
   const response = await fetch(
-      `${baseUrl}/room/ChangeHost?roomId=${roomId}&hostId=${hostId}`,
+      `${roomUrl}/ChangeHost?roomId=${roomId}&hostId=${hostId}`,
       options.GET
   );
   return response.json();

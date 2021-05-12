@@ -1,4 +1,4 @@
-import {compose, Dispatch} from 'redux';
+import {compose} from 'redux';
 import * as React from 'react';
 import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
@@ -6,6 +6,7 @@ import CreatePageView from './create-page-view';
 import {createRoom} from '../../store/room/room-operations';
 import {updateUser} from '../../store/user/user-operations';
 import {createDiscussion} from '../../store/discussion/discussion-operations';
+import {Dispatch} from 'redux';
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {

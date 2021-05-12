@@ -14,28 +14,24 @@ export interface IUser {
 }
 
 interface IProps extends IUser {
-  voteArray: {[p: string]: IVote | null} | null;
-  // eslint-disable-next-line no-unused-vars
-  getVote(voteArray: {[p: string]: IVote | null}, playerId: string): IVote | null;
+  vote: IVote | null;
 }
 
-const PlayerView: React.FunctionComponent<IProps> = (props) => {
-  const vote = props.voteArray && props.player && props.getVote(props.voteArray, props.player.id);
-
+const Player: React.FunctionComponent<IProps> = (props) => {
   return <li className="player">
     <div className="player__wrapper">
       <img className="player__icon" alt={'playerIcon'} src={playerIcon}/>
       <span className="player__name">{props.player && props.player.name}</span>
     </div>
     {!props.showResult ?
-      vote !== null && <img className="checked" alt={'checked'} src={check}/> :
+      props.vote && <img className="checked" alt={'checked'} src={check}/> :
       <span className={'player__card'}>
-        {vote && vote.card.value !== 'coffee' ?
-          vote.card.value :
+        {props.vote && props.vote.card.value !== 'coffee' ?
+          props.vote.card.value :
           coffeeIcon
         }
       </span>}
   </li>;
 };
 
-export default PlayerView;
+export default Player;

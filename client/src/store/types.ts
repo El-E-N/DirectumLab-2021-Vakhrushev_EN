@@ -8,7 +8,6 @@ export interface IRoom {
   hash: string;
   name: string;
   cards: Array<ICard>;
-  selectedCard: ICard | null;
   hostId: string;
   creatorId: string;
   players: Array<IPlayer>;

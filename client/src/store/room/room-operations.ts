@@ -13,7 +13,6 @@ export const createRoom = (roomName: string, creatorId: string): any => {
     const room: IRoom = {
       ...roomDto,
       cards,
-      selectedCard: null
     };
     dispatch(createNewRoom(room));
     return room;
@@ -28,7 +27,6 @@ export const getRoom = (roomHash: string): any => {
     const room: IRoom = {
       ...roomDto,
       cards,
-      selectedCard: null
     };
     dispatch(createNewRoom(room));
     return room;

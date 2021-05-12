@@ -4,7 +4,7 @@ import Button from '../button/button';
 import Input from '../input/input';
 import EnterStory from '../enter-story/enter-story';
 import Player from '../player/player';
-import {IRoom, IPlayer, ICard} from '../../store/types';
+import {IRoom, IPlayer, IVote} from '../../store/types';
 import './menu.css';
 
 export interface IMenuProps {
@@ -15,18 +15,13 @@ export interface IMenuProps {
 interface IProps extends IMenuProps {
   room: IRoom | null,
   player: IPlayer | null,
+  // eslint-disable-next-line no-unused-vars
+  getVote(user: IPlayer): IVote | null;
 }
 
-interface IState {
-  selectedCard: ICard | null;
-}
-
-class MenuView extends React.Component<IProps, IState> {
+class Menu extends React.Component<IProps, {}> {
   constructor(props: IProps) {
     super(props);
-    this.state = {
-      selectedCard: props.room && props.room.selectedCard,
-    };
   }
 
   render() {
@@ -35,8 +30,19 @@ class MenuView extends React.Component<IProps, IState> {
     return <div className="menu">
       <span className="menu__header">Story voting completed</span>
       <h3 className="menu__title">Players:</h3>
-      {room !== null && <Players room={room} user={this.props.player} showResult={this.props.addEnter}/>}
-      {room && <Player player={this.props.player} showResult={this.props.addEnter}/>}
+      {room &&
+      <Players
+        room={room}
+        user={this.props.player}
+        showResult={this.props.addEnter}
+        getVote={this.props.getVote}
+      />}
+      {room && this.props.player &&
+      <Player
+        player={this.props.player}
+        showResult={this.props.addEnter}
+        vote={this.props.getVote(this.props.player)}
+      />}
       {this.props.addEnter ?
         <EnterStory/> :
         showButton && <Button className={'menu__button'} value={'Finish voting'} onClick={this.props.onClick}/>}
@@ -52,4 +58,4 @@ class MenuView extends React.Component<IProps, IState> {
   }
 }
 
-export default MenuView;
+export default Menu;

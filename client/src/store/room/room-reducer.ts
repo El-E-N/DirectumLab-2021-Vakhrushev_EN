@@ -1,8 +1,8 @@
 import {IRoom} from '../types';
-import {IRoomAction, IAddUserAction, IUpdateSelectedCardAction} from './room-action-creators';
+import {IRoomAction, IAddUserAction} from './room-action-creators';
 import {ActionType} from '../reducer';
 
-export function reducer(state: IRoom | null = null, action: IRoomAction | IAddUserAction | IUpdateSelectedCardAction):
+export function reducer(state: IRoom | null = null, action: IRoomAction | IAddUserAction):
     IRoom | null {
   switch (action.type) {
     case ActionType.CREATE_ROOM:
@@ -13,12 +13,6 @@ export function reducer(state: IRoom | null = null, action: IRoomAction | IAddUs
       return state && {
         ...state,
         players: [...state.players, addUserAction.user],
-      };
-    case ActionType.UPDATE_SELECTED_CARD:
-      const updateAction = action as IUpdateSelectedCardAction;
-      return state && {
-        ...state,
-        selectedCard: updateAction.selectedCard,
       };
     default:
       return state;

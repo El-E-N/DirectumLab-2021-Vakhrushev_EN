@@ -15,7 +15,7 @@ interface IProps {
   room: IRoom | null;
 }
 
-class UserView extends React.Component<IProps, IState> {
+class User extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
@@ -54,4 +54,4 @@ class UserView extends React.Component<IProps, IState> {
   }
 }
 
-export default UserView;
+export default User;

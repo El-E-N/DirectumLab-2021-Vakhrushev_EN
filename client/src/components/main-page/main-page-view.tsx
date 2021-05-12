@@ -3,7 +3,7 @@ import Deck from '../deck/deck';
 import {RouteComponentProps} from 'react-router-dom';
 import Menu from '../menu/menu';
 import {RoutePath} from '../../routes';
-import {IRoom, IPlayer} from '../../store/types';
+import {IRoom, IPlayer, ICard, IVote} from '../../store/types';
 import BrieflyResults from '../briefly-results/briefly-results';
 import History from '../history/history';
 import './main-page.css';
@@ -15,11 +15,16 @@ interface IMatchParams {
 export interface IMainPageProps extends RouteComponentProps<IMatchParams> {
   room: IRoom | null;
   player: IPlayer | null;
+  vote: IVote | null;
   onShowModal(): void;
   // eslint-disable-next-line no-unused-vars
   getRoom(hash: string): IRoom;
   // eslint-disable-next-line no-unused-vars
-  createUser(name: string | null): IPlayer | null;
+  updateVote(voteId: string, cardId: string): void;
+  // eslint-disable-next-line no-unused-vars
+  updateCard(room: IRoom, selectedCard: ICard): void;
+  // eslint-disable-next-line no-unused-vars
+  getVote(user: IPlayer): IVote | null;
 }
 
 interface IState {
@@ -49,21 +54,32 @@ export class MainPageView extends React.Component<IMainPageProps, IState> {
         <div className="room-content">
           <div className="results">
             {this.state.isPlanning ?
-              <Deck/> :
+              <Deck
+                room={this.props.room}
+                updateVote={this.props.updateVote}
+                updateCard={this.props.updateCard}
+                vote={this.props.vote}
+              /> :
               <BrieflyResults/>}
             <History stories={[]} onShowModal={this.props.onShowModal}/>
           </div>
           <Menu
             addEnter={!this.state.isPlanning}
             onClick={this.handleClick}
+            room={this.props.room}
+            player={this.props.player}
+            getVote={this.props.getVote}
           />
         </div>
       </main>;
   }
 
   async componentDidMount() {
-    this.props.room === null && await this.props.getRoom(this.props.match.params.hash);
-    this.props.room !== null && this.props.player === null && this.props.history.push(`${RoutePath.INVITE}/${this.props.room.hash}`);
+    if (this.props.player === null) {
+      this.props.history.push(`${RoutePath.INVITE}/${this.props.match.params.hash}`);
+    } else {
+      this.props.room === null && await this.props.getRoom(this.props.match.params.hash);
+    }
   }
 }
 

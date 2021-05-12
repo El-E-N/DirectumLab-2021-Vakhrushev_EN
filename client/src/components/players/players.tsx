@@ -1,12 +1,14 @@
 import * as React from 'react';
 import Player from '../player/player';
-import {IRoom, IPlayer} from '../../store/types';
+import {IRoom, IPlayer, IVote} from '../../store/types';
 import './players.css';
 
 interface IProps {
   room: IRoom | null;
   user: IPlayer | null;
   showResult: boolean;
+  // eslint-disable-next-line no-unused-vars
+  getVote(user: IPlayer): IVote | null;
 }
 
 const Players: React.FunctionComponent<IProps> = (props) => {
@@ -17,6 +19,7 @@ const Players: React.FunctionComponent<IProps> = (props) => {
           key={player.name}
           player={player}
           showResult={props.showResult}
+          vote={props.getVote(player)}
         />;
     })}
   </ul>;

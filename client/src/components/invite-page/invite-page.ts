@@ -1,5 +1,4 @@
 import {compose, Dispatch} from 'redux';
-import {updateUser as updateStoreUser} from '../../store/user/user-action-creators';
 import * as React from 'react';
 import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
@@ -8,7 +7,7 @@ import {IRoom, IRootState, IPlayer} from '../../store/types';
 import {roomSelector} from '../../store/room/room-selectors';
 import {addUser} from '../../store/room/room-action-creators';
 import * as roomApi from '../../api/room-api';
-import * as playerApi from '../../api/player-api';
+import {updateUser} from '../../store/user/user-operations';
 
 const mapStateToProps = (state: IRootState) => {
   const room = roomSelector(state);
@@ -24,9 +23,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
       dispatch(addUser(room, newUser));
     },
     updateUser: async (name: string | null) => {
-      const user = name ? await playerApi.createPlayerRequest(name) : null;
-      dispatch(updateStoreUser(user));
-      return user;
+      return dispatch(await updateUser(name));
     },
   };
 };
