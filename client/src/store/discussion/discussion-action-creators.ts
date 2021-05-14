@@ -4,14 +4,16 @@ import {ICard, IDiscussion} from '../types';
 
 export interface IUpdateVoteAction extends Action {
   voteId: string;
-  card: ICard
+  card: ICard | null;
+  playerId: string;
 }
 
-export const updateVote = (voteId: string, card: ICard): IUpdateVoteAction => {
+export const updateVote = (voteId: string, card: ICard | null, playerId: string): IUpdateVoteAction => {
   return {
     type: ActionType.UPDATE_VOTE,
     voteId,
-    card
+    card,
+    playerId
   };
 };
 

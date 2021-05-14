@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DataService.Models;
+using Microsoft.AspNetCore.Mvc;
 using PlanPoker.DTO;
 using PlanPoker.DTO.Builders;
 using PlanPoker.Services;
@@ -46,11 +47,17 @@ namespace PlanPoker.Controllers
         [HttpGet]
         public VoteDTO Create(string cardId, string roomId, string playerId, string discussionId)
         {
-            var cardGuid = Guid.Parse(cardId.Replace(" ", string.Empty));
             var roomGuid = Guid.Parse(roomId.Replace(" ", string.Empty));
             var playerGuid = Guid.Parse(playerId.Replace(" ", string.Empty));
             var discussionGuid = Guid.Parse(discussionId.Replace(" ", string.Empty));
-            var vote = this.voteService.Create(cardGuid, roomGuid, playerGuid, discussionGuid);
+            Vote vote;
+            if (cardId != null)
+            {
+                var cardGuid = Guid.Parse(cardId.Replace(" ", string.Empty));
+                vote = this.voteService.Create(cardGuid, roomGuid, playerGuid, discussionGuid);
+            }
+            else
+                vote = this.voteService.Create(null, roomGuid, playerGuid, discussionGuid);
             return VoteDTOBuilder.Build(vote, this.cardService);
         }
 

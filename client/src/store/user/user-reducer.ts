@@ -4,9 +4,11 @@ import {ActionType} from '../reducer';
 
 export const reducer = (state: IPlayer | null = null, action: IUserAction): IPlayer | null => {
   switch (action.type) {
-    case ActionType.UPDATE_USER:
+    case ActionType.UPDATE_USER: {
       return action.user;
-    default:
+    }
+    default: {
       return state;
+    }
   }
 };

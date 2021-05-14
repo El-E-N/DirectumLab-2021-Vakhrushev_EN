@@ -3,7 +3,7 @@ import Deck from '../deck/deck';
 import {RouteComponentProps} from 'react-router-dom';
 import Menu from '../menu/menu';
 import {RoutePath} from '../../routes';
-import {IRoom, IPlayer, ICard, IVote} from '../../store/types';
+import {IRoom, IPlayer, IVote, IDiscussion} from '../../store/types';
 import BrieflyResults from '../briefly-results/briefly-results';
 import History from '../history/history';
 import './main-page.css';
@@ -16,15 +16,13 @@ export interface IMainPageProps extends RouteComponentProps<IMatchParams> {
   room: IRoom | null;
   player: IPlayer | null;
   vote: IVote | null;
+  discussions: Array<IDiscussion> | null;
   onShowModal(): void;
-  // eslint-disable-next-line no-unused-vars
   getRoom(hash: string): IRoom;
-  // eslint-disable-next-line no-unused-vars
   updateVote(voteId: string, cardId: string): void;
-  // eslint-disable-next-line no-unused-vars
-  updateCard(room: IRoom, selectedCard: ICard): void;
-  // eslint-disable-next-line no-unused-vars
   getVote(user: IPlayer): IVote | null;
+  loadingDiscussions(roomId: string): void;
+  createVote(roomId: string, playerId: string, discussionId: string): void;
 }
 
 interface IState {
@@ -57,7 +55,6 @@ export class MainPageView extends React.Component<IMainPageProps, IState> {
               <Deck
                 room={this.props.room}
                 updateVote={this.props.updateVote}
-                updateCard={this.props.updateCard}
                 vote={this.props.vote}
               /> :
               <BrieflyResults/>}
@@ -75,10 +72,22 @@ export class MainPageView extends React.Component<IMainPageProps, IState> {
   }
 
   async componentDidMount() {
+    this.props.room === null && await this.props.getRoom(this.props.match.params.hash);
+
     if (this.props.player === null) {
-      this.props.history.push(`${RoutePath.INVITE}/${this.props.match.params.hash}`);
+      history.push(`${RoutePath.INVITE}/${this.props.match.params.hash}`);
     } else {
-      this.props.room === null && await this.props.getRoom(this.props.match.params.hash);
+      this.props.room && await this.props.loadingDiscussions(this.props.room.id);
+
+      await setInterval(() => {
+        this.props.getRoom(this.props.match.params.hash);
+        this.props.room && this.props.loadingDiscussions(this.props.room.id);
+      }, 5000);
+
+      const currentDiscussion = this.props.discussions && this.props.discussions[this.props.discussions.length - 1];
+      console.log(this.props.discussions, currentDiscussion);
+      this.props.room && this.props.player && currentDiscussion &&
+      await this.props.createVote(this.props.room.id, this.props.player.id, currentDiscussion.id);
     }
   }
 }

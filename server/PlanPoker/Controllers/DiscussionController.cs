@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DataService.Models;
+using Microsoft.AspNetCore.Mvc;
 using PlanPoker.DTO;
 using PlanPoker.DTO.Builders;
 using PlanPoker.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 
 namespace PlanPoker.Controllers
 {
@@ -95,8 +97,21 @@ namespace PlanPoker.Controllers
         {
             var discussionGuid = Guid.Parse(discussionId.Replace(" ", string.Empty));
             var discussion = this.discussionService.GetById(discussionGuid);
-            var voteArray = discussion.VoteIds.Select(id => this.voteService.GetById(id));
+            var voteArray = JsonSerializer.Deserialize<ICollection<Guid>>(discussion.VoteIds).Select(id => this.voteService.GetById(id));
             return VoteDTOBuilder.BuildList(voteArray, this.cardService);
+        }
+
+        /// <summary>
+        /// Получить обсуждения одной комнаты.
+        /// </summary>
+        /// <param name="roomId">Id комнаты.</param>
+        /// <returns>Обсуждения.</returns>
+        [HttpGet]
+        public IEnumerable<DiscussionDTO> GetDiscussionsByRoomId(string roomId)
+        {
+            var roomGuid = Guid.Parse(roomId.Replace(" ", string.Empty));
+            var discussions = this.discussionService.GetDiscussionsByRoomId(roomGuid);
+            return DiscussionDTOBuilder.BuildList(new List<Discussion>(discussions), this.voteService, this.cardService);
         }
 
         /// <summary>
@@ -106,7 +121,7 @@ namespace PlanPoker.Controllers
         [HttpGet]
         public IEnumerable<DiscussionDTO> GetDiscussionList()
         {
-            var discussions = this.discussionService.GetDiscussions();
+            var discussions = new List<Discussion>(this.discussionService.GetDiscussions());
             return DiscussionDTOBuilder.BuildList(discussions, this.voteService, this.cardService);
         }
     }

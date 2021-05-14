@@ -1,7 +1,9 @@
 ﻿using DataService.Models;
 using PlanPoker.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 
 namespace PlanPoker.DTO.Builders
 {
@@ -20,7 +22,7 @@ namespace PlanPoker.DTO.Builders
         public static DiscussionDTO Build(Discussion discussion, VoteService voteService, CardService cardService)
         {
             var voteList = VoteDTOBuilder.BuildList(
-                discussion.VoteIds.Select(id => voteService.GetById(id)),
+                new List<Vote>(JsonSerializer.Deserialize<List<Guid>>(discussion.VoteIds).Select(el => voteService.GetById(el))),
                 cardService);
             return new DiscussionDTO()
             {
@@ -29,7 +31,7 @@ namespace PlanPoker.DTO.Builders
                 Name = discussion.Name,
                 // StartAt = discussion.StartAt,
                 // EndAt = discussion.EndAt,
-                VoteList = voteList
+                VoteList = new List<VoteDTO>(voteList)
             };
         }
 
@@ -40,9 +42,9 @@ namespace PlanPoker.DTO.Builders
         /// <param name="voteService">Сервис оценки.</param>
         /// <param name="cardService">Сервис карт.</param>
         /// <returns>Список DTO обсуждений.</returns>
-        public static IEnumerable<DiscussionDTO> BuildList(IEnumerable<Discussion> discussions, VoteService voteService, CardService cardService)
+        public static ICollection<DiscussionDTO> BuildList(List<Discussion> discussions, VoteService voteService, CardService cardService)
         {
-            return discussions.Select(discussion => Build(discussion, voteService, cardService));
+            return new List<DiscussionDTO>(discussions.Select(discussion => Build(discussion, voteService, cardService)));
         }
     }
 }

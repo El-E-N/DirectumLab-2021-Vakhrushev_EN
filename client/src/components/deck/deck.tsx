@@ -1,15 +1,12 @@
 import * as React from 'react';
 import Card from '../card/card';
-import {ICard, IRoom, IVote} from '../../store/types';
+import {IRoom, IVote} from '../../store/types';
 import './deck.css';
 
 interface IProps {
   room: IRoom | null;
   vote: IVote | null;
-  // eslint-disable-next-line no-unused-vars
   updateVote(voteId: string, cardId: string): void;
-  // eslint-disable-next-line no-unused-vars
-  updateCard(room: IRoom, selectedCard: ICard): void;
 }
 
 const Deck: React.FunctionComponent<IProps> = (props) => {
@@ -21,7 +18,6 @@ const Deck: React.FunctionComponent<IProps> = (props) => {
           card={card}
           room={props.room}
           vote={props.vote}
-          updateCard={props.updateCard}
           updateVote={props.updateVote}
         />
       );

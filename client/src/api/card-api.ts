@@ -5,7 +5,5 @@ export const getCardsRequest = async (): Promise<Array<ICardDto>> => {
       `${baseUrl}/card/getCards`,
       options.GET
   );
-  // eslint-disable-next-line no-console
-  console.log(response.json());
   return response.json();
 };

@@ -31,6 +31,15 @@ export const addVoteRequest = async (
   return response.json();
 };
 
+export const getDiscussionsByRoomIdRequest = async (
+  roomId: string,
+): Promise<Array<IDiscussionDto>> => {
+  const response = await fetch(
+    `${discussionUrl}/getDiscussionsByRoomId?roomId=${roomId}`,
+    options.GET);
+  return response.json();
+};
+
 export const getAllVoteRequest = async (
     discussionId: string,
 ): Promise<Array<IVoteDto>> => {

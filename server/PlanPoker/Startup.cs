@@ -74,10 +74,15 @@ namespace PlanPoker
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+               app.UseDeveloperExceptionPage();
             }
 
             app.UseRouting();
+
+            app.UseCors(builder => builder.AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowAnyOrigin()
+            );
 
             app.UseEndpoints(endpoints =>
             {

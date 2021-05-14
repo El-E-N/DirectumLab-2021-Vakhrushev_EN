@@ -8,9 +8,8 @@ import './invite-page.css';
 
 export interface IProps extends RouteComponentProps {
   room: IRoom | null;
-  // eslint-disable-next-line no-unused-vars
+  player: IPlayer | null;
   updateUser(name: string | null): IPlayer | null;
-  // eslint-disable-next-line no-unused-vars
   addUserIntoRoom(room: IRoom, newUser: IPlayer): void;
 }
 
@@ -38,8 +37,10 @@ class InvitePageView extends React.Component<IProps, IState> {
   async handleSubmit(evt: React.FormEvent) {
     evt.preventDefault();
     if (this.state.userName !== '' && this.props.room !== null) {
-      const user = await this.props.updateUser(this.state.userName);
-      user && await this.props.addUserIntoRoom(this.props.room, user);
+      await this.props.updateUser(this.state.userName);
+
+      this.props.player && await this.props.addUserIntoRoom(this.props.room, this.props.player);
+
       this.props.history.push(`${RoutePath.MAIN}/${this.props.room.hash}`);
     }
   }

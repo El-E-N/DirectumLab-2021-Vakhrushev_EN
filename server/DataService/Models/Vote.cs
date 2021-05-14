@@ -15,7 +15,7 @@ namespace DataService.Models
         /// <param name="roomId">Id комнаты.</param>
         /// <param name="playerId">Id игрока.</param>
         /// <param name="discussionId">Id обсуждения.</param>
-        public Vote(Guid id, Guid cardId, Guid roomId, Guid playerId, Guid discussionId)
+        public Vote(Guid id, Guid? cardId, Guid roomId, Guid playerId, Guid discussionId)
         {
             this.Id = id;
             this.CardId = cardId;
@@ -27,7 +27,7 @@ namespace DataService.Models
         /// <summary>
         /// Id карты.
         /// </summary>
-        public Guid CardId { get; set;  }
+        public Guid? CardId { get; set; }
 
         /// <summary>
         /// Id комнаты.

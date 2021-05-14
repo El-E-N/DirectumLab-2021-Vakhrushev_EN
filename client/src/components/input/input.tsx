@@ -8,12 +8,11 @@ interface IProps {
   placeHolder?: string;
   readOnly?: boolean;
   id?: string;
-  // eslint-disable-next-line no-unused-vars
   onBlur?(evt: React.ChangeEvent<HTMLInputElement>): void;
   onClick?(): void;
 }
 
-class Input extends React.Component<IProps, {}> {
+class Input extends React.Component<IProps, unknown> {
   render() {
     return <input
       id={this.props.id}

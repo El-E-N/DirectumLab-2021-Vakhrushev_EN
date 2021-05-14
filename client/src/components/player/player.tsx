@@ -24,9 +24,9 @@ const Player: React.FunctionComponent<IProps> = (props) => {
       <span className="player__name">{props.player && props.player.name}</span>
     </div>
     {!props.showResult ?
-      props.vote && <img className="checked" alt={'checked'} src={check}/> :
+      props.vote?.card && <img className="checked" alt={'checked'} src={check}/> :
       <span className={'player__card'}>
-        {props.vote && props.vote.card.value !== 'coffee' ?
+        {props.vote && props.vote.card && props.vote.card.value !== 'coffee' ?
           props.vote.card.value :
           coffeeIcon
         }

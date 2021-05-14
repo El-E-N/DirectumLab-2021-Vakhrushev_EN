@@ -3,7 +3,6 @@ import Input from '../input/input';
 import './main__label.css';
 
 interface IProps {
-  // eslint-disable-next-line no-unused-vars
   updateValue?(evt: React.ChangeEvent<HTMLInputElement>): void;
   title: string;
   placeHolder: string;
@@ -11,7 +10,7 @@ interface IProps {
   id?: string;
 }
 
-class MainLabel extends React.Component<IProps, {}> {
+class MainLabel extends React.Component<IProps, unknown> {
   render() {
     return <label className="main__label">
       {this.props.title}

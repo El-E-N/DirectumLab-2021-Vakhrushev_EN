@@ -42,6 +42,27 @@ namespace PlanPoker.Services
         public Card Get(Guid id) => this.repository.Get(id);
 
         /// <summary>
+        /// Добавление стандартных карт.
+        /// </summary>
+        public void AddDefaultCards()
+        {
+            this.Create(0, "number");
+            this.Create(0.5, "number");
+            this.Create(1, "number");
+            this.Create(2, "number");
+            this.Create(3, "number");
+            this.Create(5, "number");
+            this.Create(8, "number");
+            this.Create(13, "number");
+            this.Create(20, "number");
+            this.Create(40, "number");
+            this.Create(100, "number");
+            this.Create(null, "question");
+            this.Create(null, "infinity");
+            this.Create(null, "coffee");
+        }
+
+        /// <summary>
         /// Получение всех карт.
         /// </summary>
         /// <returns>Все голоса из базы данных.</returns>
@@ -49,6 +70,9 @@ namespace PlanPoker.Services
         {
             var tempCard = this.Create(1234435321234, "qwep[ewkrlq,dqw;foiw");
             this.repository.Delete(tempCard.Id);
+            var cards = this.repository.GetItems();
+            if (!cards.Any())
+                this.AddDefaultCards();
             return this.repository.GetItems();
         }
     }

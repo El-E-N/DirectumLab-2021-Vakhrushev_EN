@@ -15,9 +15,9 @@ interface IState {
   roomId: string | null;
 }
 
-export class App extends React.Component<any, IState> {
-  constructor(props: any) {
-    super(props);
+export class App extends React.Component<unknown, IState> {
+  constructor() {
+    super(null);
     this.state = {
       viewModal: false,
       roomId: null,

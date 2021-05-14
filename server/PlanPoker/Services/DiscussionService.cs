@@ -3,6 +3,7 @@ using DataService.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 
 namespace PlanPoker.Services
 {
@@ -52,9 +53,8 @@ namespace PlanPoker.Services
             var name = discussion.Name;
             var startAt = discussion.StartAt;
             var roomId = discussion.RoomId;
-            var voteIds = discussion.VoteIds;
-            var listVoteIds = new List<Guid>(voteIds);
-            var item = new Discussion(discussionId, roomId, name, startAt, DateTime.Now, listVoteIds);
+            var voteIds = JsonSerializer.Deserialize<ICollection<Guid>>(discussion.VoteIds);
+            var item = new Discussion(discussionId, roomId, name, startAt, DateTime.Now, voteIds);
             this.repository.Save(item);
             return this.repository.Get(discussionId);
         }
@@ -70,20 +70,30 @@ namespace PlanPoker.Services
             var name = discussion.Name;
             var startAt = discussion.StartAt;
             var roomId = discussion.RoomId;
-            var voteIds = discussion.VoteIds;
-            voteIds.Add(voteId);
-            var listVoteIds = new List<Guid>(voteIds);
-            var item = new Discussion(discussionId, roomId, name, startAt, DateTime.Now, listVoteIds);
+            var voteIds = JsonSerializer.Deserialize<ICollection<Guid>>(discussion.VoteIds);
+            voteIds = new List<Guid>(voteIds.Append(voteId));
+            var item = new Discussion(discussionId, roomId, name, startAt, DateTime.Now, voteIds);
             this.repository.Save(item);
             return this.repository.Get(discussionId);
         }
+
+        /// <summary>
+        /// Получить обсуждения одной комнаты.
+        /// </summary>
+        /// <param name="roomId">Id комнаты.</param>
+        /// <returns>Обсуждения.</returns>
+        public IQueryable<Discussion> GetDiscussionsByRoomId(Guid roomId) => this.GetDiscussions().Where(discussion => discussion.RoomId == roomId);
 
         /// <summary>
         /// Возвращает список оценок.
         /// </summary>
         /// <param name="discussionId">Id обсуждения.</param>
         /// <returns>Список Id оценок.</returns>
-        public ICollection<Guid> GetVoteIds(Guid discussionId) => this.repository.Get(discussionId).VoteIds;
+        public ICollection<Guid> GetVoteIds(Guid discussionId)
+        {
+            var voteIds = this.repository.Get(discussionId).VoteIds;
+            return JsonSerializer.Deserialize<ICollection<Guid>>(voteIds);
+        }
 
         /// <summary>
         /// Возвращает список обсуждений.

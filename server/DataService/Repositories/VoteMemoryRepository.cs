@@ -25,7 +25,7 @@ namespace DataService.Repositories
         /// <param name="roomId">Id комнаты.</param>
         /// <param name="playerId">Id игрока.</param>
         /// <param name="discussionId">Id обсуждения.</param>
-        public void Create(Guid id, Guid cardId, Guid roomId, Guid playerId, Guid discussionId)
+        public void Create(Guid id, Guid? cardId, Guid roomId, Guid playerId, Guid discussionId)
         {
             this.Db.Items.Add(new Vote(id, cardId, roomId, playerId, discussionId));
             this.Db.SaveChanges();

@@ -10,7 +10,6 @@ interface IProps {
 
 const Stories: React.FunctionComponent<IProps> = (props) => {
   return <table className="stories">
-    {/* eslint-disable-next-line consistent-return */}
     {props.stories.map((story) => {
       if (story.average) {
         return <Story

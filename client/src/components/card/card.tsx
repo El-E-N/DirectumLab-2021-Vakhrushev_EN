@@ -4,10 +4,7 @@ import './card.css';
 import {IVote, ICard, IRoom} from '../../store/types';
 
 interface IProps {
-  // eslint-disable-next-line no-unused-vars
   updateVote(voteId: string, cardId: string): void;
-  // eslint-disable-next-line no-unused-vars
-  updateCard(room: IRoom, selectedCard: ICard): void;
   card: ICard;
   vote: IVote | null;
   room: IRoom | null;
@@ -19,13 +16,13 @@ const coffeeIcon = <svg className={'card__coffee'} width="44" height="44" viewBo
 
 const Card: React.FunctionComponent<IProps> = (props) => {
   const handleSetValue = () => {
+    console.log(props.vote);
     props.vote && props.updateVote(props.vote.id, props.card.id);
-    props.room && props.updateCard(props.room, props.card);
   };
 
   return <label className="card">
-    <Input type={'radio'} name={'cards'} value={props.card.value} className={'card__input'} onClick={handleSetValue}/>
-    <div className="card__content">
+    <Input type={'radio'} name={'cards'} value={props.card.value} className={'card__input'}/>
+    <div className="card__content" onClick={handleSetValue}>
       {props.card.value === 'coffee' ? coffeeIcon : props.card.value}
     </div>
   </label>;

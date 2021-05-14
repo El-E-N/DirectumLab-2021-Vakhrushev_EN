@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json;
 
 namespace DataService.Models
 {
@@ -34,7 +35,7 @@ namespace DataService.Models
                 this.Name = "Discussion" + this.Id;
             this.StartAt = startAt;
             this.EndAt = endAt;
-            this.VoteIds = voteIds;
+            this.VoteIds = JsonSerializer.Serialize<ICollection<Guid>>(voteIds);
         }
 
         /// <summary>
@@ -60,6 +61,6 @@ namespace DataService.Models
         /// <summary>
         /// Id голосований из обсуждения.
         /// </summary>
-        public ICollection<Guid> VoteIds { get; }
+        public string VoteIds { get; set; }
     }
 }

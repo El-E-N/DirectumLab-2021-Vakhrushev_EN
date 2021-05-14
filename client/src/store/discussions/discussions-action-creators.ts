@@ -38,3 +38,14 @@ export const addVote = (id: string, playerId: string, vote: IVote): IAddVoteActi
     vote,
   };
 };
+
+export interface IUpdateDiscussions extends Action {
+  discussions: Array<IDiscussion>;
+}
+
+export const updateDiscussions = (discussions: Array<IDiscussion>): IUpdateDiscussions => {
+  return {
+    type: ActionType.UPDATE_DISCUSSIONS,
+    discussions
+  }
+};

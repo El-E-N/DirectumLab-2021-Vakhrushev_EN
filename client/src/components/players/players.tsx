@@ -7,7 +7,6 @@ interface IProps {
   room: IRoom | null;
   user: IPlayer | null;
   showResult: boolean;
-  // eslint-disable-next-line no-unused-vars
   getVote(user: IPlayer): IVote | null;
 }
 

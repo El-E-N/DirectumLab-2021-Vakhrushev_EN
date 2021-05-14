@@ -6,7 +6,7 @@ import {Dispatch} from 'redux';
 import {translateDtoCardsIntoCard} from '../card';
 
 export const createRoom = (roomName: string, creatorId: string): any => {
-  return async (dispatch: Dispatch): Promise<IRoom> => {
+  return async (dispatch: Dispatch) => {
     const roomDto = await roomApi.createRoomRequest(roomName, creatorId);
     const cardsDto = await cardApi.getCardsRequest();
     const cards = translateDtoCardsIntoCard(cardsDto);
@@ -15,12 +15,11 @@ export const createRoom = (roomName: string, creatorId: string): any => {
       cards,
     };
     dispatch(createNewRoom(room));
-    return room;
   };
 };
 
 export const getRoom = (roomHash: string): any => {
-  return async (dispatch: Dispatch): Promise<IRoom> => {
+  return async (dispatch: Dispatch) => {
     const roomDto = await roomApi.getRoomRequest(roomHash);
     const cardsDto = await cardApi.getCardsRequest();
     const cards = translateDtoCardsIntoCard(cardsDto);
@@ -29,6 +28,5 @@ export const getRoom = (roomHash: string): any => {
       cards,
     };
     dispatch(createNewRoom(room));
-    return room;
   };
 };

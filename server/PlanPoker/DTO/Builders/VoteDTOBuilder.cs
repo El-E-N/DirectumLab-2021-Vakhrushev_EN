@@ -18,11 +18,19 @@ namespace PlanPoker.DTO.Builders
         /// <returns>DTO оценки.</returns>
         public static VoteDTO Build(Vote vote, CardService cardService)
         {
-            var card = cardService.Get(vote.CardId);
+            Card card;
+            CardDTO cardDto;
+            if (vote.CardId != null)
+            {
+                card = cardService.Get((System.Guid)vote.CardId);
+                cardDto = CardDTOBuilder.Build(card);
+            }
+            else
+                cardDto = null;
             return new VoteDTO()
             {
                 Id = vote.Id,
-                Card = CardDTOBuilder.Build(card),
+                Card = cardDto,
                 //RoomId = vote.RoomId,
                 PlayerId = vote.PlayerId,
                 // DiscussionId = vote.DiscussionId

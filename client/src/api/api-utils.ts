@@ -30,7 +30,7 @@ export interface IDiscussionDto {
 export interface IVoteDto {
   id: string;
   playerId: string;
-  card: ICardDto;
+  card: ICardDto | null;
 }
 
 export interface ICardDto {

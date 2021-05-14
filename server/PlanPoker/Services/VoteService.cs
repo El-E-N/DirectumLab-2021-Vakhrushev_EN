@@ -29,7 +29,7 @@ namespace PlanPoker.Services
         /// <param name="playerId">Id игрока.</param>
         /// <param name="discussionId">Id обсуждения.</param>
         /// <returns>Голос.</returns>
-        public Vote Create(Guid cardId, Guid roomId, Guid playerId, Guid discussionId) 
+        public Vote Create(Guid? cardId, Guid roomId, Guid playerId, Guid discussionId) 
         {
             var id = Guid.NewGuid();
             this.repository.Create(id, cardId, roomId, playerId, discussionId);

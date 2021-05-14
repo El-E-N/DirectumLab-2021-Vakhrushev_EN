@@ -15,11 +15,10 @@ export interface IMenuProps {
 interface IProps extends IMenuProps {
   room: IRoom | null,
   player: IPlayer | null,
-  // eslint-disable-next-line no-unused-vars
   getVote(user: IPlayer): IVote | null;
 }
 
-class Menu extends React.Component<IProps, {}> {
+class Menu extends React.Component<IProps, unknown> {
   constructor(props: IProps) {
     super(props);
   }

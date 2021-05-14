@@ -7,6 +7,19 @@ import {createRoom} from '../../store/room/room-operations';
 import {updateUser} from '../../store/user/user-operations';
 import {createDiscussion} from '../../store/discussion/discussion-operations';
 import {Dispatch} from 'redux';
+import {IRootState} from '../../store/types';
+import {userSelector} from '../../store/user/user-selectors';
+import {roomSelector} from '../../store/room/room-selectors';
+import {discussionSelector} from '../../store/discussion/discussion-selectors';
+import {createVote} from '../../store/discussion/discussion-operations';
+
+const mapStateToProps = (state: IRootState) => {
+  return {
+    player: userSelector(state),
+    room: roomSelector(state),
+    discussion: discussionSelector(state)
+  };
+};
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
@@ -17,9 +30,12 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
       return dispatch(await updateUser(name));
     },
     createDiscussion: async (roomId: string) => {
-      dispatch(await createDiscussion(roomId));
+      return dispatch(await createDiscussion(roomId));
+    },
+    createVote: async (roomId: string, playerId: string, discussionId: string) => {
+      return dispatch(await createVote(roomId, playerId, discussionId));
     },
   };
 };
 
-export default compose<React.ComponentClass>(withRouter, connect(null, mapDispatchToProps))(CreatePageView);
+export default compose<React.ComponentClass>(withRouter, connect(mapStateToProps, mapDispatchToProps))(CreatePageView);

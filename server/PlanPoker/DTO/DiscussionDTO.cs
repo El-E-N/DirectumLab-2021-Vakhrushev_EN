@@ -36,6 +36,6 @@ namespace PlanPoker.DTO
         /// <summary>
         /// Голосования из него.
         /// </summary>
-        public IEnumerable<VoteDTO> VoteList { get; set; }
+        public ICollection<VoteDTO> VoteList { get; set; }
     }
 }

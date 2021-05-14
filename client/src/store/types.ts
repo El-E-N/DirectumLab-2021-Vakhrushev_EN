@@ -22,7 +22,7 @@ export interface IDiscussion {
 
 export interface IVote {
   id: string;
-  card: ICard;
+  card: ICard | null;
 }
 
 export interface ICard {

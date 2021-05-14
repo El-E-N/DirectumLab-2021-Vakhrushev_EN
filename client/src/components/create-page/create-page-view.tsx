@@ -2,16 +2,15 @@ import * as React from 'react';
 import {RouteComponentProps} from 'react-router-dom';
 import MainLabel from '../main__label/main__label';
 import Button from '../button/button';
-import {IPlayer, IRoom} from '../../store/types';
+import {IDiscussion, IPlayer, IRoom} from '../../store/types';
 import {RoutePath} from '../../routes';
 import './create-page.css';
 
 export interface IProps extends RouteComponentProps {
-  // eslint-disable-next-line no-unused-vars
+  player: IPlayer | null;
+  room: IRoom | null;
   createRoom(roomName: string, creatorId: string): IRoom;
-  // eslint-disable-next-line no-unused-vars
   createUser(name: string | null): IPlayer | null;
-  // eslint-disable-next-line no-unused-vars
   createDiscussion(roomId: string): void;
 }
 
@@ -36,20 +35,23 @@ class CreatePageView extends React.Component<IProps, IState> {
   async handleSubmit(evt: React.FormEvent) {
     evt.preventDefault();
     if (this.state.roomName !== '' && this.state.userName !== '') {
-      const user = await this.props.createUser(this.state.userName);
-      const room = user && await this.props.createRoom(this.state.roomName, user.id);
-      room && await this.props.createDiscussion(room.id);
-      room && this.props.history.push(`${RoutePath.MAIN}/${room.hash}`);
+      await this.props.createUser(this.state.userName);
+
+      this.props.player && await this.props.createRoom(this.state.roomName, this.props.player.id);
+
+      this.props.room && await this.props.createDiscussion(this.props.room.id);
+
+      this.props.room && this.props.history.push(`${RoutePath.MAIN}/${this.props.room.hash}`);
     }
   }
 
-  updateUserValue(evt: React.ChangeEvent<HTMLInputElement>) {
+  updateUserValue(evt: React.ChangeEvent<HTMLInputElement>): void {
     this.setState({
       userName: evt.target.value
     });
   }
 
-  updateRoomValue(evt: React.ChangeEvent<HTMLInputElement>) {
+  updateRoomValue(evt: React.ChangeEvent<HTMLInputElement>): void {
     this.setState({
       roomName: evt.target.value
     });
