@@ -75,7 +75,7 @@ export class MainPageView extends React.Component<IMainPageProps, IState> {
     this.props.room === null && await this.props.getRoom(this.props.match.params.hash);
 
     if (this.props.player === null) {
-      history.push(`${RoutePath.INVITE}/${this.props.match.params.hash}`);
+      this.props.history.push(`${RoutePath.INVITE}/${this.props.match.params.hash}`);
     } else {
       this.props.room && await this.props.loadingDiscussions(this.props.room.id);
 
