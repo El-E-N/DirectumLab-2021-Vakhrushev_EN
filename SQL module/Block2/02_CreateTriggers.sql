@@ -5,10 +5,11 @@ create trigger OrdersDelete
 on Orders
 after delete
 as
-insert into OrdersHistory (OperationType, OrderDateTime, CustomerId, SellerId)
+insert into OrdersHistory (OperationType, OrderDateTime, OrderId, CustomerId, SellerId)
 select 
   'DELETE', 
-  OrderDateTime, 
+  OrderDateTime,
+  Id,
   CustomerId, 
   SellerId
 from deleted
@@ -18,10 +19,11 @@ create trigger OrdersInsert
 on Orders
 after insert
 as
-insert into OrdersHistory (OperationType, OrderDateTime, CustomerId, SellerId)
+insert into OrdersHistory (OperationType, OrderDateTime, OrderId, CustomerId, SellerId)
 select
   'INSERT',
   OrderDateTime,
+  Id,
   CustomerId, 
   SellerId
 from inserted
@@ -31,10 +33,11 @@ create trigger OrdersUpdate
 on Orders
 after update
 as
-insert into OrdersHistory (OperationType, OrderDateTime, CustomerId, SellerId)
+insert into OrdersHistory (OperationType, OrderDateTime, OrderId, CustomerId, SellerId)
 select
   'UPDATE', 
   OrderDateTime, 
+  Id,
   CustomerId, 
   SellerId
 from inserted

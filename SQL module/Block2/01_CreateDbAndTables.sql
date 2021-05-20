@@ -34,8 +34,8 @@ create table Orders
 		constraint CK_Order_Amount check(Amount > 0),
 
 	OrderDateTime datetime not null,
-	CustomerId int not null references Customers(Id) on delete cascade,
-	SellerId int not null references Sellers(Id) on delete cascade
+	CustomerId int not null references Customers(Id),
+	SellerId int not null references Sellers(Id)
 );
 
 go
@@ -45,6 +45,7 @@ create table OrdersHistory
 	OperationType nvarchar(50) not null,
 	OperationDateTime datetime not null default getdate(),
 	OrderDateTime datetime not null,
-	CustomerId int not null references Customers(Id) on delete cascade,
-	SellerId int not null references Sellers(Id) on delete cascade
+	OrderId int not null,
+	CustomerId int not null,
+	SellerId int not null
 );
