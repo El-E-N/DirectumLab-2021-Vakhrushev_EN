@@ -5,12 +5,12 @@ select * from Customers
 where 
   city = 'Таллин'
   or city = 'Ижевск';
---58 spid
+--0.004 sec
 
 select * from Customers
 where 
   city in ('Таллин', 'Ижевск');
---58 spid
+--0.006 sec
 
 --b
 select * from SalesPeople

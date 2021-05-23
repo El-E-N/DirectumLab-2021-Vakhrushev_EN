@@ -1,8 +1,7 @@
-create database Labstudy;
+use STUDYTrace;
 
+--1
 go
-use Labstudy;
-
 create table Customers
 (
   cnum int not null,
@@ -29,4 +28,16 @@ create table Orders
   odate datetime not null,
   cnum int not null,
   snum int not null,
+  ocamt float not null default 0,
+  osamt float not null default 0
+);
+
+go
+create table Documents
+(
+  dnum int,
+  dcamt float null default 0,
+  dsamt float null default 0,
+  ddate	datetime not null,
+  onum	int	not null
 );

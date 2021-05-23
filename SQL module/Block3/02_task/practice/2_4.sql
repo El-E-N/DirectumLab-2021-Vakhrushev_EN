@@ -8,16 +8,17 @@ select cname, rating, city
 from Customers; 
 
 --e
---61 spid
+--0.004 sec
 
 --f
 select snum
 from Orders;
---61 spid
+--0.003 sec
 
 select distinct snum
 from Orders;
---61 spid
+--0.006 sec
+-- distinct - убирает одинаковые строки
 
 --g
 select distinct snum
@@ -41,21 +42,21 @@ select * from Orders
 where 
   odate = '23.10.1990'
   and amt > 159;
---61 spid
+--0.004 sec
 
 set dateformat DMY;
 select * from Orders
 where 
   odate = '23.10.1990'
   and amt > 159;
---61 spid. SET DATEFORMAT DMY не понижает производительность 
+--0.003 sec. SET DATEFORMAT DMY повышает производительность 
 
 --l
 select * from Customers
 where city = 'Москва'
 union select * from Customers
 where rating > 200;
---61 spid
+--0.01 sec
 
 --m
 select * from Customers
