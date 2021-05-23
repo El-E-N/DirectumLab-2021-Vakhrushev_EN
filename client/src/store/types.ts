@@ -11,12 +11,16 @@ export interface IRoom {
   hostId: string;
   creatorId: string;
   players: Array<IPlayer>;
+  currentDiscussionId: string | null;
+  choosedDiscussionId: string | null;
+  shownModal: boolean;
 }
 
 export interface IDiscussion {
   id: string;
   name: string | null;
   average: number | null;
+  players: Array<IPlayer> | null;
   voteArray: { [key: string]: IVote | null }; // key - userId, value - vote
 }
 
@@ -33,6 +37,5 @@ export interface ICard {
 export interface IRootState {
   room: IRoom | null;
   discussions: Array<IDiscussion> | null;
-  discussion: IDiscussion | null;
   user: IPlayer | null;
 }

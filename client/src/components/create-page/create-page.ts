@@ -5,19 +5,16 @@ import {connect} from 'react-redux';
 import CreatePageView from './create-page-view';
 import {createRoom} from '../../store/room/room-operations';
 import {updateUser} from '../../store/user/user-operations';
-import {createDiscussion} from '../../store/discussion/discussion-operations';
+import {createDiscussion, createVote} from '../../store/discussions/discussions-operations';
 import {Dispatch} from 'redux';
 import {IRootState} from '../../store/types';
 import {userSelector} from '../../store/user/user-selectors';
 import {roomSelector} from '../../store/room/room-selectors';
-import {discussionSelector} from '../../store/discussion/discussion-selectors';
-import {createVote} from '../../store/discussion/discussion-operations';
 
 const mapStateToProps = (state: IRootState) => {
   return {
     player: userSelector(state),
     room: roomSelector(state),
-    discussion: discussionSelector(state)
   };
 };
 

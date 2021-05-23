@@ -42,6 +42,18 @@ namespace PlanPoker.Controllers
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public PlayerDTO GetById(string id)
+        {
+            var guid = Guid.Parse(id.Replace(" ", string.Empty));
+            var player = this.service.GetById(guid);
+            return PlayerDTOBuilder.Build(player);
+        }
+
+        /// <summary>
         /// Получить токен игрока.
         /// </summary>
         /// <param name="id">Id игрока.</param>

@@ -30,6 +30,6 @@ namespace PlanPoker.DTO
         /// <summary>
         /// Id обсуждения.
         /// </summary>
-        // public Guid DiscussionId { get; set; } //
+        public Guid DiscussionId { get; set; }
     }
 }

@@ -2,7 +2,7 @@ import * as React from 'react';
 import './vote.css';
 
 export interface IVote {
-  count: number;
+  count: string;
   percents: string;
   color: string;
 }

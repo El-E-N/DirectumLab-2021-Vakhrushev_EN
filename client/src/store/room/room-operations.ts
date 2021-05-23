@@ -13,6 +13,9 @@ export const createRoom = (roomName: string, creatorId: string): any => {
     const room: IRoom = {
       ...roomDto,
       cards,
+      currentDiscussionId: null,
+      choosedDiscussionId: null,
+      shownModal: false,
     };
     dispatch(createNewRoom(room));
   };
@@ -26,6 +29,9 @@ export const getRoom = (roomHash: string): any => {
     const room: IRoom = {
       ...roomDto,
       cards,
+      currentDiscussionId: null,
+      choosedDiscussionId: null,
+      shownModal: false,
     };
     dispatch(createNewRoom(room));
   };

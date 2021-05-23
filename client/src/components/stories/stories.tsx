@@ -5,7 +5,7 @@ import './stories.css';
 
 interface IProps {
   stories: Array<IDiscussion>;
-  onShowModal?(): void;
+  changeShownModal(activated: boolean): void;
 }
 
 const Stories: React.FunctionComponent<IProps> = (props) => {
@@ -16,7 +16,7 @@ const Stories: React.FunctionComponent<IProps> = (props) => {
           key={story.name + story.id}
           name={story.name}
           average={story.average}
-          onShowModal={props.onShowModal}
+          changeShownModal={props.changeShownModal}
         />;
       }
     })}

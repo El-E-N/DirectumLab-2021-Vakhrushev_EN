@@ -33,7 +33,7 @@ namespace PlanPoker.DTO.Builders
                 Card = cardDto,
                 //RoomId = vote.RoomId,
                 PlayerId = vote.PlayerId,
-                // DiscussionId = vote.DiscussionId
+                DiscussionId = vote.DiscussionId
             };
         }
 

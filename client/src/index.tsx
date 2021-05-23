@@ -18,5 +18,5 @@ render(
         <App/>
       </Router>
     </Provider>,
-    document.body
+    document.getElementById('root')
 );

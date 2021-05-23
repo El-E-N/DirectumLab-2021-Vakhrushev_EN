@@ -15,14 +15,15 @@ interface IMatchParams {
 export interface IMainPageProps extends RouteComponentProps<IMatchParams> {
   room: IRoom | null;
   player: IPlayer | null;
-  vote: IVote | null;
+  vote: IVote;
   discussions: Array<IDiscussion> | null;
-  onShowModal(): void;
+  voteArray: Array<IVote> | null;
   getRoom(hash: string): IRoom;
   updateVote(voteId: string, cardId: string): void;
   getVote(user: IPlayer): IVote | null;
   loadingDiscussions(roomId: string): void;
   createVote(roomId: string, playerId: string, discussionId: string): void;
+  changeShownModal(activated: boolean): void;
 }
 
 interface IState {
@@ -57,9 +58,11 @@ export class MainPageView extends React.Component<IMainPageProps, IState> {
                 updateVote={this.props.updateVote}
                 vote={this.props.vote}
               /> :
-              <BrieflyResults/>}
-            <History stories={[]} onShowModal={this.props.onShowModal}/>
+              this.props.voteArray && <BrieflyResults room={this.props.room} voteArray={this.props.voteArray}/>}
+            {this.props.discussions &&
+            <History discussions={this.props.discussions} changeShownModal={this.props.changeShownModal}/>}
           </div>
+
           <Menu
             addEnter={!this.state.isPlanning}
             onClick={this.handleClick}
@@ -75,7 +78,7 @@ export class MainPageView extends React.Component<IMainPageProps, IState> {
     this.props.room === null && await this.props.getRoom(this.props.match.params.hash);
 
     if (this.props.player === null) {
-      history.push(`${RoutePath.INVITE}/${this.props.match.params.hash}`);
+      this.props.history.push(`${RoutePath.INVITE}/${this.props.match.params.hash}`);
     } else {
       this.props.room && await this.props.loadingDiscussions(this.props.room.id);
 

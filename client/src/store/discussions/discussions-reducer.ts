@@ -1,10 +1,10 @@
 import {IDiscussion} from '../types';
-import {IRemoveDiscussionAction, IAddDiscussionAction, IAddVoteAction, IUpdateDiscussions} from './discussions-action-creators';
+import {IRemoveDiscussionAction, IAddDiscussionAction, IUpdateDiscussions, IUpdateVoteAction} from './discussions-action-creators';
 import {ActionType} from '../reducer';
 
 export function reducer(
     state: Array<IDiscussion> | null = [],
-    action: IRemoveDiscussionAction | IAddDiscussionAction | IAddVoteAction | IUpdateDiscussions):
+    action: IRemoveDiscussionAction | IAddDiscussionAction | IUpdateDiscussions | IUpdateVoteAction):
   Array<IDiscussion> | null {
   switch (action.type) {
     case ActionType.REMOVE_DISCUSSION: {
@@ -22,24 +22,13 @@ export function reducer(
       const discussionsAction = action as IUpdateDiscussions;
       return discussionsAction.discussions;
     }
-    case ActionType.ADD_VOTE: {
-      const addVoteAction = action as IAddVoteAction;
+    case ActionType.UPDATE_VOTE: {
+      const addVoteAction = action as IUpdateVoteAction;
       return state && state.map((discussion) => {
-        if (addVoteAction.id === discussion.id) {
+        if (addVoteAction.discussionId === discussion.id) {
           discussion.voteArray[addVoteAction.playerId] = addVoteAction.vote;
         }
         return discussion;
-      });
-    }
-    case 'CHANGE_NAME': {
-      return state && state.map((s) => {
-        if (s.id === 'sdafsag') {
-          return {
-            ...s,
-            name: 'asdgsadg',
-          };
-        }
-        return s;
       });
     }
     default: {

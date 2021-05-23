@@ -6,16 +6,17 @@ import './story.css';
 interface IStory {
   name: string | null;
   average: number | null;
-  onShowModal?(): void;
+  changeShownModal(activated: boolean): void;
 }
 
 const Story: React.FunctionComponent<IStory> = (props) => {
   const onClick = (event: React.FormEvent) => {
     event.preventDefault();
-    props.onShowModal && props.onShowModal();
+    props.changeShownModal(true);
   };
 
   const storyDeleteImg = <img className="story__delete" alt={'storyDelete'} src={deleteImg}/>;
+
   return <tr className="story">
     <td className="story__name">
       <a href={'/#'} className="story__link" onClick={onClick}>{props.name}</a>

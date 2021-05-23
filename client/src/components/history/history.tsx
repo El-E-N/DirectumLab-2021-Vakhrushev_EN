@@ -6,8 +6,8 @@ import Button from '../button/button';
 import './history.css';
 
 interface IProps {
-  stories: Array<IDiscussion>;
-  onShowModal?(): void;
+  discussions: Array<IDiscussion>;
+  changeShownModal(activated: boolean): void;
 }
 
 const History: React.FunctionComponent<IProps> = (props) => {
@@ -16,11 +16,11 @@ const History: React.FunctionComponent<IProps> = (props) => {
     <div className="history__header">
       <div className="history__header-wrapper">
         <h3 className="history__title">Completed Stories</h3>
-        <div className="history__count">{props.stories.length}</div>
+        <div className="history__count">{props.discussions.length}</div>
       </div>
       <Button value={downloadImg} className={'history__button'}/>
     </div>
-    <Stories stories={props.stories} onShowModal={props.onShowModal}/>
+    <Stories stories={props.discussions} changeShownModal={props.changeShownModal}/>
   </div>;
 };
 

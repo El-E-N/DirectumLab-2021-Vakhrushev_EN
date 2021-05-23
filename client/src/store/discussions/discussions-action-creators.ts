@@ -24,16 +24,16 @@ export const addDiscussion = (discussion: IDiscussion): IAddDiscussionAction => 
   };
 };
 
-export interface IAddVoteAction extends Action {
-  id: string;
+export interface IUpdateVoteAction extends Action {
+  discussionId: string;
   playerId: string;
   vote: IVote | null;
 }
 
-export const addVote = (id: string, playerId: string, vote: IVote): IAddVoteAction => {
+export const updateVote = (discussionId: string, playerId: string, vote: IVote): IUpdateVoteAction => {
   return {
-    type: ActionType.ADD_VOTE,
-    id,
+    type: ActionType.UPDATE_VOTE,
+    discussionId,
     playerId,
     vote,
   };

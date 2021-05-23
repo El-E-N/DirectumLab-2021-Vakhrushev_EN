@@ -4,7 +4,7 @@ import './modal__user.css';
 
 export interface IUser {
   name: string;
-  number: number;
+  value: string;
 }
 
 const ModalUser: React.FunctionComponent<IUser> = (props) => {
@@ -13,7 +13,7 @@ const ModalUser: React.FunctionComponent<IUser> = (props) => {
       <img className="modal__user-image" alt={'modal__user-img'} src={userIcon}/>
       <span className="modal__user-name">{props.name}</span>
     </div>
-    <span className="modal__user-number">{props.number}</span>
+    <span className="modal__user-number">{props.value}</span>
   </li>;
 };
 

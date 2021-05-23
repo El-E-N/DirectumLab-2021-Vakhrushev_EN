@@ -12,6 +12,16 @@ export const createPlayerRequest = async (
   return response.json();
 };
 
+export const loadingPlayerRequest = async (
+    id: string,
+): Promise<IPlayerDto> => {
+  const response = await fetch(
+      `${playerUrl}/getById?id=${id}`,
+      options.GET
+  );
+  return response.json();
+};
+
 export const getTokenRequest = async (
     id: string,
 ): Promise<string> => {
