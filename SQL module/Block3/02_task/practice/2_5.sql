@@ -10,7 +10,8 @@ where
 select * from Customers
 where 
   city in ('Таллин', 'Ижевск');
---0.006 sec
+--0.003 sec
+--второй работает быстрее
 
 --b
 select * from SalesPeople

@@ -17,6 +17,7 @@ where
 select 
   s.sname,
   s.comm,
-  (o.amt * (1 - s.comm)) as [sum]
+  (o.amt * s.comm) as [sum]
 from Orders o, Salespeople s
 where o.snum = s.snum
+order by onum;

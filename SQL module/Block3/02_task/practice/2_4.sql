@@ -8,7 +8,7 @@ select cname, rating, city
 from Customers; 
 
 --e
---0.004 sec
+--0.003 sec
 
 --f
 select snum
@@ -42,27 +42,54 @@ select * from Orders
 where 
   odate = '23.10.1990'
   and amt > 159;
---0.004 sec
+--0.003 sec
 
 set dateformat DMY;
 select * from Orders
 where 
   odate = '23.10.1990'
   and amt > 159;
---0.003 sec. SET DATEFORMAT DMY повышает производительность 
+--0.003 sec. SET DATEFORMAT DMY не влияет на производительность.
 
 --l
 select * from Customers
 where city = 'Москва'
 union select * from Customers
 where rating > 200;
---0.01 sec
+--0.007 sec
 
 --m
-select * from Customers
-where not city = 'Москва'
-union select * from Customers
-where not rating > 200;
+--1
+go
+select * from Orders
+where not amt > 
+    (select avg(amt)
+	from Orders
+    where odate = '23/09/1990')
+
+--2
+go
+select * from Orders
+where not
+  (select city 
+  from Salespeople 
+  where snum = Orders.snum) in ('Ижевск', 'Томск')
+
+--3
+go
+select * from Salespeople
+where not
+  (select count(*) from Customers 
+  where snum = Salespeople.snum) > 1
+
+--4
+go
+select * 
+from Salespeople s
+where not
+  (select COUNT(*)
+  from Customers c
+  where c.snum = s.snum) > 1
 
 --n
 select * from Orders

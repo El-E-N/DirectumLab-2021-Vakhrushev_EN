@@ -27,6 +27,7 @@ where
   (select COUNT(*)
   from Customers c
   where c.snum = s.snum) > 1
+  --0.003 sec
 
 select *
 from Salespeople s
@@ -36,4 +37,5 @@ where
     where c.snum = s.snum
 	group by c.snum
 	having COUNT(c.snum) > 1)
--- второй запрос - дольше
+--0.003 sec
+-- оба запроса работают одинаково быстро (17 чтений)
