@@ -59,37 +59,9 @@ where rating > 200;
 --0.007 sec
 
 --m
---1
 go
-select * from Orders
-where not amt > 
-    (select avg(amt)
-	from Orders
-    where odate = '23/09/1990')
-
---2
-go
-select * from Orders
-where not
-  (select city 
-  from Salespeople 
-  where snum = Orders.snum) in ('Ижевск', 'Томск')
-
---3
-go
-select * from Salespeople
-where not
-  (select count(*) from Customers 
-  where snum = Salespeople.snum) > 1
-
---4
-go
-select * 
-from Salespeople s
-where not
-  (select COUNT(*)
-  from Customers c
-  where c.snum = s.snum) > 1
+select * from Customers
+where not (city = 'Москва' or rating > 200);
 
 --n
 select * from Orders
