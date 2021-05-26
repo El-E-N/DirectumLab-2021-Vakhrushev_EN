@@ -5,14 +5,14 @@ use AdventureWorksLT;
 
 --1.	Отобразить названия организации всех покупателей из Торонто.
 go
-select CompanyName
+select c.CompanyName
 from SalesLT.Customer c
 join SalesLT.CustomerAddress ca
 on c.CustomerID = ca.CustomerID
-where ca.AddressID in
-  (select a.AddressID 
-  from SalesLT.[Address] a
-  where City = 'Toronto')
+join SalesLT.[Address] a
+on ca.AddressID = a.AddressID
+where a.City = 'Toronto'
+order by c.CompanyName
 
 --2.	Сколько товаров со стоимостью (ListPrice) выше 1000 было продано?
 go
@@ -24,35 +24,33 @@ where p.ListPrice > 1000
 
 --3.	Отобразить названия организаций, суммарные покупки которых (включая налоги), превысили 50000.
 go
-select distinct CompanyName cname
+select c1.CompanyName cname
 from SalesLT.Customer c1
-where 
-(select sum(TotalDue) from SalesLT.SalesOrderHeader
-where CustomerID in 
-  (select CustomerID 
-  from SalesLT.Customer c2
-  where c2.CompanyName = c1.CompanyName)) > 50000
+group by c1.CompanyName
+having 
+  (select sum(soh.TotalDue) 
+  from SalesLT.SalesOrderHeader soh
+  join SalesLT.Customer c2
+  on soh.CustomerID = c2.CustomerID
+  where c2.CompanyName = c1.CompanyName) > 50000
 
 --4.	Какие компании заказывали продукт (ProductModel) «Racing Socks»?
 go
-select distinct CompanyName cname
+select c1.CompanyName cname
 from SalesLT.Customer c1
-where 'Racing Socks' in
+group by c1.CompanyName
+having 'Racing Socks' in
   (select pm.[Name]
   from SalesLT.ProductModel pm
-  where pm.ProductModelID in
-    (select p.ProductModelID 
-	from SalesLT.Product p
-	where p.ProductID in
-	  (select sod.ProductID 
-      from SalesLT.SalesOrderDetail sod
-	  where sod.SalesOrderID in
-		(select soh.SalesOrderID 
-		from SalesLT.SalesOrderHeader soh
-		where soh.CustomerID in 
-		  (select CustomerID
-          from SalesLT.Customer c2
-          where c2.CompanyName = c1.CompanyName)))))
+  join SalesLT.Product p
+  on pm.ProductModelID = p.ProductModelID
+  join SalesLT.SalesOrderDetail sod
+  on p.ProductID = sod.ProductID
+  join SalesLT.SalesOrderHeader soh
+  on sod.SalesOrderID = soh.SalesOrderID
+  join SalesLT.Customer c2
+  on soh.CustomerID = c2.CustomerID
+  where c2.CompanyName = c1.CompanyName)
 
 --5.	Отобразить 25 товаров с наибольшим суммарным чеком (количество * стоимость товара).
 go
@@ -69,9 +67,9 @@ order by
 --      Для каждого диапазона отобразить количество заказов и общую стоимость.
 go
 select 
-  [range], 
+  tbl.[range], 
   count(*) as [count], 
-  sum(TotalDue) as [sum] 
+  sum(tbl.TotalDue) as [sum] 
 from
   (select *, '0-99' as [range]
   from SalesLT.SalesOrderHeader 
@@ -108,21 +106,17 @@ from SalesLT.[Address] tbl
 group by tbl.City
 having exists
   (select *
-  from SalesLT.SalesOrderHeader
-  where CustomerID in
-    (select ca.CustomerID
-    from SalesLT.CustomerAddress ca
-    where ca.AddressID in
-      (select a2.AddressID
-      from SalesLT.[Address] a2
-      where tbl.City = a2.City)))
+  from SalesLT.SalesOrderHeader soh
+  join SalesLT.CustomerAddress ca
+  on soh.CustomerID = ca.CustomerID
+  join SalesLT.[Address] a
+  on ca.AddressID = a.AddressID
+  where tbl.City = a.City)
 order by
   (select sum(TotalDue)
-  from SalesLT.SalesOrderHeader
-  where CustomerID in
-    (select ca.CustomerID
-    from SalesLT.CustomerAddress ca
-    where ca.AddressID in
-      (select a2.AddressID
-      from SalesLT.[Address] a2
-      where tbl.City = a2.City))) desc
+  from SalesLT.SalesOrderHeader soh
+  join SalesLT.CustomerAddress ca
+  on soh.CustomerID = ca.CustomerID
+  join SalesLT.[Address] a
+  on ca.AddressID = a.AddressID
+  where tbl.City = a.City) desc
