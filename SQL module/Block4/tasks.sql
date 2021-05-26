@@ -36,21 +36,18 @@ having
 
 --4.	Какие компании заказывали продукт (ProductModel) «Racing Socks»?
 go
-select c1.CompanyName cname
-from SalesLT.Customer c1
-group by c1.CompanyName
-having 'Racing Socks' in
-  (select pm.[Name]
-  from SalesLT.ProductModel pm
-  join SalesLT.Product p
-  on pm.ProductModelID = p.ProductModelID
-  join SalesLT.SalesOrderDetail sod
-  on p.ProductID = sod.ProductID
-  join SalesLT.SalesOrderHeader soh
-  on sod.SalesOrderID = soh.SalesOrderID
-  join SalesLT.Customer c2
-  on soh.CustomerID = c2.CustomerID
-  where c2.CompanyName = c1.CompanyName)
+select c.CompanyName cname
+from SalesLT.Customer c
+join SalesLT.SalesOrderHeader soh
+on c.CustomerID = soh.CustomerID
+join SalesLT.SalesOrderDetail sod
+on sod.SalesOrderID = soh.SalesOrderID
+join SalesLT.Product p
+on p.ProductID = sod.ProductID
+join SalesLT.ProductModel pm
+on pm.ProductModelID = p.ProductModelID
+where pm.[Name] = 'Racing Socks'
+group by c.CompanyName
 
 --5.	Отобразить 25 товаров с наибольшим суммарным чеком (количество * стоимость товара).
 go
@@ -101,22 +98,12 @@ where c2.CompanyName like '%cycle%'
 
 -- 8.	Отобразите 10 наиболее важных для продаж городов.
 go
-select top 10 tbl.City
+select top 10 tbl.City, sum(soh.TotalDue)
 from SalesLT.[Address] tbl
+join SalesLT.CustomerAddress ca
+on ca.AddressID = tbl.AddressID
+join SalesLT.SalesOrderHeader soh
+on soh.CustomerID = ca.CustomerID
+where tbl.City = tbl.City
 group by tbl.City
-having exists
-  (select *
-  from SalesLT.SalesOrderHeader soh
-  join SalesLT.CustomerAddress ca
-  on soh.CustomerID = ca.CustomerID
-  join SalesLT.[Address] a
-  on ca.AddressID = a.AddressID
-  where tbl.City = a.City)
-order by
-  (select sum(TotalDue)
-  from SalesLT.SalesOrderHeader soh
-  join SalesLT.CustomerAddress ca
-  on soh.CustomerID = ca.CustomerID
-  join SalesLT.[Address] a
-  on ca.AddressID = a.AddressID
-  where tbl.City = a.City) desc
+order by sum(soh.TotalDue) desc
