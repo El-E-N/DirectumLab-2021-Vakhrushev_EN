@@ -10,7 +10,6 @@ import * as roomApi from '../../api/room-api';
 import {updateUser} from '../../store/user/user-operations';
 import {Dispatch} from 'redux';
 import {userSelector} from '../../store/user/user-selectors';
-import {loadingDiscussions} from '../../store/discussions/discussions-operations';
 
 const mapStateToProps = (state: IRootState) => {
   const room = roomSelector(state);
@@ -25,7 +24,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     addUserIntoRoom: async (room: IRoom, newUser: IPlayer) => {
       await roomApi.addPlayerIntoRoomRequest(room.id, newUser.id);
-      return addUser(room, newUser);
+      return addUser(newUser);
     },
     updateUser: async (name: string | null) => {
       return dispatch(await updateUser(name));

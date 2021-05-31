@@ -59,6 +59,17 @@ namespace PlanPoker.Services
             return this.repository.Get(discussionId);
         }
 
+        public Discussion SetName(Guid discussionId, string name)
+        {
+            var discussion = this.repository.Get(discussionId);
+            var startAt = discussion.StartAt;
+            var roomId = discussion.RoomId;
+            var voteIds = JsonSerializer.Deserialize<ICollection<Guid>>(discussion.VoteIds);
+            var item = new Discussion(discussionId, roomId, name, startAt, DateTime.Now, voteIds);
+            this.repository.Save(item);
+            return this.repository.Get(discussionId);
+        }
+
         /// <summary>
         /// Добавление голоса в обсуждение. Если он существует, то происходи замена.
         /// </summary>

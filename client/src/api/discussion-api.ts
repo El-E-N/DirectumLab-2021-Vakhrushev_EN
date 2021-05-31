@@ -21,6 +21,16 @@ export const closeDiscussionRequest = async (
   return response.json();
 };
 
+export const setDiscussionNameRequest = async (
+  discussionId: string,
+  name: string
+): Promise<IDiscussionDto> => {
+const response = await fetch(
+    `${discussionUrl}/setName?discussionId=${discussionId}&name=${name}`,
+    options.GET);
+return response.json();
+};
+
 export const addVoteRequest = async (
     discussionId: string,
     voteId: string

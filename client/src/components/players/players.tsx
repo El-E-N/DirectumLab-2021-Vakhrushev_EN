@@ -1,13 +1,14 @@
 import * as React from 'react';
 import Player from '../player/player';
-import {IRoom, IPlayer, IVote} from '../../store/types';
+import {IRoom, IPlayer, IVote, IDiscussion} from '../../store/types';
 import './players.css';
 
 interface IProps {
-  room: IRoom | null;
-  user: IPlayer | null;
+  room: IRoom;
+  user: IPlayer;
+  discussions: Array<IDiscussion>;
   showResult: boolean;
-  getVote(user: IPlayer): IVote | null;
+  getVote(discussionId: string, discussions: Array<IDiscussion>, user: IPlayer): IVote | null;
 }
 
 const Players: React.FunctionComponent<IProps> = (props) => {
@@ -18,7 +19,9 @@ const Players: React.FunctionComponent<IProps> = (props) => {
           key={player.name}
           player={player}
           showResult={props.showResult}
-          vote={props.getVote(player)}
+          room={props.room}
+          discussions={props.discussions}
+          getVote={props.getVote}
         />;
     })}
   </ul>;

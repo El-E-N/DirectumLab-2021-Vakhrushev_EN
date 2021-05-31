@@ -18,11 +18,14 @@ namespace PlanPoker.DTO.Builders
         /// <param name="room">Комната.</param>
         /// <param name="playerService">Сервис игроков.</param>
         /// <returns>Экземпляр DTO комнаты.</returns>
-        public static RoomDTO Build(Room room, PlayerService playerService)
+        public static RoomDTO Build(Room room, PlayerService playerService, CardService cardService, DiscussionService discussionService, VoteService voteService)
         {
             var players = PlayerDTOBuilder.BuildList(
                 new List<Player>(JsonSerializer.Deserialize<List<Guid>>(room.PlayersIds).Select(el => playerService.GetById(el)))
                 );
+            var cardsDto = new List<CardDTO>(CardDTOBuilder.BuildList(cardService.GetCards()));
+            var discussions = new List<Discussion>(discussionService.GetDiscussionsByRoomId(room.Id));
+            var discussionsDto = DiscussionDTOBuilder.BuildList(discussions, voteService, cardService);
             return new RoomDTO()
             {
                 Id = room.Id,
@@ -30,7 +33,9 @@ namespace PlanPoker.DTO.Builders
                 Name = room.Name,
                 HostId = room.HostId,
                 CreatorId = room.CreatorId,
-                Players = players
+                Players = players,
+                Cards = cardsDto,
+                Discussions = discussionsDto
             };
         }
 
@@ -40,9 +45,9 @@ namespace PlanPoker.DTO.Builders
         /// <param name="rooms">Комнаты.</param>
         /// <param name="playerService">Сервис игроков.</param>
         /// <returns>Список DTO комнат.</returns>
-        public static ICollection<RoomDTO> BuildList(List<Room> rooms, PlayerService playerService)
+        public static ICollection<RoomDTO> BuildList(List<Room> rooms, PlayerService playerService, CardService cardService, DiscussionService discussionService, VoteService voteService)
         {
-            return new List<RoomDTO>(rooms.Select(room => Build(room, playerService)));
+            return new List<RoomDTO>(rooms.Select(room => Build(room, playerService, cardService, discussionService, voteService)));
         }
     }
 }

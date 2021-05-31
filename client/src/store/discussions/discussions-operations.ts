@@ -1,11 +1,12 @@
 import {Dispatch} from 'redux';
 import * as discussionApi from '../../api/discussion-api';
 import * as voteApi from '../../api/vote-api';
-import {addDiscussion, updateDiscussions} from './discussions-action-creators';
+import {updateDiscussions} from './discussions-action-creators';
 import {ICard, IDiscussion, IVote} from '../types';
 import { translateDtoCardIntoCard } from '../card';
 import { IDiscussionDto } from '../../api/api-utils';
 import {updateVote as updateStoreVote} from './discussions-action-creators';
+import {addCurrentDiscussionId} from '../room/room-action-creators';
 
 export const translateDtoDiscussionIntoDiscussion = (discussionDto: IDiscussionDto) => {
   const allVote: { [key: string]: IVote | null } = {};
@@ -20,9 +21,11 @@ export const translateDtoDiscussionIntoDiscussion = (discussionDto: IDiscussionD
     allVote[playerId] = {id: voteList[i].id, card};
   }
   const discussion: IDiscussion = {
-    ...discussionDto,
+    id: discussionDto.id,
+    name: discussionDto.name,
     average: null,
     voteArray: allVote,
+    players: null
   };
   return discussion;
 };
@@ -33,17 +36,10 @@ export const loadingDiscussions = (roomId: string): any => {
     const discussions: Array<IDiscussion> = discussionsDto.map((discussionDto) => {
       return translateDtoDiscussionIntoDiscussion(discussionDto);
     });
-    dispatch(updateDiscussions(discussions));
+    dispatch(addCurrentDiscussionId(discussions[discussions.length - 1].id));
+    return dispatch(updateDiscussions(discussions));
   }
 }
-
-export const createDiscussion = (roomId: string): any => {
-  return async (dispatch: Dispatch) => {
-    const discussionDto = await discussionApi.createDiscussionRequest(roomId, '');
-    const discussion = translateDtoDiscussionIntoDiscussion(discussionDto);
-    dispatch(addDiscussion(discussion));
-  };
-};
 
 export const updateVote = (voteId: string, cardId: string): any => {
   return async (dispatch: Dispatch) => {
@@ -53,7 +49,7 @@ export const updateVote = (voteId: string, cardId: string): any => {
       id: voteDto.card.id,
       value: translatedCard.value
     };
-    dispatch(updateStoreVote(
+    return dispatch(updateStoreVote(
       voteDto.discussionId,
       voteDto.playerId,
       {id: voteDto.id, card}
@@ -73,7 +69,7 @@ export const createVote = (
       id: voteDto.card.id,
       value: translatedCard.value
     };
-    dispatch(updateStoreVote(
+    return dispatch(updateStoreVote(
       voteDto.discussionId, 
       voteDto.playerId,
       {id: voteDto.id, card}

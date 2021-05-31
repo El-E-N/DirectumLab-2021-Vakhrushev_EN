@@ -9,7 +9,7 @@ export function reducer(
   switch (action.type) {
     case ActionType.CREATE_ROOM: {
       const roomAction = action as IRoomAction;
-      return roomAction.room;
+      return {...roomAction.room};
     }
     case ActionType.ADD_USER_INTO_ROOM: {
       const addUserAction = action as IAddUserAction;

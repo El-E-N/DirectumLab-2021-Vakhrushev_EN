@@ -14,6 +14,8 @@ export interface IRoomDto {
   players: Array<IPlayerDto>;
   hostId: string;
   creatorId: string;
+  cards: Array<ICardDto>;
+  discussions: Array<IDiscussionDto>;
 }
 
 export interface IPlayerDto {

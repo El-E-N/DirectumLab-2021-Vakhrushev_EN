@@ -5,16 +5,24 @@ import {connect} from 'react-redux';
 import CreatePageView from './create-page-view';
 import {createRoom} from '../../store/room/room-operations';
 import {updateUser} from '../../store/user/user-operations';
-import {createDiscussion, createVote} from '../../store/discussions/discussions-operations';
+import * as discussionApi from '../../api/discussion-api';
+import {createVote} from '../../store/discussions/discussions-operations';
 import {Dispatch} from 'redux';
 import {IRootState} from '../../store/types';
 import {userSelector} from '../../store/user/user-selectors';
 import {roomSelector} from '../../store/room/room-selectors';
+import { discussionByIdSelector, discussionsSelector } from '../../store/discussions/discussions-selectors';
 
 const mapStateToProps = (state: IRootState) => {
-  return {
+  const room = roomSelector(state);
+  const discussions = discussionsSelector(state);
+  const discussion = (room !== null && room.currentDiscussionId !== null && discussions) ?
+  discussionByIdSelector(room.currentDiscussionId, discussions) :
+  null;
+  return  {
     player: userSelector(state),
-    room: roomSelector(state),
+    room,
+    discussion
   };
 };
 
@@ -27,11 +35,11 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
       return dispatch(await updateUser(name));
     },
     createDiscussion: async (roomId: string) => {
-      return dispatch(await createDiscussion(roomId));
+      return await discussionApi.createDiscussionRequest(roomId, '');
     },
-    createVote: async (roomId: string, playerId: string, discussionId: string) => {
+    createNewVote: async (roomId: string, playerId: string, discussionId: string) => {
       return dispatch(await createVote(roomId, playerId, discussionId));
-    },
+    }
   };
 };
 

@@ -10,9 +10,10 @@ const mapStateToProps = (state: IRootState) => {
     const room = roomSelector(state);
     const discussions = discussionsSelector(state);
 
-    const discussion = room && room.choosedDiscussionId && discussions && 
-    discussionByIdSelector(room.choosedDiscussionId, discussions);
-    return discussion && {
+    const discussion = (room && room.choosedDiscussionId && discussions) ?
+                        discussionByIdSelector(room.choosedDiscussionId, discussions) :
+                        null;
+    return {
         room,
         discussion
     };

@@ -72,6 +72,15 @@ namespace PlanPoker.Controllers
             return DiscussionDTOBuilder.Build(discussion, this.voteService, this.cardService);
         }
 
+
+        [HttpGet]
+        public DiscussionDTO SetName(string discussionId, string name)
+        {
+            var discussionGuid = Guid.Parse(discussionId.Replace(" ", string.Empty));
+            var discussion = this.discussionService.SetName(discussionGuid, name);
+            return DiscussionDTOBuilder.Build(discussion, this.voteService, this.cardService);
+        }
+
         /// <summary>
         /// Добавление голоса в обсуждение по Id обсуждения.
         /// </summary>

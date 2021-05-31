@@ -36,6 +36,6 @@ export interface ICard {
 
 export interface IRootState {
   room: IRoom | null;
-  discussions: Array<IDiscussion> | null;
+  discussions: Array<IDiscussion>;
   user: IPlayer | null;
 }

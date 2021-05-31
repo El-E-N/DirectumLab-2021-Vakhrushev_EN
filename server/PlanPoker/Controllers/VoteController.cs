@@ -24,16 +24,22 @@ namespace PlanPoker.Controllers
         /// Сервис карт.
         /// </summary>
         private readonly CardService cardService;
+        
+        /// <summary>
+        /// Сервис обсуждений.
+        /// </summary>
+        private readonly DiscussionService discussionService;
 
         /// <summary>
         /// Конструктор.
         /// </summary>
         /// <param name="voteService">Сервисы оценок.</param>
         /// <param name="cardService">Сервисы карт.</param>
-        public VoteController(VoteService voteService, CardService cardService)
+        public VoteController(VoteService voteService, CardService cardService, DiscussionService discussionService)
         {
             this.voteService = voteService;
             this.cardService = cardService;
+            this.discussionService = discussionService;
         }
 
         /// <summary>
@@ -58,6 +64,7 @@ namespace PlanPoker.Controllers
             }
             else
                 vote = this.voteService.Create(null, roomGuid, playerGuid, discussionGuid);
+            this.discussionService.AddVote(vote.DiscussionId, vote.Id);
             return VoteDTOBuilder.Build(vote, this.cardService);
         }
 

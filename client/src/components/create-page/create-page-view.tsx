@@ -9,6 +9,7 @@ import './create-page.css';
 export interface IProps extends RouteComponentProps {
   player: IPlayer | null;
   room: IRoom | null;
+  discussion: IDiscussion | null;
   createRoom(roomName: string, creatorId: string): IRoom;
   createUser(name: string | null): IPlayer | null;
   createDiscussion(roomId: string): void;

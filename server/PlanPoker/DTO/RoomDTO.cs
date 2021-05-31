@@ -29,6 +29,16 @@ namespace PlanPoker.DTO
         public ICollection<PlayerDTO> Players { get; set; }
 
         /// <summary>
+        /// Карты.
+        /// </summary>
+        public ICollection<CardDTO> Cards { get; set; }
+
+        /// <summary>
+        /// Обсуждения.
+        /// </summary>
+        public ICollection<DiscussionDTO> Discussions { get; set; }
+
+        /// <summary>
         /// Управляющий комнатой.
         /// </summary>
         /// <remarks>По умолчанию ID создателя.</remarks>
