@@ -58,6 +58,11 @@ namespace PlanPoker.Services
             return this.repository.Get(voteId);
         }
 
+        public void Delete(Guid voteId)
+        {
+            this.repository.Delete(voteId);
+        }
+
         /// <summary>
         /// Получение всех оценок.
         /// </summary>

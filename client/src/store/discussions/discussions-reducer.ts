@@ -20,8 +20,6 @@ export function reducer(
     }
     case ActionType.UPDATE_DISCUSSIONS: {
       const discussionsAction = action as IUpdateDiscussions;
-      console.log(123);
-      console.log(discussionsAction);
       return [...discussionsAction.discussions];
     }
     case ActionType.UPDATE_VOTE: {

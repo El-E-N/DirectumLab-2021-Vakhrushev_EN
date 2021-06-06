@@ -2,18 +2,30 @@ import * as React from 'react';
 import deleteImg from './../../images/delete.svg';
 import Button from '../button/button';
 import './story.css';
+import { deleteDiscussionRequest } from '../../api/discussion-api';
+import { IRoom } from '../../store/types';
+import { loadingRoom } from '../../store/room/room-operations';
 
 interface IStory {
   name: string | null;
-  average: number | null;
-  changeShownModal(activated: boolean): void;
+  average: number;
+  discussionId: string;
+  room: IRoom;
+  changeChoosedDiscussion(discussionId: string): void;
+  loadingRoom(hash: string, choosedDiscussionId: string | null): void;
 }
 
 const Story: React.FunctionComponent<IStory> = (props) => {
   const onClick = (event: React.FormEvent) => {
     event.preventDefault();
-    props.changeShownModal(true);
+    props.changeChoosedDiscussion(props.discussionId);
   };
+
+  const onDelete = async () => {
+    console.log('Удалено');
+    await deleteDiscussionRequest(props.discussionId);
+    await props.loadingRoom(props.room.id, props.room.choosedDiscussionId);
+  }
 
   const storyDeleteImg = <img className="story__delete" alt={'storyDelete'} src={deleteImg}/>;
 
@@ -23,7 +35,7 @@ const Story: React.FunctionComponent<IStory> = (props) => {
     </td>
     <td className="story__count">{props.average}</td>
     <td className="story__delete-cell">
-      <Button value={storyDeleteImg} className={'story__delete-wrapper'}/>
+      <Button value={storyDeleteImg} className={'story__delete-wrapper'} onClick={onDelete}/>
     </td>
   </tr>;
 };

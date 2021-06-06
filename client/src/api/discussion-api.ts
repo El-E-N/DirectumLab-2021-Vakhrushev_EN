@@ -12,6 +12,15 @@ export const createDiscussionRequest = async (
   return response.json();
 };
 
+export const deleteDiscussionRequest = async (
+    discussionId: string
+) => {
+  const response = await fetch(
+    `${discussionUrl}/delete?discussionId=${discussionId}`,
+    options.GET);
+return response.json();
+};
+
 export const closeDiscussionRequest = async (
     discussionId: string,
 ): Promise<IDiscussionDto> => {

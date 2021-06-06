@@ -2,15 +2,15 @@ import * as React from 'react';
 import Input from '../input/input';
 import Button from '../button/button';
 import './enter-story.css';
-import { IDiscussion, IRoom } from '../../store/types';
+import { IDiscussion, IPlayer, IRoom } from '../../store/types';
 import * as discussionApi from '../../api/discussion-api';
 
 interface IProps {
   room: IRoom;
   discussions: IDiscussion[];
+  player: IPlayer;
   createDiscussion(roomId: string): void;
-  loadingRoom(hash: string): IRoom;
-  showPlanning(): void;
+  loadingRoom(hash: string, choosedDiscussionId: string | null): void;
 }
 
 interface IState {
@@ -28,11 +28,11 @@ class EnterStory extends React.Component<IProps, IState> {
   }
 
   async handleSubmit() {
-    if (this.props.room !== null && this.props.room.currentDiscussionId !== null) {
-      await discussionApi.setDiscussionNameRequest(this.props.room.currentDiscussionId, this.state.discussionName);
-      this.props.createDiscussion(this.props.room.id);
-      this.props.showPlanning();
-      this.props.loadingRoom(this.props.room.hash);
+    const {room, player} = this.props;
+    if (room !== null && room.currentDiscussionId !== null) {
+      await discussionApi.setDiscussionNameRequest(room.currentDiscussionId, this.state.discussionName);
+      this.props.createDiscussion(room.id);
+      this.props.loadingRoom(room.hash, room.choosedDiscussionId);
     }
   }
 

@@ -5,6 +5,7 @@ import MainLabel from '../main__label/main__label';
 import Button from '../button/button';
 import {IRoom, IPlayer} from '../../store/types';
 import './invite-page.css';
+import { addPlayerIntoRoomRequest } from '../../api/room-api';
 
 export interface IProps extends RouteComponentProps {
   room: IRoom | null;
@@ -39,7 +40,7 @@ class InvitePageView extends React.Component<IProps, IState> {
     if (this.state.userName !== '' && this.props.room !== null) {
       await this.props.updateUser(this.state.userName);
 
-      this.props.player && await this.props.addUserIntoRoom(this.props.room, this.props.player);
+      this.props.player && await addPlayerIntoRoomRequest(this.props.room.id, this.props.player.id);
 
       this.props.history.push(`${RoutePath.MAIN}/${this.props.room.hash}`);
     }
@@ -49,6 +50,7 @@ class InvitePageView extends React.Component<IProps, IState> {
     const values = [
       {label: 'User name', placeHolder: 'Enter your name', name: 'userName', update: this.updateUserValue}
     ];
+
     return <main className="main">
       <form action={'POST'} onSubmit={this.handleSubmit} className={'main__content invite'}>
         <span className="main__tagline">{'Let\'s start!'}</span>
@@ -65,6 +67,11 @@ class InvitePageView extends React.Component<IProps, IState> {
         <Button className={'main__button'} value={'Enter'}/>
       </form>
     </main>;
+  }
+
+  componentDidMount() {
+    if (this.props.room === null)
+      this.props.history.push(`/error`);
   }
 }
 

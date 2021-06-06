@@ -29,6 +29,11 @@ namespace PlanPoker.DTO
         public ICollection<PlayerDTO> Players { get; set; }
 
         /// <summary>
+        /// Все игроки, которые были в комнате.
+        /// </summary>
+        public ICollection<PlayerDTO> AllPlayers { get; set; }
+
+        /// <summary>
         /// Карты.
         /// </summary>
         public ICollection<CardDTO> Cards { get; set; }

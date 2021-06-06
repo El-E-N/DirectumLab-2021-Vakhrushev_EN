@@ -26,6 +26,16 @@ namespace PlanPoker.DTO.Builders
             var cardsDto = new List<CardDTO>(CardDTOBuilder.BuildList(cardService.GetCards()));
             var discussions = new List<Discussion>(discussionService.GetDiscussionsByRoomId(room.Id));
             var discussionsDto = DiscussionDTOBuilder.BuildList(discussions, voteService, cardService);
+
+            var allPlayers = new List<Player>();
+            foreach (var discussionDTO in discussionsDto)
+            {
+                var tempPlayers = discussionDTO.VoteList.Select(vote => playerService.GetById(vote.PlayerId));
+                allPlayers.AddRange(tempPlayers);
+            }
+            allPlayers = new List<Player>(allPlayers.Distinct());
+            var allPlayersDto = PlayerDTOBuilder.BuildList(allPlayers);
+
             return new RoomDTO()
             {
                 Id = room.Id,
@@ -34,6 +44,7 @@ namespace PlanPoker.DTO.Builders
                 HostId = room.HostId,
                 CreatorId = room.CreatorId,
                 Players = players,
+                AllPlayers = allPlayersDto,
                 Cards = cardsDto,
                 Discussions = discussionsDto
             };

@@ -29,12 +29,17 @@ namespace PlanPoker.Services
         /// <param name="name">Название комнаты.</param>
         /// <param name="creatorId">Id создателя комнаты.</param>
         /// <returns>Созданная комната.</returns>
-        public Room Create(string name, Guid creatorId) 
+        public Room Create(string name, Guid creatorId)
         {
             var id = Guid.NewGuid();
             var hash = Guid.NewGuid();
             this.repository.Create(name, creatorId, creatorId, id, hash, new List<Guid> { creatorId });
             return this.repository.Get(id);
+        }
+
+        public void Delete(Guid roomId)
+        {
+            this.repository.Delete(roomId);
         }
 
         /// <summary>
@@ -49,7 +54,17 @@ namespace PlanPoker.Services
         /// </summary>
         /// <param name="hash">Хэш.</param>
         /// <returns>Комната.</returns>
-        public Room GetByHash(Guid hash) => this.repository.GetByHash(hash);
+        public Room GetByHash(Guid hash) 
+        {
+            try
+            {
+              return this.repository.GetByHash(hash);
+            }
+            catch (System.InvalidOperationException)
+            {
+                return null;
+            }
+        }
 
         /// <summary>
         /// Добавление игрока в комнату.

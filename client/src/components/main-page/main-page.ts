@@ -7,19 +7,18 @@ import {connect} from 'react-redux';
 import MainPageView from './main-page-view';
 import {roomSelector} from '../../store/room/room-selectors';
 import {userSelector} from '../../store/user/user-selectors';
-import {loadingRoom} from '../../store/room/room-operations';
+import {loadingRoom, removePlayerFromRoom} from '../../store/room/room-operations';
 import {updateUser} from '../../store/user/user-operations';
 import {discussionByIdSelector, voteArraySelector, voteByPlayerSelector} from '../../store/discussions/discussions-selectors';
 import {updateVote as updateValueVote, createVote as createNewVote, createVote} from '../../store/discussions/discussions-operations';
 import {Dispatch} from 'redux';
-import {loadingDiscussions} from '../../store/discussions/discussions-operations';
 import {discussionsSelector} from '../../store/discussions/discussions-selectors';
+import { changeChoosedDiscussion } from '../../store/room/room-action-creators';
 
 const mapStateToProps = (state: IRootState) => {
   const room = roomSelector(state);
   const player = userSelector(state);
   const discussions = discussionsSelector(state);
-  console.log(state);
 
   const currentDiscussion = (room !== null && room.currentDiscussionId !== null && discussions !== null) ?
                             discussionByIdSelector(room.currentDiscussionId, discussions) :
@@ -31,31 +30,30 @@ const mapStateToProps = (state: IRootState) => {
   const voteArray = currentDiscussion && voteArraySelector(currentDiscussion);
   const getVote = (discussionId: string, discussions: Array<IDiscussion>, user: IPlayer) => {
     const discussion = discussionByIdSelector(discussionId, discussions);
-    return discussion && voteByPlayerSelector(discussion, user)
+    return discussion && voteByPlayerSelector(discussion, user);
   };
+  const discussionEndAt = currentDiscussion !== null ? currentDiscussion.endAt : null;
   return {
     room,
     vote,
     player,
     discussions,
     voteArray,
-    getVote
+    getVote,
+    discussionEndAt
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    loadingRoom: async (roomHash: string) => {
-      return dispatch(await loadingRoom(roomHash));
+    loadingRoom: async (roomHash: string, choosedDiscussionId: string | null) => {
+      return dispatch(await loadingRoom(roomHash, choosedDiscussionId));
     },
     createUser: async (name: string | null) => {
       return dispatch(await updateUser(name));
     },
     updateVote: async (voteId: string, cardId: string) => {
       return dispatch(await updateValueVote(voteId, cardId));
-    },
-    loadingDiscussions: async (roomId: string) => {
-      return dispatch(await loadingDiscussions(roomId));
     },
     createVote: async (roomId: string, playerId: string, discussionId: string) => {
       return dispatch(await createNewVote(roomId, playerId, discussionId));
@@ -66,6 +64,9 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
     createDiscussion: async (roomId: string) => {
       return await discussionApi.createDiscussionRequest(roomId, '');
     },
+    changeChoosedDiscussion: (discussionId: string) => {
+      return dispatch(changeChoosedDiscussion(discussionId));
+    }
   };
 };
 

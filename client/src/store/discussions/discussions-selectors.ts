@@ -3,7 +3,7 @@ import {IDiscussion, IRootState, IPlayer} from '../types';
 export const discussionsSelector = (state: IRootState) => state.discussions;
 
 export const discussionByIdSelector = (discussionId: string, discussions: Array<IDiscussion>): IDiscussion | null => {
-  const discussion = discussions.find((discussion) => discussion.id = discussionId);
+  const discussion = discussions.find((discussion) => discussion.id === discussionId);
   return discussion !== undefined ? discussion : null; 
 };
 

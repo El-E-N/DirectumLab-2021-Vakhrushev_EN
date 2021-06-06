@@ -8,7 +8,7 @@ import {IRoom, IPlayer, IVote, IDiscussion} from '../../store/types';
 import './menu.css';
 
 export interface IMenuProps {
-  addEnter: boolean;
+  showResults: boolean;
   onClick?(): void;
 }
 
@@ -17,9 +17,8 @@ interface IProps extends IMenuProps {
   player: IPlayer,
   discussions: Array<IDiscussion>;
   getVote(discussionId: string, discussions: Array<IDiscussion>, user: IPlayer): IVote | null;
-  loadingRoom(hash: string): IRoom;
+  loadingRoom(hash: string, choosedDiscussionId: string | null): void;
   createDiscussion(roomId: string): void;
-  showPlanning(): void;
 }
 
 class Menu extends React.Component<IProps, unknown> {
@@ -33,30 +32,30 @@ class Menu extends React.Component<IProps, unknown> {
     return <div className="menu">
       <span className="menu__header">Story voting completed</span>
       <h3 className="menu__title">Players:</h3>
-      {room &&
-      <Players
-        room={room}
-        user={player}
-        showResult={this.props.addEnter}
-        discussions={this.props.discussions}
-        getVote={this.props.getVote}
-      />}
       {(player !== null && player !== undefined) ?
       <Player
         player={player}
-        showResult={this.props.addEnter}
+        showResult={this.props.showResults}
         room={room}
         discussions={this.props.discussions}
         getVote={this.props.getVote}
       /> :
       null}
-      {this.props.addEnter ?
-        <EnterStory 
+      {room &&
+      <Players
+        room={room}
+        user={player}
+        showResult={this.props.showResults}
         discussions={this.props.discussions}
+        getVote={this.props.getVote}
+      />}
+      {(this.props.showResults && player.id === room.hostId) ?
+        <EnterStory 
+          discussions={this.props.discussions}
           room={this.props.room} 
-          showPlanning={this.props.showPlanning} 
           createDiscussion={this.props.createDiscussion} 
-          loadingRoom={this.props.loadingRoom}/> :
+          loadingRoom={this.props.loadingRoom}
+          player={player}/> :
         showButton && <Button className={'menu__button'} value={'Finish voting'} onClick={this.props.onClick}/>}
       <span className="menu__link-name">Invite a teammate</span>
       <Input

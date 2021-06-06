@@ -22,3 +22,11 @@ export const changeCardRequest = async (
       options.GET);
   return response.json();
 };
+
+export const deleteVoteRequest = async (
+  voteId: string
+) => {
+  await fetch(
+      `${voteApi}/delete?voteId=${voteId}`,
+      options.GET);
+  };

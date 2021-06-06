@@ -63,15 +63,16 @@ namespace PlanPoker.Services
         {
             var discussion = this.repository.Get(discussionId);
             var startAt = discussion.StartAt;
+            var endAt = discussion.EndAt;
             var roomId = discussion.RoomId;
             var voteIds = JsonSerializer.Deserialize<ICollection<Guid>>(discussion.VoteIds);
-            var item = new Discussion(discussionId, roomId, name, startAt, DateTime.Now, voteIds);
+            var item = new Discussion(discussionId, roomId, name, startAt, endAt, voteIds);
             this.repository.Save(item);
             return this.repository.Get(discussionId);
         }
 
         /// <summary>
-        /// Добавление голоса в обсуждение. Если он существует, то происходи замена.
+        /// Добавление голоса в обсуждение. Если он существует, то происходит замена.
         /// </summary>
         /// <param name="discussionId">Id обсуждения.</param>
         /// <param name="voteId">Id голоса.</param>
@@ -80,10 +81,30 @@ namespace PlanPoker.Services
             var discussion = this.repository.Get(discussionId);
             var name = discussion.Name;
             var startAt = discussion.StartAt;
+            var endAt = discussion.EndAt;
             var roomId = discussion.RoomId;
             var voteIds = JsonSerializer.Deserialize<ICollection<Guid>>(discussion.VoteIds);
             voteIds = new List<Guid>(voteIds.Append(voteId));
-            var item = new Discussion(discussionId, roomId, name, startAt, DateTime.Now, voteIds);
+            var item = new Discussion(discussionId, roomId, name, startAt, endAt, voteIds);
+            this.repository.Save(item);
+            return this.repository.Get(discussionId);
+        }
+
+        /// <summary>
+        /// Удаление голоса из обсуждения.
+        /// </summary>
+        /// <param name="discussionId">Id обсуждения.</param>
+        /// <param name="voteId">Id голоса.</param>
+        public Discussion RemoveVote(Guid discussionId, Guid voteId)
+        {
+            var discussion = this.repository.Get(discussionId);
+            var name = discussion.Name;
+            var startAt = discussion.StartAt;
+            var endAt = discussion.EndAt;
+            var roomId = discussion.RoomId;
+            var voteIds = JsonSerializer.Deserialize<ICollection<Guid>>(discussion.VoteIds);
+            voteIds = new List<Guid>(voteIds.Where(id => id != voteId));
+            var item = new Discussion(discussionId, roomId, name, startAt, endAt, voteIds);
             this.repository.Save(item);
             return this.repository.Get(discussionId);
         }
@@ -104,6 +125,11 @@ namespace PlanPoker.Services
         {
             var voteIds = this.repository.Get(discussionId).VoteIds;
             return JsonSerializer.Deserialize<ICollection<Guid>>(voteIds);
+        }
+
+        public void Delete(Guid discussionId)
+        {
+            this.repository.Delete(discussionId);
         }
 
         /// <summary>

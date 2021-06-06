@@ -12,8 +12,11 @@ const ModalUsers: React.FunctionComponent<IProps> = (props) => {
   const getModalPlayers = () => {
     const modalPlayers: {name: string, value: string}[] = [];
     for (let i = 0; i < props.players.length; i++) {
-      const name = props.players[i].name;
-      const value = props.voteArray[props.players[i].id]?.card?.value;
+      const player = props.players[i];
+      const name = player.name;
+      const vote = props.voteArray[player.id];
+      const card = vote && vote.card;
+      const value = card && card.value;
       value && modalPlayers.push({name, value});
     }
     return modalPlayers;

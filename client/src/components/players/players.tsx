@@ -2,6 +2,7 @@ import * as React from 'react';
 import Player from '../player/player';
 import {IRoom, IPlayer, IVote, IDiscussion} from '../../store/types';
 import './players.css';
+import { discussionByIdSelector } from '../../store/discussions/discussions-selectors';
 
 interface IProps {
   room: IRoom;
@@ -12,8 +13,10 @@ interface IProps {
 }
 
 const Players: React.FunctionComponent<IProps> = (props) => {
+  const discussion = props.room.currentDiscussionId && discussionByIdSelector(props.room.currentDiscussionId, props.discussions);
+  const players = discussion && discussion.players;
   return <ul className="players">
-    {props.room && props.room.players.map((player) => {
+    {players && players.map((player) => {
       return props.user && player.id !== props.user.id &&
         <Player
           key={player.name}

@@ -123,6 +123,13 @@ namespace PlanPoker.Controllers
             return DiscussionDTOBuilder.BuildList(new List<Discussion>(discussions), this.voteService, this.cardService);
         }
 
+        [HttpGet]
+        public void Delete(string discussionId)
+        {
+            var discussionGuid = Guid.Parse(discussionId.Replace(" ", string.Empty));
+            this.discussionService.Delete(discussionGuid);
+        }
+
         /// <summary>
         /// Возвращает список всех обсуждений.
         /// </summary>

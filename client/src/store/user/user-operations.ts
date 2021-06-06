@@ -5,6 +5,6 @@ import {Dispatch} from 'redux';
 export const updateUser = (name: string | null): any => {
   return async (dispatch: Dispatch) => {
     const user = name ? await playerApi.createPlayerRequest(name) : null;
-    dispatch(updateStoreUser(user));
+    return dispatch(updateStoreUser(user));
   };
 };

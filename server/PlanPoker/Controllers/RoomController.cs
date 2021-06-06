@@ -68,6 +68,12 @@ namespace PlanPoker.Controllers
             return RoomDTOBuilder.Build(room, this.playerService, this.cardService, this.discussionService, this.voteService);
         }
 
+        public void Delete(string roomId)
+        {
+            var roomGuid = Guid.Parse(roomId.Replace(" ", string.Empty));
+            this.roomService.Delete(roomGuid);
+        }
+
         /// <summary>
         /// Получение комнаты по хэшу.
         /// </summary>
@@ -76,9 +82,18 @@ namespace PlanPoker.Controllers
         [HttpGet]
         public RoomDTO GetByHash(string hash)
         {
-            var hashGuid = Guid.Parse(hash.Replace(" ", string.Empty));
+            Guid hashGuid;
+
+            try
+            { hashGuid = Guid.Parse(hash.Replace(" ", string.Empty)); }
+            catch
+            { return null; }
+
             var room = this.roomService.GetByHash(hashGuid);
-            return RoomDTOBuilder.Build(room, this.playerService, this.cardService, this.discussionService, this.voteService);
+            
+            return room != null ?
+                RoomDTOBuilder.Build(room, this.playerService, this.cardService, this.discussionService, this.voteService) :
+                null;
         }
 
         /// <summary>

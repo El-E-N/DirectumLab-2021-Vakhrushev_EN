@@ -6,7 +6,6 @@ import CreatePageView from './create-page-view';
 import {createRoom} from '../../store/room/room-operations';
 import {updateUser} from '../../store/user/user-operations';
 import * as discussionApi from '../../api/discussion-api';
-import {createVote} from '../../store/discussions/discussions-operations';
 import {Dispatch} from 'redux';
 import {IRootState} from '../../store/types';
 import {userSelector} from '../../store/user/user-selectors';
@@ -36,9 +35,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
     },
     createDiscussion: async (roomId: string) => {
       return await discussionApi.createDiscussionRequest(roomId, '');
-    },
-    createNewVote: async (roomId: string, playerId: string, discussionId: string) => {
-      return dispatch(await createVote(roomId, playerId, discussionId));
     }
   };
 };

@@ -17,73 +17,86 @@ export interface IMainPageProps extends RouteComponentProps<IMatchParams> {
   room: IRoom | null;
   player: IPlayer | null;
   vote: IVote | null;
-  discussions: Array<IDiscussion> | null;
+  discussions: Array<IDiscussion>;
   voteArray: {[key: string]: IVote | null} | null;
-  loadingRoom(hash: string): IRoom;
+  discussionEndAt: string | null;
+  loadingRoom(hash: string, choosedDiscussionId: string | null): void;
   updateVote(voteId: string, cardId: string): void;
   getVote(discussionId: string, discussions: Array<IDiscussion>, user: IPlayer): IVote | null;
-  loadingDiscussions(roomId: string): void;
   createVote(roomId: string, playerId: string, discussionId: string): void;
-  changeShownModal(activated: boolean): void;
   createNewVote(roomId: string, playerId: string, discussionId: string): void;
   createDiscussion(roomId: string): void;
+  changeChoosedDiscussion(discussionId: string): void;
 }
 
-interface IState {
-  isPlanning: boolean;
-}
-
-export class MainPageView extends React.Component<IMainPageProps, IState> {
+export class MainPageView extends React.Component<IMainPageProps> {
   constructor(props: IMainPageProps) {
     super(props);
-    this.state = {
-      isPlanning: true,
-    };
     this.handleClick = this.handleClick.bind(this);
-    this.onShowPlanningClick = this.onShowPlanningClick.bind(this);
   }
+
+  private discussionsCount = 0; // в state происходит предупреждение при изменении в render
+
+  private intervalId: any;
 
   public async handleClick() {
-    this.setState({
-      isPlanning: false,
-    });
-    if (this.props.room !== null && this.props.room.currentDiscussionId !== null) 
+    if (this.props.room !== null && this.props.room.currentDiscussionId !== null) {
       await discussionApi.closeDiscussionRequest(this.props.room.currentDiscussionId);
+      this.props.loadingRoom(this.props.room.hash, this.props.room?.choosedDiscussionId);
+      const voteArray = this.props.voteArray;
+      for (const key in voteArray) {
+        const vote = voteArray[key];
+        if (vote !== null) {
+          if (vote.card === null) {
+            const questionCard = this.props.room.cards.find((card) => card.value === '?');
+            if (questionCard !== undefined) this.props.updateVote(vote.id, questionCard.id);
+          }
+        }
+      }
+    }
   }
 
-  public onShowPlanningClick() {
-    this.setState({
-      isPlanning: true,
-    });
-  }
-
-  public async createVote(room: IRoom, player: IPlayer, currentDiscussionId: string) {
-    await this.props.createNewVote(room.id, player.id, currentDiscussionId);
+  public updateDiscussionsCount() {
+    const {room, vote, player, discussions} = this.props;
+    if (
+      (vote === null || vote === undefined) 
+      && room !== null 
+      && player !== null 
+      && room.currentDiscussionId !== null 
+      && discussions !== null 
+      && discussions.length > this.discussionsCount
+    ) {
+      this.props.createNewVote(room.id, player.id, room.currentDiscussionId);
+      this.discussionsCount = discussions.length;
+    }
   }
 
   public render() {
     const {room, vote, player, discussions} = this.props;
-    console.log(discussions);
-    if (vote === null && room !== null && player !== null && room.currentDiscussionId !== null) 
-      this.createVote(room, player, room.currentDiscussionId);
+    this.updateDiscussionsCount();
     return (room && player && discussions) ?
       <main className="room">
         <h2 className="room-name">{room && room.name}</h2>
         <div className="room-content">
           <div className="results">
-            {this.state.isPlanning ?
+            {this.props.discussionEndAt === null ?
               vote && <Deck
                 room={room}
                 updateVote={this.props.updateVote}
                 vote={vote}
               /> :
-              this.props.voteArray && <BrieflyResults room={room} voteArray={this.props.voteArray}/>}
+              this.props.voteArray && <BrieflyResults room={room} voteArray={this.props.voteArray} discussions={discussions}/>}
             {this.props.discussions &&
-            <History discussions={discussions} changeShownModal={this.props.changeShownModal}/>}
+            <History 
+              discussions={discussions} 
+              room={room}
+              changeChoosedDiscussion={this.props.changeChoosedDiscussion}
+              loadingRoom={this.props.loadingRoom}
+            />}
           </div>
 
           <Menu
-            addEnter={!this.state.isPlanning}
+            showResults={this.props.discussionEndAt !== null}
             onClick={this.handleClick}
             room={room}
             player={player}
@@ -91,7 +104,6 @@ export class MainPageView extends React.Component<IMainPageProps, IState> {
             getVote={this.props.getVote}
             loadingRoom={this.props.loadingRoom}
             createDiscussion={this.props.createDiscussion}
-            showPlanning={this.onShowPlanningClick}
           />
         </div>
       </main> :
@@ -99,23 +111,24 @@ export class MainPageView extends React.Component<IMainPageProps, IState> {
   }
 
   async componentDidMount() {
-    this.props.room === null && await this.props.loadingRoom(this.props.match.params.hash);
+    await this.props.loadingRoom(this.props.match.params.hash, null);
 
-    if (this.props.player === null) {
-      this.props.history.push(`${RoutePath.INVITE}/${this.props.match.params.hash}`);
-    } else {
-      this.props.room && await this.props.loadingDiscussions(this.props.room.id);
-
-      await setInterval(() => {
-        this.props.loadingRoom(this.props.match.params.hash);
-      }, 9999000);
-
-      const currentDiscussion = this.props.discussions && this.props.discussions[this.props.discussions.length - 1];
-
-      (this.props.room !== null && this.props.player !== null && currentDiscussion !== null) ?
-      await this.props.createVote(this.props.room.id, this.props.player.id, currentDiscussion.id) :
-      null;
+    
+    if (this.props.room === null)
+      this.props.history.push(`/error`);
+    else {
+      if (this.props.player === null)
+        this.props.history.push(`${RoutePath.INVITE}/${this.props.match.params.hash}`);
+      
+      this.intervalId = await setInterval(() => {
+        if (this.props.player !== null && this.props.room !== null)
+          this.props.loadingRoom(this.props.match.params.hash, this.props.room.choosedDiscussionId)
+      }, 5000);
     }
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.intervalId);
   }
 }
 

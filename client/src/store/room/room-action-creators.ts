@@ -1,39 +1,17 @@
 import {Action} from 'redux';
 import {ActionType} from '../reducer';
-import {IRoom, IPlayer} from '../types';
+import {IRoom} from '../types';
 
 export interface IRoomAction extends Action {
-  room: IRoom;
+  room: IRoom | null;
 }
 
-export const createRoom = (room: IRoom): IRoomAction => {
+export const updateRoom = (room: IRoom | null): IRoomAction => {
   return {
     type: ActionType.CREATE_ROOM,
     room,
   };
 };
-
-export interface IAddUserAction extends Action {
-  user: IPlayer;
-}
-
-export const addUser = (user: IPlayer): IAddUserAction => {
-  return {
-    type: ActionType.ADD_USER_INTO_ROOM,
-    user
-  };
-};
-
-export interface IChangeShownModal extends Action {
-  shownModal: boolean;
-}
-
-export const changeShownModal = (shownModal: boolean): IChangeShownModal => {
-  return {
-    type: ActionType.CHANGE_SHOWN_MODAL,
-    shownModal,
-  };
-}
 
 export interface IAddCurrentDiscussionIdAction extends Action {
   currentDiscussionId: string;

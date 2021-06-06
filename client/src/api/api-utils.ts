@@ -12,6 +12,7 @@ export interface IRoomDto {
   hash: string;
   name: string;
   players: Array<IPlayerDto>;
+  allPlayers: Array<IPlayerDto>;
   hostId: string;
   creatorId: string;
   cards: Array<ICardDto>;
@@ -27,6 +28,8 @@ export interface IDiscussionDto {
   id: string;
   name: string;
   voteList: Array<IVoteDto>;
+  startAt: string | null;
+  endAt: string | null;
 }
 
 export interface IVoteDto {

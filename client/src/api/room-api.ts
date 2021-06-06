@@ -14,12 +14,14 @@ export const createRoomRequest = async (
 
 export const getRoomRequest = async (
     hash: string,
-): Promise<IRoomDto> => {
+): Promise<IRoomDto | null> => {
   const response = await fetch(
       `${roomUrl}/getByHash?hash=${hash}`,
       options.GET
   );
-  return response.json();
+  return response.status !== 204 ?
+    response.json() :
+    null;
 };
 
 export const addPlayerIntoRoomRequest = async (
@@ -33,7 +35,7 @@ export const addPlayerIntoRoomRequest = async (
   return response.json();
 };
 
-export const removePlayerIntoRoomRequest = async (
+export const removePlayerFromRoomRequest = async (
     roomId: string,
     playerId: string,
 ): Promise<IRoomDto> => {
@@ -54,3 +56,12 @@ export const changeHostRequest = async (
   );
   return response.json();
 };
+
+export const deleteRoomRequest = async (
+  roomId: string
+) => {
+  await fetch(
+    `${roomUrl}/Delete?roomId=${roomId}`,
+    options.GET
+  );
+}

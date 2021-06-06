@@ -10,18 +10,19 @@ export interface IRoom {
   cards: Array<ICard>;
   hostId: string;
   creatorId: string;
-  players: Array<IPlayer>;
   currentDiscussionId: string | null;
   choosedDiscussionId: string | null;
-  shownModal: boolean;
+  players: Array<IPlayer>;
 }
 
 export interface IDiscussion {
   id: string;
   name: string | null;
-  average: number | null;
-  players: Array<IPlayer> | null;
+  average: number;
+  players: Array<IPlayer>;
   voteArray: { [key: string]: IVote | null }; // key - userId, value - vote
+  startAt: string | null;
+  endAt: string | null;
 }
 
 export interface IVote {

@@ -68,6 +68,14 @@ namespace PlanPoker.Controllers
             return VoteDTOBuilder.Build(vote, this.cardService);
         }
 
+        public void Delete(string voteId)
+        {
+            var voteGuid = Guid.Parse(voteId.Replace(" ", string.Empty));
+            var vote = this.voteService.GetById(voteGuid);
+            this.discussionService.RemoveVote(vote.DiscussionId, voteGuid);
+            this.voteService.Delete(voteGuid);
+        }
+
         /// <summary>
         /// Изменение выбора.
         /// </summary>

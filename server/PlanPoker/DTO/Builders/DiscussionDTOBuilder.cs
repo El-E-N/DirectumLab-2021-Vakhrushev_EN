@@ -29,8 +29,8 @@ namespace PlanPoker.DTO.Builders
                 Id = discussion.Id,
                 // RoomID = discussion.RoomId,
                 Name = discussion.Name,
-                // StartAt = discussion.StartAt,
-                // EndAt = discussion.EndAt,
+                StartAt = discussion.StartAt,
+                EndAt = discussion.EndAt,
                 VoteList = new List<VoteDTO>(voteList)
             };
         }

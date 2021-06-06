@@ -26,12 +26,12 @@ namespace PlanPoker.DTO
         /// <summary>
         /// Время начала обсуждения.
         /// </summary>
-        // public DateTime? StartAt { get; set; }
+        public DateTime? StartAt { get; set; }
 
         /// <summary>
         /// Время конца обсуждения.
         /// </summary>
-        // public DateTime? EndAt { get; set; }
+        public DateTime? EndAt { get; set; }
 
         /// <summary>
         /// Голосования из него.
