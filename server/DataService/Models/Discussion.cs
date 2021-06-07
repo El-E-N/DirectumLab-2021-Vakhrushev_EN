@@ -29,10 +29,7 @@ namespace DataService.Models
         {
             this.Id = id;
             this.RoomId = roomId;
-            if (name != string.Empty)
-                this.Name = name;
-            else
-                this.Name = "Discussion" + this.Id;
+            this.Name = name;
             this.StartAt = startAt;
             this.EndAt = endAt;
             this.VoteIds = JsonSerializer.Serialize<ICollection<Guid>>(voteIds);

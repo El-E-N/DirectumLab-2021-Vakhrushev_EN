@@ -4,6 +4,10 @@ export const options = {
   GET: {
     method: 'GET',
     headers: {'Content-Type': 'application/json'}
+  },
+  POST: {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json;charset=utf-8'}
   }
 };
 

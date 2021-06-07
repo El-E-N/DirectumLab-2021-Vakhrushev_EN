@@ -1,10 +1,20 @@
-﻿using DataService.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PlanPoker.DTO;
 using PlanPoker.DTO.Builders;
 using PlanPoker.Services;
 using System;
-using System.Collections.Generic;
+
+public class ElementForRoomCreate
+{
+    public string name { get; set; }
+    public string creatorId { get; set; }
+}
+
+public class ElementForRoomPlayer
+{
+    public string roomHash { get; set; }
+    public string playerId { get; set; }
+}
 
 namespace PlanPoker.Controllers
 {
@@ -60,18 +70,20 @@ namespace PlanPoker.Controllers
         /// <param name="name">Название комнаты.</param>
         /// <param name="creatorId">Id создателя.</param>
         /// <returns>Объект DTO созданной комнаты.</returns>
-        [HttpGet]
-        public RoomDTO Create(string name, string creatorId)
+        [HttpPost]
+        public RoomDTO Create(ElementForRoomCreate body)
         {
-            var creatorGuid = Guid.Parse(creatorId.Replace(" ", string.Empty));
-            var room = this.roomService.Create(name, creatorGuid);
+            var creatorGuid = Guid.Parse(body.creatorId.Replace(" ", string.Empty));
+            var room = this.roomService.Create(body.name, creatorGuid);
             return RoomDTOBuilder.Build(room, this.playerService, this.cardService, this.discussionService, this.voteService);
         }
 
-        public void Delete(string roomId)
+        [HttpPost]
+        public void Delete([FromBody] string roomHash)
         {
-            var roomGuid = Guid.Parse(roomId.Replace(" ", string.Empty));
-            this.roomService.Delete(roomGuid);
+            var roomHashGuid = Guid.Parse(roomHash.Replace(" ", string.Empty));
+            var room = this.roomService.GetByHash(roomHashGuid);
+            this.roomService.Delete(room.Id);
         }
 
         /// <summary>
@@ -79,8 +91,8 @@ namespace PlanPoker.Controllers
         /// </summary>
         /// <param name="hash">Хэш.</param>
         /// <returns>Комната.</returns>
-        [HttpGet]
-        public RoomDTO GetByHash(string hash)
+        [HttpPost]
+        public RoomDTO GetByHash([FromBody] string hash)
         {
             Guid hashGuid;
 
@@ -99,57 +111,46 @@ namespace PlanPoker.Controllers
         /// <summary>
         /// Добавление игрока в комнату.
         /// </summary>
-        /// <param name="roomId">Id комнаты.</param>
-        /// <param name="playerId">Id добавляемого игрока.</param>
+        /// <param name="body">Тело с hash комнаты и id игрока.</param>
         /// <returns>Комната.</returns>
-        [HttpGet]
-        public RoomDTO AddPlayer(string roomId, string playerId)
+        [HttpPost]
+        public RoomDTO AddPlayer(ElementForRoomPlayer body)
         {
-            var roomGuid = Guid.Parse(roomId.Replace(" ", string.Empty));
-            var playerGuid = Guid.Parse(playerId.Replace(" ", string.Empty));
-            var room = this.roomService.AddPlayer(roomGuid, playerGuid);
+            var roomHashGuid = Guid.Parse(body.roomHash.Replace(" ", string.Empty));
+            var playerGuid = Guid.Parse(body.playerId.Replace(" ", string.Empty));
+            var room = this.roomService.GetByHash(roomHashGuid);
+            room = this.roomService.AddPlayer(room.Id, playerGuid);
             return RoomDTOBuilder.Build(room, this.playerService, this.cardService, this.discussionService, this.voteService);
         }
 
         /// <summary>
         /// Удаление игрока из комнаты.
         /// </summary>
-        /// <param name="roomId">Id комнаты.</param>
-        /// <param name="playerId">Id игрока.</param>
+        /// <param name="body">Тело с hash комнаты и id игрока.</param>
         /// <returns>Комната.</returns>
-        [HttpGet]
-        public RoomDTO RemovePlayer(string roomId, string playerId)
+        [HttpPost]
+        public RoomDTO RemovePlayer(ElementForRoomPlayer body)
         {
-            var roomGuid = Guid.Parse(roomId.Replace(" ", string.Empty));
-            var playerGuid = Guid.Parse(playerId.Replace(" ", string.Empty));
-            var room = this.roomService.RemovePlayer(roomGuid, playerGuid);
+            var roomHashGuid = Guid.Parse(body.roomHash.Replace(" ", string.Empty));
+            var playerGuid = Guid.Parse(body.playerId.Replace(" ", string.Empty));
+            var room = this.roomService.GetByHash(roomHashGuid);
+            room = this.roomService.RemovePlayer(room.Id, playerGuid);
             return RoomDTOBuilder.Build(room, this.playerService, this.cardService, this.discussionService, this.voteService);
         }
 
         /// <summary>
         /// Изменение ведущего комнаты.
         /// </summary>
-        /// <param name="roomId">Id комнаты.</param>
-        /// <param name="hostId">Id ведущего.</param>
+        /// <param name="body">Тело с hash комнаты и id игрока.</param>
         /// <returns>Комната.</returns>
-        [HttpGet]
-        public RoomDTO ChangeHost(string roomId, string hostId)
+        [HttpPost]
+        public RoomDTO ChangeHost(ElementForRoomPlayer body)
         {
-            var roomGuid = Guid.Parse(roomId.Replace(" ", string.Empty));
-            var hostGuid = Guid.Parse(hostId.Replace(" ", string.Empty));
-            var room = this.roomService.ChangeHost(roomGuid, hostGuid);
+            var roomHashGuid = Guid.Parse(body.roomHash.Replace(" ", string.Empty));
+            var hostGuid = Guid.Parse(body.playerId.Replace(" ", string.Empty));
+            var room = this.roomService.GetByHash(roomHashGuid);
+            room = this.roomService.ChangeHost(room.Id, hostGuid);
             return RoomDTOBuilder.Build(room, this.playerService, this.cardService, this.discussionService, this.voteService);
-        }
-
-        /// <summary>
-        /// Получение всех комнат.
-        /// </summary>
-        /// <returns>Все комнаты из базы данных.</returns>
-        [HttpGet]
-        public IEnumerable<RoomDTO> GetRooms()
-        {
-            var rooms = new List<Room>(this.roomService.GetRooms());
-            return RoomDTOBuilder.BuildList(rooms, this.playerService, this.cardService, this.discussionService, this.voteService);
         }
     }
 }

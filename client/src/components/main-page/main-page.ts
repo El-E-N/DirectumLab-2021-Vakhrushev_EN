@@ -7,10 +7,10 @@ import {connect} from 'react-redux';
 import MainPageView from './main-page-view';
 import {roomSelector} from '../../store/room/room-selectors';
 import {userSelector} from '../../store/user/user-selectors';
-import {loadingRoom, removePlayerFromRoom} from '../../store/room/room-operations';
+import {loadingRoom} from '../../store/room/room-operations';
 import {updateUser} from '../../store/user/user-operations';
 import {discussionByIdSelector, voteArraySelector, voteByPlayerSelector} from '../../store/discussions/discussions-selectors';
-import {updateVote as updateValueVote, createVote as createNewVote, createVote} from '../../store/discussions/discussions-operations';
+import {updateVote as updateValueVote, createVote} from '../../store/discussions/discussions-operations';
 import {Dispatch} from 'redux';
 import {discussionsSelector} from '../../store/discussions/discussions-selectors';
 import { changeChoosedDiscussion } from '../../store/room/room-action-creators';
@@ -55,14 +55,11 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
     updateVote: async (voteId: string, cardId: string) => {
       return dispatch(await updateValueVote(voteId, cardId));
     },
-    createVote: async (roomId: string, playerId: string, discussionId: string) => {
-      return dispatch(await createNewVote(roomId, playerId, discussionId));
+    createVote: async (roomHash: string, playerId: string, discussionId: string) => {
+      return dispatch(await createVote(roomHash, playerId, discussionId));
     },
-    createNewVote: async (roomId: string, playerId: string, discussionId: string) => {
-      return dispatch(await createVote(roomId, playerId, discussionId));
-    },
-    createDiscussion: async (roomId: string) => {
-      return await discussionApi.createDiscussionRequest(roomId, '');
+    createDiscussion: async (roomHash: string) => {
+      return await discussionApi.createDiscussionRequest(roomHash, '');
     },
     changeChoosedDiscussion: (discussionId: string) => {
       return dispatch(changeChoosedDiscussion(discussionId));

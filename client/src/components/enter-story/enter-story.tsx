@@ -15,6 +15,8 @@ interface IProps {
 
 interface IState {
   discussionName: string;
+  placeHolder: string;
+  class: string;
 }
 
 class EnterStory extends React.Component<IProps, IState> {
@@ -24,15 +26,29 @@ class EnterStory extends React.Component<IProps, IState> {
     this.updateDiscussionName = this.updateDiscussionName.bind(this);
     this.state = {
       discussionName: '',
+      placeHolder: 'Enter discussion name',
+      class: ''
     };
   }
 
   async handleSubmit() {
-    const {room, player} = this.props;
+    const {room} = this.props;
     if (room !== null && room.currentDiscussionId !== null) {
-      await discussionApi.setDiscussionNameRequest(room.currentDiscussionId, this.state.discussionName);
-      this.props.createDiscussion(room.id);
-      this.props.loadingRoom(room.hash, room.choosedDiscussionId);
+      if (this.state.discussionName !== '') {
+        this.setState({
+          placeHolder: 'Enter discussion name',
+          class: ''
+        });
+
+        await discussionApi.setDiscussionNameRequest(room.currentDiscussionId, this.state.discussionName);
+        this.props.createDiscussion(room.hash);
+        this.props.loadingRoom(room.hash, room.choosedDiscussionId);
+      } else {
+        this.setState({
+          placeHolder: 'Empty value',
+          class: 'red'
+        });
+      }
     }
   }
 
@@ -43,12 +59,13 @@ class EnterStory extends React.Component<IProps, IState> {
   }
 
   render() {
-    return <div className="enter-story">
+    return <div className={'enter-story ' + this.state.class}>
       <Input 
         type={'text'} 
         name={'story'} 
         className={'enter-story__input'} 
         onBlur={(evt) => this.updateDiscussionName(evt)}
+        placeHolder={this.state.placeHolder}
       />
       <Button 
         value={'Go'} 

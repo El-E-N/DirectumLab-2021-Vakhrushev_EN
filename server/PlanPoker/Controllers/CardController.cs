@@ -2,7 +2,6 @@
 using PlanPoker.DTO;
 using PlanPoker.DTO.Builders;
 using PlanPoker.Services;
-using System;
 using System.Collections.Generic;
 
 namespace PlanPoker.Controllers
@@ -26,12 +25,6 @@ namespace PlanPoker.Controllers
         public CardController(CardService service)
         {
             this.service = service;
-        }
-
-        [HttpGet]
-        public void Create(double? value, string name)
-        {
-            this.service.Create(value, name);
         }
 
         /// <summary>

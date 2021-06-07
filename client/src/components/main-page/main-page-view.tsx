@@ -23,8 +23,7 @@ export interface IMainPageProps extends RouteComponentProps<IMatchParams> {
   loadingRoom(hash: string, choosedDiscussionId: string | null): void;
   updateVote(voteId: string, cardId: string): void;
   getVote(discussionId: string, discussions: Array<IDiscussion>, user: IPlayer): IVote | null;
-  createVote(roomId: string, playerId: string, discussionId: string): void;
-  createNewVote(roomId: string, playerId: string, discussionId: string): void;
+  createVote(roomHash: string, playerId: string, discussionId: string): void;
   createDiscussion(roomId: string): void;
   changeChoosedDiscussion(discussionId: string): void;
 }
@@ -66,7 +65,7 @@ export class MainPageView extends React.Component<IMainPageProps> {
       && discussions !== null 
       && discussions.length > this.discussionsCount
     ) {
-      this.props.createNewVote(room.id, player.id, room.currentDiscussionId);
+      this.props.createVote(room.hash, player.id, room.currentDiscussionId);
       this.discussionsCount = discussions.length;
     }
   }

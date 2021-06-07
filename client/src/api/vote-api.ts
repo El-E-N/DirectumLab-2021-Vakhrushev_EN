@@ -3,13 +3,19 @@ import {baseUrl, options, IVoteDto} from './api-utils';
 const voteApi = `${baseUrl}/vote`;
 
 export const createVoteRequest = async (
-    roomId: string,
+    roomHash: string,
     playerId: string,
     discussionId: string,
 ): Promise<IVoteDto> => {
   const response = await fetch(
-      `${voteApi}/create?roomId=${roomId}&playerId=${playerId}&discussionId=${discussionId}`,
-      options.GET);
+      `${voteApi}/create`,
+      {...options.POST,
+      body: JSON.stringify({
+        roomHash,
+        playerId,
+        discussionId
+      })}
+  );
   return response.json();
 };
 
@@ -18,8 +24,13 @@ export const changeCardRequest = async (
     cardId: string,
 ): Promise<IVoteDto> => {
   const response = await fetch(
-      `${voteApi}/changeCard?voteId=${voteId}&cardId=${cardId}`,
-      options.GET);
+      `${voteApi}/changeCard`,
+      {...options.POST,
+      body: JSON.stringify({
+        voteId,
+        cardId
+      })}
+  );
   return response.json();
 };
 
@@ -27,6 +38,7 @@ export const deleteVoteRequest = async (
   voteId: string
 ) => {
   await fetch(
-      `${voteApi}/delete?voteId=${voteId}`,
-      options.GET);
+      `${voteApi}/delete`,
+      {...options.POST,
+      body: JSON.stringify(voteId)});
   };

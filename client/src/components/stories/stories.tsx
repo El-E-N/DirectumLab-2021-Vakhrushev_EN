@@ -13,7 +13,7 @@ interface IProps {
 const Stories: React.FunctionComponent<IProps> = (props) => {
   return <table className="stories">
     {props.stories.map((story) => {
-      if (story.average !== null && story.name !== null) {
+      if (story.average !== null && story.name !== '') {
         return <Story
           key={story.name + story.id}
           name={story.name}

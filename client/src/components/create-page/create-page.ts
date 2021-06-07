@@ -33,8 +33,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
     createUser: async (name: string | null) => {
       return dispatch(await updateUser(name));
     },
-    createDiscussion: async (roomId: string) => {
-      return await discussionApi.createDiscussionRequest(roomId, '');
+    createDiscussion: async (roomHash: string) => {
+      return await discussionApi.createDiscussionRequest(roomHash, '');
     }
   };
 };

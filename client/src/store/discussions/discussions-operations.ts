@@ -49,17 +49,6 @@ export const translateDtoDiscussionIntoDiscussion = (discussionDto: IDiscussionD
   return discussion;
 };
 
-export const loadingDiscussions = (roomId: string, players: Array<IPlayer>): any => {
-  return async (dispatch: Dispatch) => {
-    const discussionsDto = await discussionApi.getDiscussionsByRoomIdRequest(roomId);
-    const discussions: Array<IDiscussion> = discussionsDto.map((discussionDto) => {
-      return translateDtoDiscussionIntoDiscussion(discussionDto, players);
-    });
-    dispatch(addCurrentDiscussionId(discussions[discussions.length - 1].id));
-    return dispatch(updateDiscussions(discussions));
-  }
-}
-
 export const updateVote = (voteId: string, cardId: string): any => {
   return async (dispatch: Dispatch) => {
     const voteDto = await voteApi.changeCardRequest(voteId, cardId);
@@ -77,12 +66,12 @@ export const updateVote = (voteId: string, cardId: string): any => {
 };
 
 export const createVote = (
-  roomId: string,
+  roomHash: string,
   playerId: string,
   discussionId: string,
   ): any => {
   return async (dispatch: Dispatch) => {
-    const voteDto = await voteApi.createVoteRequest(roomId, playerId, discussionId);
+    const voteDto = await voteApi.createVoteRequest(roomHash, playerId, discussionId);
     const translatedCard = voteDto.card && translateDtoCardIntoCard(voteDto.card);
     const card: ICard | null = voteDto.card && translatedCard && {
       id: voteDto.card.id,

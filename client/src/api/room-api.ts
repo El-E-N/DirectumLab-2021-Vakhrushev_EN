@@ -7,8 +7,12 @@ export const createRoomRequest = async (
     creatorId: string,
 ): Promise<IRoomDto> => {
   const response = await fetch(
-      `${roomUrl}/create?name=${roomName}&creatorId=${creatorId}`,
-      options.GET);
+      `${roomUrl}/create`,
+      {...options.POST,
+      body: JSON.stringify({
+        name: roomName,
+        creatorId
+      })});
   return response.json();
 };
 
@@ -16,8 +20,9 @@ export const getRoomRequest = async (
     hash: string,
 ): Promise<IRoomDto | null> => {
   const response = await fetch(
-      `${roomUrl}/getByHash?hash=${hash}`,
-      options.GET
+      `${roomUrl}/getByHash`,
+      {...options.POST,
+      body: JSON.stringify(hash)}
   );
   return response.status !== 204 ?
     response.json() :
@@ -25,43 +30,56 @@ export const getRoomRequest = async (
 };
 
 export const addPlayerIntoRoomRequest = async (
-    roomId: string,
+    roomHash: string,
     playerId: string,
 ): Promise<IRoomDto> => {
   const response = await fetch(
-      `${roomUrl}/addPlayer?roomId=${roomId}&playerId=${playerId}`,
-      options.GET
+      `${roomUrl}/addPlayer`,
+      {...options.POST,
+      body: JSON.stringify({
+        roomHash,
+        playerId
+      })}
   );
   return response.json();
 };
 
 export const removePlayerFromRoomRequest = async (
-    roomId: string,
+    roomHash: string,
     playerId: string,
 ): Promise<IRoomDto> => {
   const response = await fetch(
-      `${roomUrl}/removePlayer?roomId=${roomId}&playerId=${playerId}`,
-      options.GET
+      `${roomUrl}/removePlayer`,
+      {...options.POST,
+      body: JSON.stringify({
+        roomHash,
+        playerId
+      })}
   );
   return response.json();
 };
 
 export const changeHostRequest = async (
-    roomId: string,
+    roomHash: string,
     hostId: string,
 ): Promise<IRoomDto> => {
   const response = await fetch(
-      `${roomUrl}/ChangeHost?roomId=${roomId}&hostId=${hostId}`,
-      options.GET
+      `${roomUrl}/ChangeHost`,
+      {...options.POST,
+      body: JSON.stringify({
+        roomHash,
+        playerId: hostId
+      })}
   );
   return response.json();
 };
 
 export const deleteRoomRequest = async (
-  roomId: string
+  roomHash: string
 ) => {
   await fetch(
-    `${roomUrl}/Delete?roomId=${roomId}`,
-    options.GET
+    `${roomUrl}/Delete`,
+    {...options.POST,
+    body: JSON.stringify(roomHash)}
   );
 }
