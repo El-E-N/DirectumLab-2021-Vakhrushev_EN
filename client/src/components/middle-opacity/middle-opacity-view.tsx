@@ -7,7 +7,9 @@ interface IProps {
 }
 
 const MiddleOpacityView: React.FunctionComponent<IProps> = (props) => {
-  return (props.room && props.room.choosedDiscussionId) ? <div className="middle-opacity"/> : null;
+  return (props.room && props.room.choosedDiscussionId) ? 
+    <div className="middle-opacity"/> : 
+    null;
 };
 
 export default MiddleOpacityView;

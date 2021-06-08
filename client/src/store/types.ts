@@ -17,7 +17,7 @@ export interface IRoom {
 
 export interface IDiscussion {
   id: string;
-  name: string | null;
+  name: string;
   average: number;
   players: Array<IPlayer>;
   voteArray: { [key: string]: IVote | null }; // key - userId, value - vote

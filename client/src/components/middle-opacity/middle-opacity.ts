@@ -5,9 +5,7 @@ import {connect} from 'react-redux';
 
 const mapStateToProps = (state: IRootState) => {
     const room = roomSelector(state);
-    return {
-        room
-    };
+    return {room};
 };
 
 export default connect(mapStateToProps)(MiddleOpacityView);

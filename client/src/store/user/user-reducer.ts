@@ -7,6 +7,7 @@ export const reducer = (state: IPlayer | null = null, action: IUserAction): IPla
     case ActionType.UPDATE_USER: {
       return action.user;
     }
+    
     default: {
       return state;
     }

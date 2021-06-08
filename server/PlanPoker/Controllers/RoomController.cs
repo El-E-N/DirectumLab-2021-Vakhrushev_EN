@@ -97,9 +97,9 @@ namespace PlanPoker.Controllers
             Guid hashGuid;
 
             try
-            { hashGuid = Guid.Parse(hash.Replace(" ", string.Empty)); }
+              { hashGuid = Guid.Parse(hash.Replace(" ", string.Empty)); }
             catch
-            { return null; }
+              { return null; }
 
             var room = this.roomService.GetByHash(hashGuid);
             

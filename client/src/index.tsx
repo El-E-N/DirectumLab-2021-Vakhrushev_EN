@@ -13,10 +13,10 @@ import './index.css';
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
 
 render(
-    <Provider store={store}>
-      <Router history={history}>
-        <App/>
-      </Router>
-    </Provider>,
-    document.getElementById('root')
+  <Provider store={store}>
+    <Router history={history}>
+      <App/>
+    </Router>
+  </Provider>,
+  document.getElementById('root')
 );

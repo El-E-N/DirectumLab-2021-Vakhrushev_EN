@@ -17,8 +17,8 @@ const Vote: React.FunctionComponent<IVote> = (props) => {
       <div className={'vote__round'} style={{backgroundColor: props.color}}/>
       <span className="vote__count">
         {props.count !== 'coffee' ? 
-        props.count :
-        <div className={'coffeeIcon'}>{coffeeIcon}</div>}
+          props.count :
+          <div className={'coffeeIcon'}>{coffeeIcon}</div>}
       </span>
     </div>
     <span className="vote__percents">{props.percents}</span>

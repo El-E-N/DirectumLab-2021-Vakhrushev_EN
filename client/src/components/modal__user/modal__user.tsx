@@ -21,7 +21,7 @@ const ModalUser: React.FunctionComponent<IUser> = (props) => {
       {props.value !== 'coffee' ?
       props.value :
       <div className={'coffeeIcon'}>{coffeeIcon}</div>}
-      </span>
+    </span>
   </li>;
 };
 

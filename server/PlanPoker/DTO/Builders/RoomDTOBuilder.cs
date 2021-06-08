@@ -43,8 +43,8 @@ namespace PlanPoker.DTO.Builders
                 Name = room.Name,
                 HostId = room.HostId,
                 CreatorId = room.CreatorId,
-                Players = players,
-                AllPlayers = allPlayersDto,
+                CurrentPlayers = players,
+                RoomPlayers = allPlayersDto,
                 Cards = cardsDto,
                 Discussions = discussionsDto
             };

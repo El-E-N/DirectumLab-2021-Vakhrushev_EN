@@ -15,8 +15,8 @@ export interface IRoomDto {
   id: string;
   hash: string;
   name: string;
-  players: Array<IPlayerDto>;
-  allPlayers: Array<IPlayerDto>;
+  currentPlayers: Array<IPlayerDto>;
+  roomPlayers: Array<IPlayerDto>;
   hostId: string;
   creatorId: string;
   cards: Array<ICardDto>;

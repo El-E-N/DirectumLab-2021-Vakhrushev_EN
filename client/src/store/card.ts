@@ -9,6 +9,7 @@ export const translateDtoCardsIntoCard = (cardsDto: Array<ICardDto>) => {
 
 export const translateDtoCardIntoCard = (card: ICardDto) => {
   let tempCard: ICard;
+
   if (card.name === 'question') {
     tempCard = {
       id: card.id,
@@ -30,5 +31,6 @@ export const translateDtoCardIntoCard = (card: ICardDto) => {
       value: card.value!,
     };
   }
+  
   return tempCard;
 };

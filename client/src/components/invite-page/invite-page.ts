@@ -21,7 +21,7 @@ const mapStateToProps = (state: IRootState) => {
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     updateUser: async (name: string | null) => {
-      return dispatch(await updateUser(name));
+      return dispatch(await updateUser(name)(dispatch));
     }
   };
 };

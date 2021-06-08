@@ -13,17 +13,6 @@ export const removeDiscussion = (id: string): IRemoveDiscussionAction => {
   };
 };
 
-export interface IAddDiscussionAction extends Action {
-  discussion: IDiscussion;
-}
-
-export const addDiscussion = (discussion: IDiscussion): IAddDiscussionAction => {
-  return {
-    type: ActionType.ADD_DISCUSSION,
-    discussion,
-  };
-};
-
 export interface IUpdateVoteAction extends Action {
   discussionId: string;
   playerId: string;

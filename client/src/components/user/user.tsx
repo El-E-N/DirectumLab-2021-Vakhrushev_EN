@@ -3,7 +3,7 @@ import userImage from '../../images/userIcon.svg';
 import Button from '../button/button';
 import {Link} from 'react-router-dom';
 import {RoutePath} from '../../routes';
-import {IRoom, IPlayer, IDiscussion} from '../../store/types';
+import {IPlayer} from '../../store/types';
 import './user.css';
 
 interface IState {
@@ -12,9 +12,6 @@ interface IState {
 
 interface IProps {
   user: IPlayer;
-  room: IRoom;
-  discussion: IDiscussion;
-  onIndex(room: IRoom, playerId: string | null, discussion: IDiscussion): void;
 }
 
 class User extends React.Component<IProps, IState> {
@@ -39,28 +36,26 @@ class User extends React.Component<IProps, IState> {
     </React.Fragment>;
   }
 
-  private onRemovePlayer = () => {
-    this.props.onIndex(this.props.room, this.props.user.id, this.props.discussion);
-  }
-
   render() {
     return <div className="user">
       <Button
         className={'user__button'}
-        value={this.userButton((this.props.user && this.props.user.name) || '')}
+        value={this.userButton(this.props.user ? this.props.user.name : '')}
         onClick={this.handleShowOrHide}
       />
-      {this.state.showUserMenu && <div className="user__menu-wrapper">
-        <div className="rhombus"/>
-        <div className="user__menu">
-          <Link 
-            to={`${RoutePath.INDEX}`} 
-            onClick={this.onRemovePlayer} 
-            className="sign-out">
+
+      {this.state.showUserMenu ? 
+
+        <div className="user__menu-wrapper">
+          <div className="rhombus"/>
+          <div className="user__menu">
+            <Link to={`${RoutePath.INDEX}`} className="sign-out">
               Sign Out
-          </Link>
-        </div>
-      </div>}
+            </Link>
+          </div>
+        </div> :
+
+        null}
     </div>;
   }
 }

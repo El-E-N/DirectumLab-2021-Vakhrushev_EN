@@ -5,8 +5,6 @@ import {reducer as userReducer} from './user/user-reducer';
 import {reducer as discussionsReducer} from './discussions/discussions-reducer';
 
 export const ActionType = {
-  ADD_USER_INTO_ROOM: 'ADD_USER_INTO_ROOM',
-  ADD_DISCUSSION: 'ADD_DISCUSSION',
   ADD_CURRENT_DISCUSSION_ID: 'ADD_CURRENT_DISCUSSION_ID',
   CHANGE_SHOWN_MODAL: 'CHANGE_SHOWN_MODAL',
   CHANGE_CHOOSED_DISCUSSION_ID: 'CHANGE_CHOOSED_DISCUSSION_ID',

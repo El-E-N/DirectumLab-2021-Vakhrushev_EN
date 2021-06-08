@@ -12,20 +12,19 @@ interface IProps {
   onClick?(): void;
 }
 
-class Input extends React.Component<IProps, unknown> {
-  render() {
-    return <input
-      id={this.props.id}
-      className={this.props.className}
-      type={this.props.type}
-      name={this.props.name}
-      readOnly={this.props.readOnly}
-      defaultValue={this.props.value}
-      placeholder={this.props.placeHolder}
-      onBlur={this.props.onBlur}
-      onClick={this.props.onClick}
-    />;
-  }
+const Input: React.FunctionComponent<IProps> = (props) => {
+  return <input
+    required={true}
+    id={props.id}
+    className={props.className}
+    type={props.type}
+    name={props.name}
+    readOnly={props.readOnly}
+    defaultValue={props.value}
+    placeholder={props.placeHolder}
+    onBlur={props.onBlur}
+    onClick={props.onClick}
+  />;
 }
 
 export default Input;

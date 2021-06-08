@@ -3,22 +3,9 @@ import {Link} from 'react-router-dom';
 import logo from './../../images/headerIcon.svg';
 import {RoutePath} from '../../routes';
 import './logo.css';
-import { IDiscussion, IRoom } from '../../store/types';
 
-interface IProps {
-  room: IRoom | null;
-  discussion: IDiscussion | null;
-  playerId: string | null;
-  onIndex(room: IRoom, playerId: string | null, discussion: IDiscussion): void;
-}
-
-const Logo: React.FunctionComponent<IProps> = (props) => {
-  const onIndex = () => {
-    if (props.room !== null && props.discussion !== null)
-      props.onIndex(props.room, props.playerId, props.discussion);
-  };
-
-  return <Link to={RoutePath.INDEX} onClick={onIndex} className="logo">
+const Logo: React.FunctionComponent = () => {
+  return <Link to={RoutePath.INDEX} className="logo">
     <img className="logo__icon" alt="logo__icon" src={logo} />
     <h1 className="logo__name">PlanPoker</h1>
   </Link>;

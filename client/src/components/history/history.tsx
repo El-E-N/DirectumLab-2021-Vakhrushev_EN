@@ -1,13 +1,14 @@
 import * as React from 'react';
 import download from '../../images/download.svg';
 import Stories from '../stories/stories';
-import {IDiscussion, IRoom} from '../../store/types';
+import {IDiscussion, IPlayer, IRoom} from '../../store/types';
 import Button from '../button/button';
 import './history.css';
 
 interface IProps {
   discussions: Array<IDiscussion>;
   room: IRoom;
+  player: IPlayer;
   changeChoosedDiscussion(discussionId: string): void;
   loadingRoom(hash: string, choosedDiscussionId: string | null): void;
 }
@@ -26,6 +27,7 @@ const History: React.FunctionComponent<IProps> = (props) => {
       stories={props.discussions} 
       changeChoosedDiscussion={props.changeChoosedDiscussion}
       room={props.room}
+      player={props.player}
       loadingRoom={props.loadingRoom}
     />
   </div>;

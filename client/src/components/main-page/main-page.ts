@@ -21,18 +21,25 @@ const mapStateToProps = (state: IRootState) => {
   const discussions = discussionsSelector(state);
 
   const currentDiscussion = (room !== null && room.currentDiscussionId !== null && discussions !== null) ?
-                            discussionByIdSelector(room.currentDiscussionId, discussions) :
-                            null;
+    discussionByIdSelector(room.currentDiscussionId, discussions) :
+    null;
 
   const vote = (player !== null && currentDiscussion !== null) ? 
-                voteByPlayerSelector(currentDiscussion, player) : 
-                null;
+    voteByPlayerSelector(currentDiscussion, player) : 
+    null;
+
   const voteArray = currentDiscussion && voteArraySelector(currentDiscussion);
-  const getVote = (discussionId: string, discussions: Array<IDiscussion>, user: IPlayer) => {
-    const discussion = discussionByIdSelector(discussionId, discussions);
-    return discussion && voteByPlayerSelector(discussion, user);
+  
+  const getVote = (user: IPlayer) => {
+    return currentDiscussion !== null ? 
+      voteByPlayerSelector(currentDiscussion, user) :
+      null;
   };
-  const discussionEndAt = currentDiscussion !== null ? currentDiscussion.endAt : null;
+
+  const discussionEndAt = currentDiscussion !== null ? 
+    currentDiscussion.endAt : 
+    null;
+
   return {
     room,
     vote,
@@ -40,27 +47,33 @@ const mapStateToProps = (state: IRootState) => {
     discussions,
     voteArray,
     getVote,
-    discussionEndAt
+    discussionEndAt,
+    currentDiscussion
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     loadingRoom: async (roomHash: string, choosedDiscussionId: string | null) => {
-      return dispatch(await loadingRoom(roomHash, choosedDiscussionId));
+      return dispatch(await loadingRoom(roomHash, choosedDiscussionId)(dispatch));
     },
+
     createUser: async (name: string | null) => {
-      return dispatch(await updateUser(name));
+      return dispatch(await updateUser(name)(dispatch));
     },
+
     updateVote: async (voteId: string, cardId: string) => {
-      return dispatch(await updateValueVote(voteId, cardId));
+      return dispatch(await updateValueVote(voteId, cardId)(dispatch));
     },
+
     createVote: async (roomHash: string, playerId: string, discussionId: string) => {
-      return dispatch(await createVote(roomHash, playerId, discussionId));
+      return dispatch(await createVote(roomHash, playerId, discussionId)(dispatch));
     },
+
     createDiscussion: async (roomHash: string) => {
       return await discussionApi.createDiscussionRequest(roomHash, '');
     },
+
     changeChoosedDiscussion: (discussionId: string) => {
       return dispatch(changeChoosedDiscussion(discussionId));
     }
