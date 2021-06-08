@@ -1,19 +1,20 @@
 import * as React from 'react';
 
-interface IInput {
+interface IProps {
   className?: string;
   type: string;
   name: string;
   value?: string;
   placeHolder?: string;
   readOnly?: boolean;
-  onChange?: boolean;
   id?: string;
+  onBlur?(evt: React.ChangeEvent<HTMLInputElement>): void;
   onClick?(): void;
 }
 
-const Input: React.FunctionComponent<IInput> = (props) => {
+const Input: React.FunctionComponent<IProps> = (props) => {
   return <input
+    required={true}
     id={props.id}
     className={props.className}
     type={props.type}
@@ -21,8 +22,9 @@ const Input: React.FunctionComponent<IInput> = (props) => {
     readOnly={props.readOnly}
     defaultValue={props.value}
     placeholder={props.placeHolder}
+    onBlur={props.onBlur}
     onClick={props.onClick}
   />;
-};
+}
 
 export default Input;

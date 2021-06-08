@@ -14,11 +14,6 @@ namespace PlanPoker.DTO
         public Guid Id { get; set; }
 
         /// <summary>
-        /// Id комнаты.
-        /// </summary>
-        public Guid RoomID { get; set; }
-
-        /// <summary>
         /// Его название.
         /// </summary>
         public string Name { get; set; }
@@ -36,6 +31,6 @@ namespace PlanPoker.DTO
         /// <summary>
         /// Голосования из него.
         /// </summary>
-        public IEnumerable<VoteDTO> VoteList { get; set; }
+        public ICollection<VoteDTO> VoteList { get; set; }
     }
 }

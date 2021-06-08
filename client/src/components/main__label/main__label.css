@@ -19,3 +19,7 @@
   border: 1px solid #d5d9de;
   border-radius: 4px;
 }
+
+.red input[type="text"]::-webkit-input-placeholder {
+  color: red;
+}

@@ -3,8 +3,23 @@ using PlanPoker.DTO;
 using PlanPoker.DTO.Builders;
 using PlanPoker.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+
+public class ElementForDiscussionCreate
+{
+    public string roomHash { get; set; }
+    public string name { get; set; }
+}
+
+public class ElementForDiscussionSetName
+{
+    public string discussionId { get; set; }
+    public string name { get; set; }
+}
+
+public class DiscussionDtoWithToken : DiscussionDTO
+{
+    public Guid Token { get; set; }
+}
 
 namespace PlanPoker.Controllers
 {
@@ -13,7 +28,7 @@ namespace PlanPoker.Controllers
     /// </summary>
     [ApiController]
     [Route("/api/[controller]/[action]")]
-    public class DiscussionController
+    public class DiscussionController : ControllerBase
     {
         /// <summary>
         /// Сервис обсуждения.
@@ -30,17 +45,20 @@ namespace PlanPoker.Controllers
         /// </summary>
         private readonly CardService cardService;
 
+        private readonly RoomService roomService;
+
         /// <summary>
         /// Конструктор с присваиванием сервиса.
         /// </summary>
         /// <param name="discussionService">Сервисы обсуждения.</param>
         /// <param name="voteService">Сервисы оценок.</param>
         /// <param name="cardService">Сервисы карт.</param>
-        public DiscussionController(DiscussionService discussionService, VoteService voteService, CardService cardService)
+        public DiscussionController(DiscussionService discussionService, VoteService voteService, CardService cardService, RoomService roomService)
         {
             this.discussionService = discussionService;
             this.voteService = voteService;
             this.cardService = cardService;
+            this.roomService = roomService;
         }
 
         /// <summary>
@@ -49,61 +67,76 @@ namespace PlanPoker.Controllers
         /// <param name="roomId">Id комнаты.</param>
         /// <param name="name">Название обсуждения.</param>
         /// <returns>Объект DTO этого обсуждения.</returns>
-        [HttpGet]
-        public DiscussionDTO Create(string roomId, string name = "")
+        [HttpPost]
+        public DiscussionDtoWithToken Create(ElementForDiscussionCreate body)
         {
-            var roomGuid = Guid.Parse(roomId.Replace(" ", string.Empty));
-            var discussion = this.discussionService.Create(roomGuid, name);
-            return DiscussionDTOBuilder.Build(discussion, this.voteService, this.cardService);
+            var roomHashGuid = Guid.Parse(body.roomHash.Replace(" ", string.Empty));
+            var tokenGuid = Guid.Parse(Request.Headers["token"].ToString().Replace(" ", string.Empty));
+            var room = this.roomService.GetByHash(roomHashGuid);
+            var discussion = this.discussionService.Create(room.Id, body.name);
+            var discussionDto = DiscussionDTOBuilder.Build(discussion, this.voteService, this.cardService);
+            var result = new DiscussionDtoWithToken()
+            {
+                EndAt = discussionDto.EndAt,
+                StartAt = discussionDto.StartAt,
+                Id = discussionDto.Id,
+                Name = discussionDto.Name,
+                VoteList = discussionDto.VoteList,
+                Token = tokenGuid
+            };
+            return result;
         }
 
         /// <summary>
         /// Закрытие обсуждения.
         /// </summary>
         /// <param name="discussionId">Id этого обсуждения.</param>
+        /// <returns>Обсуждение.</returns>
         [HttpPost]
-        public void Close(string discussionId)
+        public DiscussionDtoWithToken Close([FromBody] string discussionId)
         {
             var discussionGuid = Guid.Parse(discussionId.Replace(" ", string.Empty));
-            this.discussionService.Close(discussionGuid);
+            var tokenGuid = Guid.Parse(Request.Headers["token"].ToString().Replace(" ", string.Empty));
+            var discussion = this.discussionService.Close(discussionGuid);
+            var discussionDto = DiscussionDTOBuilder.Build(discussion, this.voteService, this.cardService);
+            var result = new DiscussionDtoWithToken()
+            {
+                EndAt = discussionDto.EndAt,
+                StartAt = discussionDto.StartAt,
+                Id = discussionDto.Id,
+                Name = discussionDto.Name,
+                VoteList = discussionDto.VoteList,
+                Token = tokenGuid
+            };
+            return result;
         }
 
-        /// <summary>
-        /// Добавление голоса в обсуждение по Id обсуждения.
-        /// </summary>
-        /// <param name="discussionId">Id обсуждения.</param>
-        /// <param name="voteId">Id голоса.</param>
         [HttpPost]
-        public void AddVote(string discussionId, string voteId)
+        public DiscussionDtoWithToken SetName(ElementForDiscussionSetName body)
         {
-            var discussionGuid = Guid.Parse(discussionId.Replace(" ", string.Empty));
-            var voteGuid = Guid.Parse(voteId.Replace(" ", string.Empty));
-            this.discussionService.AddVote(discussionGuid, voteGuid);
+            var discussionGuid = Guid.Parse(body.discussionId.Replace(" ", string.Empty));
+            var tokenGuid = Guid.Parse(Request.Headers["token"].ToString().Replace(" ", string.Empty));
+            var discussion = this.discussionService.SetName(discussionGuid, body.name);
+            var discussionDto = DiscussionDTOBuilder.Build(discussion, this.voteService, this.cardService);
+            var result = new DiscussionDtoWithToken()
+            {
+                EndAt = discussionDto.EndAt,
+                StartAt = discussionDto.StartAt,
+                Id = discussionDto.Id,
+                Name = discussionDto.Name,
+                VoteList = discussionDto.VoteList,
+                Token = tokenGuid
+            };
+            return result;
         }
 
-        /// <summary>
-        /// Возвращает список оценок.
-        /// </summary>
-        /// <param name="discussionId">Id обсуждения.</param>
-        /// <returns>Список оценок.</returns>
-        [HttpGet]
-        public IEnumerable<VoteDTO> GetAllVote(string discussionId)
+        [HttpPost]
+        public StringToken Delete([FromBody] string discussionId)
         {
             var discussionGuid = Guid.Parse(discussionId.Replace(" ", string.Empty));
-            var discussion = this.discussionService.GetDiscussion(discussionGuid);
-            var voteArray = discussion.VoteIds.Select(id => this.voteService.GetVote(id));
-            return VoteDTOBuilder.BuildList(voteArray, this.cardService);
-        }
-
-        /// <summary>
-        /// Возвращает список всех обсуждений.
-        /// </summary>
-        /// <returns>Все обсуждения из базы данных.</returns>
-        [HttpGet]
-        public IEnumerable<DiscussionDTO> GetDiscussionList()
-        {
-            var discussions = this.discussionService.GetDiscussions();
-            return DiscussionDTOBuilder.BuildList(discussions, this.voteService, this.cardService);
+            this.discussionService.Delete(discussionGuid);
+            var token = Request.Headers["token"];
+            return new StringToken() { Token = token };
         }
     }
 }

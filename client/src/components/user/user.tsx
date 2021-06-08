@@ -3,7 +3,7 @@ import userImage from '../../images/userIcon.svg';
 import Button from '../button/button';
 import {Link} from 'react-router-dom';
 import {RoutePath} from '../../routes';
-import {IRoom, IUser} from '../../store/types';
+import {IPlayer} from '../../store/types';
 import './user.css';
 
 interface IState {
@@ -11,11 +11,10 @@ interface IState {
 }
 
 interface IProps {
-  user: IUser | null;
-  room: IRoom | null;
+  user: IPlayer;
 }
 
-class UserView extends React.Component<IProps, IState> {
+class User extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
@@ -39,15 +38,26 @@ class UserView extends React.Component<IProps, IState> {
 
   render() {
     return <div className="user">
-      <Button className={'user__button'} value={this.userButton((this.props.user && this.props.user.name) || '')} onClick={this.handleShowOrHide}/>
-      {this.state.showUserMenu && <div className="user__menu-wrapper">
-        <div className="rhombus"/>
-        <div className="user__menu">
-          <Link to={`${RoutePath.INVITE}/${this.props.room && this.props.room.id}`} className="sign-out">Sign Out</Link>
-        </div>
-      </div>}
+      <Button
+        className={'user__button'}
+        value={this.userButton(this.props.user ? this.props.user.name : '')}
+        onClick={this.handleShowOrHide}
+      />
+
+      {this.state.showUserMenu ? 
+
+        <div className="user__menu-wrapper">
+          <div className="rhombus"/>
+          <div className="user__menu">
+            <Link to={`${RoutePath.INDEX}`} className="sign-out">
+              Sign Out
+            </Link>
+          </div>
+        </div> :
+
+        null}
     </div>;
   }
 }
 
-export default UserView;
+export default User;

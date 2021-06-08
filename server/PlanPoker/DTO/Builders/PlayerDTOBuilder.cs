@@ -28,9 +28,9 @@ namespace PlanPoker.DTO.Builders
         /// </summary>
         /// <param name="players">Игроки.</param>
         /// <returns>Список DTO игроков.</returns>
-        public static IEnumerable<PlayerDTO> BuildList(IEnumerable<Player> players)
+        public static ICollection<PlayerDTO> BuildList(ICollection<Player> players)
         {
-            return players.Select(player => Build(player));
+            return new List<PlayerDTO>(players.Select(player => Build(player)));
         }
     }
 }

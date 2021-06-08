@@ -3,7 +3,23 @@ using PlanPoker.DTO;
 using PlanPoker.DTO.Builders;
 using PlanPoker.Services;
 using System;
-using System.Collections.Generic;
+
+public class ElementForRoomCreate
+{
+    public string name { get; set; }
+    public string creatorId { get; set; }
+}
+
+public class ElementForRoomPlayer
+{
+    public string roomHash { get; set; }
+    public string playerId { get; set; }
+}
+
+public class RoomDtoWithToken : RoomDTO
+{
+    public string Token { get; set; }
+}
 
 namespace PlanPoker.Controllers
 {
@@ -12,7 +28,7 @@ namespace PlanPoker.Controllers
     /// </summary>
     [ApiController]
     [Route("/api/[controller]/[action]")]
-    public class RoomController
+    public class RoomController : ControllerBase
     {
         /// <summary>
         /// Сервисы комнаты.
@@ -25,14 +41,32 @@ namespace PlanPoker.Controllers
         private readonly PlayerService playerService;
 
         /// <summary>
+        /// Сервисы карт.
+        /// </summary>
+        private readonly CardService cardService;
+
+        /// <summary>
+        /// Сервисы обсуждений.
+        /// </summary>
+        private readonly DiscussionService discussionService;
+
+        /// <summary>
+        /// Сервисы голосов.
+        /// </summary>
+        private readonly VoteService voteService;
+
+        /// <summary>
         /// Конструктор.
         /// </summary>
         /// <param name="roomService">Сервисы комнат.</param>
         /// <param name="playerService">Сервисы игроков.</param>
-        public RoomController(RoomService roomService, PlayerService playerService)
+        public RoomController(RoomService roomService, PlayerService playerService, CardService cardService, DiscussionService discussionService, VoteService voteService)
         {
             this.roomService = roomService;
             this.playerService = playerService;
+            this.voteService = voteService;
+            this.cardService = cardService;
+            this.discussionService = discussionService;
         }
 
         /// <summary>
@@ -41,62 +75,160 @@ namespace PlanPoker.Controllers
         /// <param name="name">Название комнаты.</param>
         /// <param name="creatorId">Id создателя.</param>
         /// <returns>Объект DTO созданной комнаты.</returns>
-        [HttpGet]
-        public RoomDTO Create(string name, string creatorId)
+        [HttpPost]
+        public RoomDtoWithToken Create(ElementForRoomCreate body)
         {
-            var creatorGuid = Guid.Parse(creatorId.Replace(" ", string.Empty));
-            var room = this.roomService.Create(name, creatorGuid);
-            return RoomDTOBuilder.Build(room, this.playerService);
+            var creatorGuid = Guid.Parse(body.creatorId.Replace(" ", string.Empty));
+            var room = this.roomService.Create(body.name, creatorGuid);
+            var roomDto = RoomDTOBuilder.Build(room, this.playerService, this.cardService, this.discussionService, this.voteService);
+            var result = new RoomDtoWithToken()
+            {
+                Cards = roomDto.Cards,
+                CreatorId = roomDto.CreatorId,
+                CurrentPlayers = roomDto.CurrentPlayers,
+                Discussions = roomDto.Discussions,
+                Hash = roomDto.Hash,
+                HostId = roomDto.HostId,
+                Id = roomDto.Id,
+                Name = roomDto.Name,
+                RoomPlayers = roomDto.RoomPlayers,
+                Token = Request.Headers["token"]
+            };
+            return result;
+        }
+
+        [HttpPost]
+        public string Delete([FromBody] string roomHash)
+        {
+            var roomHashGuid = Guid.Parse(roomHash.Replace(" ", string.Empty));
+            var room = this.roomService.GetByHash(roomHashGuid);
+            this.roomService.Delete(room.Id);
+            return Request.Headers["token"];
+        }
+
+        /// <summary>
+        /// Получение комнаты по хэшу.
+        /// </summary>
+        /// <param name="hash">Хэш.</param>
+        /// <returns>Комната.</returns>
+        [HttpPost]
+        public RoomDtoWithToken GetByHash([FromBody] string hash)
+        {
+            Guid hashGuid;
+
+            try
+              { hashGuid = Guid.Parse(hash.Replace(" ", string.Empty)); }
+            catch
+              { return null; }
+
+            var room = this.roomService.GetByHash(hashGuid);
+
+            if (room != null)
+            {
+                var roomDto = RoomDTOBuilder.Build(room, this.playerService, this.cardService, this.discussionService, this.voteService);
+                var result = new RoomDtoWithToken()
+                {
+                    Cards = roomDto.Cards,
+                    CreatorId = roomDto.CreatorId,
+                    CurrentPlayers = roomDto.CurrentPlayers,
+                    Discussions = roomDto.Discussions,
+                    Hash = roomDto.Hash,
+                    HostId = roomDto.HostId,
+                    Id = roomDto.Id,
+                    Name = roomDto.Name,
+                    RoomPlayers = roomDto.RoomPlayers,
+                    Token = Request.Headers["token"]
+                };
+                return result;
+            }
+            return null;
         }
 
         /// <summary>
         /// Добавление игрока в комнату.
         /// </summary>
-        /// <param name="roomId">Id комнаты.</param>
-        /// <param name="playerId">Id добавляемого игрока.</param>
+        /// <param name="body">Тело с hash комнаты и id игрока.</param>
+        /// <returns>Комната.</returns>
         [HttpPost]
-        public void AddPlayer(string roomId, string playerId)
+        public RoomDtoWithToken AddPlayer(ElementForRoomPlayer body)
         {
-            var roomGuid = Guid.Parse(roomId.Replace(" ", string.Empty));
-            var playerGuid = Guid.Parse(playerId.Replace(" ", string.Empty));
-            this.roomService.AddPlayer(roomGuid, playerGuid);
+            var roomHashGuid = Guid.Parse(body.roomHash.Replace(" ", string.Empty));
+            var playerGuid = Guid.Parse(body.playerId.Replace(" ", string.Empty));
+            var room = this.roomService.GetByHash(roomHashGuid);
+            room = this.roomService.AddPlayer(room.Id, playerGuid);
+            var roomDto = RoomDTOBuilder.Build(room, this.playerService, this.cardService, this.discussionService, this.voteService);
+            var result = new RoomDtoWithToken()
+            {
+                Cards = roomDto.Cards,
+                CreatorId = roomDto.CreatorId,
+                CurrentPlayers = roomDto.CurrentPlayers,
+                Discussions = roomDto.Discussions,
+                Hash = roomDto.Hash,
+                HostId = roomDto.HostId,
+                Id = roomDto.Id,
+                Name = roomDto.Name,
+                RoomPlayers = roomDto.RoomPlayers,
+                Token = Request.Headers["token"]
+            };
+            return result;
         }
 
         /// <summary>
         /// Удаление игрока из комнаты.
         /// </summary>
-        /// <param name="roomId">Id комнаты.</param>
-        /// <param name="playerId">Id игрока.</param>
+        /// <param name="body">Тело с hash комнаты и id игрока.</param>
+        /// <returns>Комната.</returns>
         [HttpPost]
-        public void RemovePlayer(string roomId, string playerId)
+        public RoomDtoWithToken RemovePlayer(ElementForRoomPlayer body)
         {
-            var roomGuid = Guid.Parse(roomId.Replace(" ", string.Empty));
-            var playerGuid = Guid.Parse(playerId.Replace(" ", string.Empty));
-            this.roomService.RemovePlayer(roomGuid, playerGuid);
+            var roomHashGuid = Guid.Parse(body.roomHash.Replace(" ", string.Empty));
+            var playerGuid = Guid.Parse(body.playerId.Replace(" ", string.Empty));
+            var room = this.roomService.GetByHash(roomHashGuid);
+            room = this.roomService.RemovePlayer(room.Id, playerGuid); 
+            var roomDto = RoomDTOBuilder.Build(room, this.playerService, this.cardService, this.discussionService, this.voteService);
+            var result = new RoomDtoWithToken()
+            {
+                Cards = roomDto.Cards,
+                CreatorId = roomDto.CreatorId,
+                CurrentPlayers = roomDto.CurrentPlayers,
+                Discussions = roomDto.Discussions,
+                Hash = roomDto.Hash,
+                HostId = roomDto.HostId,
+                Id = roomDto.Id,
+                Name = roomDto.Name,
+                RoomPlayers = roomDto.RoomPlayers,
+                Token = Request.Headers["token"]
+            };
+            return result;
         }
 
         /// <summary>
         /// Изменение ведущего комнаты.
         /// </summary>
-        /// <param name="roomId">Id комнаты.</param>
-        /// <param name="hostId">Id ведущего.</param>
+        /// <param name="body">Тело с hash комнаты и id игрока.</param>
+        /// <returns>Комната.</returns>
         [HttpPost]
-        public void ChangeHost(string roomId, string hostId)
+        public RoomDtoWithToken ChangeHost(ElementForRoomPlayer body)
         {
-            var roomGuid = Guid.Parse(roomId.Replace(" ", string.Empty));
-            var hostGuid = Guid.Parse(hostId.Replace(" ", string.Empty));
-            this.roomService.ChangeHost(roomGuid, hostGuid);
-        }
-
-        /// <summary>
-        /// Получение всех комнат.
-        /// </summary>
-        /// <returns>Все комнаты из базы данных.</returns>
-        [HttpGet]
-        public IEnumerable<RoomDTO> GetRooms()
-        {
-            var rooms = this.roomService.GetRooms();
-            return RoomDTOBuilder.BuildList(rooms, this.playerService);
+            var roomHashGuid = Guid.Parse(body.roomHash.Replace(" ", string.Empty));
+            var hostGuid = Guid.Parse(body.playerId.Replace(" ", string.Empty));
+            var room = this.roomService.GetByHash(roomHashGuid);
+            room = this.roomService.ChangeHost(room.Id, hostGuid);
+            var roomDto = RoomDTOBuilder.Build(room, this.playerService, this.cardService, this.discussionService, this.voteService);
+            var result = new RoomDtoWithToken()
+            {
+                Cards = roomDto.Cards,
+                CreatorId = roomDto.CreatorId,
+                CurrentPlayers = roomDto.CurrentPlayers,
+                Discussions = roomDto.Discussions,
+                Hash = roomDto.Hash,
+                HostId = roomDto.HostId,
+                Id = roomDto.Id,
+                Name = roomDto.Name,
+                RoomPlayers = roomDto.RoomPlayers,
+                Token = Request.Headers["token"]
+            };
+            return result;
         }
     }
 }

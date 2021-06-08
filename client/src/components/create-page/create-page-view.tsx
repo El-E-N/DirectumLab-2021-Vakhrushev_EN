@@ -2,58 +2,93 @@ import * as React from 'react';
 import {RouteComponentProps} from 'react-router-dom';
 import MainLabel from '../main__label/main__label';
 import Button from '../button/button';
+import {IDiscussion, IPlayer, IRoom} from '../../store/types';
 import {RoutePath} from '../../routes';
-import {IRoom, IUser} from '../../store/types';
 import './create-page.css';
-
-const values = [
-  {label: 'User name', placeHolder: 'Enter your name', name: 'userName'},
-  {label: 'Room name', placeHolder: 'Enter room name', name: 'roomName'}
-];
+import authService from '../../services/auth-service';
 
 export interface IProps extends RouteComponentProps {
-  // eslint-disable-next-line no-unused-vars
-  createRoom(room: IRoom): void;
-  // eslint-disable-next-line no-unused-vars
-  updateUser(user: IUser | null): void;
+  player: IPlayer | null;
+  room: IRoom | null;
+  discussion: IDiscussion | null;
+  createRoom(roomName: string, creatorId: string): IRoom;
+  createUser(name: string | null): IPlayer | null;
+  createDiscussion(roomId: string): void;
+  clearDates(room: IRoom, playerId: string | null, discussion: IDiscussion): void;
 }
 
-class CreatePageView extends React.Component<IProps, {}> {
+interface IState {
+  userName: string;
+  roomName: string;
+}
+
+class CreatePageView extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.props.updateUser(null);
+    this.state = {
+      userName: '',
+      roomName: '',
+    };
+
+    this.props.createUser(null);
+
+    if (this.props.room !== null && this.props.discussion !== null)
+      this.props.clearDates(
+        this.props.room, 
+        this.props.player ? this.props.player.id : null, 
+        this.props.discussion
+      );
+
+    authService.set('');
   }
 
-  handleSubmit(evt: React.FormEvent) {
+  async handleSubmit(evt: React.FormEvent) {
     evt.preventDefault();
-    let userName = ((evt.target as Element).children.item(2)!.children.namedItem('userName') as HTMLInputElement).value;
-    let roomName = ((evt.target as Element).children.item(3)!.children.namedItem('roomName') as HTMLInputElement).value;
-    if (userName && roomName && userName !== '' && roomName !== '') {
-      const roomId = `${Math.round(Math.random() * (1000 - 1) + 1)}`;
-      const userId = `${Math.round(Math.random() * (1000 - 1) + 1)}`;
-      const storyId = `${Math.round(Math.random() * (1000 - 1) + 1)}`;
-      this.props.updateUser({id: userId, name: userName});
-      this.props.createRoom({
-        id: roomId,
-        name: roomName,
-        cards: ['0', '0.5', '1', '2', '3', '5', '8', '13', '20', '40', '100', '?', '∞', 'coffee'],
-        selectedCard: null,
-        ownerId: userId,
-        users: [{id: userId, name: userName}],
-        storiesId: [storyId],
-      });
-      this.props.history.push(`${RoutePath.MAIN}/${roomId}`);
-    }
+    
+    if (this.state.roomName !== '' && this.state.userName !== '') {
+      await this.props.createUser(this.state.userName);
+
+      if (this.props.player) 
+        await this.props.createRoom(this.state.roomName, this.props.player.id);
+
+      if (this.props.room) {
+        await this.props.createDiscussion(this.props.room.hash);
+        this.props.history.push(`${RoutePath.MAIN}/${this.props.room.hash}`);
+      }
+    } 
+  }
+
+  updateUserValue(evt: React.ChangeEvent<HTMLInputElement>) {
+    this.setState({
+      userName: evt.target.value
+    });
+  }
+
+  updateRoomValue(evt: React.ChangeEvent<HTMLInputElement>) {
+    this.setState({
+      roomName: evt.target.value
+    });
   }
 
   render() {
+    const values = [
+      {label: 'User name', placeHolder: 'Enter your name', name: 'userName', update: this.updateUserValue.bind(this)},
+      {label: 'Room name', placeHolder: 'Enter room name', name: 'roomName', update: this.updateRoomValue.bind(this)}
+    ];
+
     return <main className="main">
       <form action={'POST'} onSubmit={this.handleSubmit} className={'main__content'}>
         <span className="main__tagline">{'Let\'s start!'}</span>
         <h2 className="main__title">{'Create the room:'}</h2>
         {values.map((value) => {
-          return <MainLabel key={value.name} name={value.name} title={value.label} placeHolder={value.placeHolder}/>;
+          return <MainLabel
+            updateValue={value.update}
+            key={value.name}
+            name={value.name}
+            title={value.label}
+            placeHolder={value.placeHolder}
+          />;
         })}
         <Button className={'main__button'} value={'Enter'}/>
       </form>

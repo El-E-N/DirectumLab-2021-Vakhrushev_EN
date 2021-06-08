@@ -1,9 +1,33 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DataService.Models;
+using Microsoft.AspNetCore.Mvc;
 using PlanPoker.DTO;
 using PlanPoker.DTO.Builders;
 using PlanPoker.Services;
 using System;
-using System.Collections.Generic;
+
+public class ElementForVoteCreate
+{
+    public string cardId { get; set; }
+    public string roomHash { get; set; }
+    public string playerId { get; set; }
+    public string discussionId { get; set; }
+}
+
+public class ElementForVoteChangeCard
+{
+    public string voteId { get; set; }
+    public string cardId { get; set; }
+}
+
+public class VoteDtoWithToken : VoteDTO
+{
+    public Guid Token { get; set; }
+}
+
+public class StringToken
+{
+    public string Token { get; set; }
+}
 
 namespace PlanPoker.Controllers
 {
@@ -12,7 +36,7 @@ namespace PlanPoker.Controllers
     /// </summary>
     [ApiController]
     [Route("/api/[controller]/[action]")]
-    public class VoteController
+    public class VoteController : ControllerBase
     {
         /// <summary>
         /// Сервисы голоса.
@@ -23,16 +47,25 @@ namespace PlanPoker.Controllers
         /// Сервис карт.
         /// </summary>
         private readonly CardService cardService;
+        
+        /// <summary>
+        /// Сервис обсуждений.
+        /// </summary>
+        private readonly DiscussionService discussionService;
+
+        private readonly RoomService roomService;
 
         /// <summary>
         /// Конструктор.
         /// </summary>
         /// <param name="voteService">Сервисы оценок.</param>
         /// <param name="cardService">Сервисы карт.</param>
-        public VoteController(VoteService voteService, CardService cardService)
+        public VoteController(VoteService voteService, CardService cardService, DiscussionService discussionService, RoomService roomService)
         {
             this.voteService = voteService;
             this.cardService = cardService;
+            this.discussionService = discussionService;
+            this.roomService = roomService;
         }
 
         /// <summary>
@@ -43,16 +76,44 @@ namespace PlanPoker.Controllers
         /// <param name="playerId">Id игрока, котрый проголосовал.</param>
         /// <param name="discussionId">Id обсуждения, на которое проголосовали.</param>
         /// <returns>Оценка.</returns>
-        [HttpGet]
-        public VoteDTO Create(string cardId, string roomId, string playerId, string discussionId)
+        [HttpPost]
+        public VoteDtoWithToken Create(ElementForVoteCreate body)
         {
-            var cardGuid = Guid.Parse(cardId.Replace(" ", string.Empty));
-            var roomGuid = Guid.Parse(roomId.Replace(" ", string.Empty));
-            var playerGuid = Guid.Parse(playerId.Replace(" ", string.Empty));
-            var discussionGuid = Guid.Parse(discussionId.Replace(" ", string.Empty));
+            var roomHashGuid = Guid.Parse(body.roomHash.Replace(" ", string.Empty));
+            var room = this.roomService.GetByHash(roomHashGuid);
+            var playerGuid = Guid.Parse(body.playerId.Replace(" ", string.Empty));
+            var discussionGuid = Guid.Parse(body.discussionId.Replace(" ", string.Empty));
+            Vote vote;
+            if (body.cardId != null)
+            {
+                var cardGuid = Guid.Parse(body.cardId.Replace(" ", string.Empty));
+                vote = this.voteService.Create(cardGuid, room.Id, playerGuid, discussionGuid);
+            }
+            else
+                vote = this.voteService.Create(null, room.Id, playerGuid, discussionGuid);
+            var tokenGuid = Guid.Parse(Request.Headers["token"].ToString().Replace(" ", string.Empty));
+            this.discussionService.AddVote(vote.DiscussionId, vote.Id);
+            var voteDto = VoteDTOBuilder.Build(vote, this.cardService);
+            var result = new VoteDtoWithToken()
+            {
+                Card = voteDto.Card,
+                DiscussionId = voteDto.DiscussionId,
+                Id = voteDto.Id,
+                PlayerId = voteDto.PlayerId,
+                Token = tokenGuid
+            };
+            return result;
+        }
 
-            var vote = this.voteService.Create(cardGuid, roomGuid, playerGuid, discussionGuid);
-            return VoteDTOBuilder.Build(vote, this.cardService);
+        [HttpPost]
+        public StringToken Delete([FromBody] string voteId)
+        {
+            var voteGuid = Guid.Parse(voteId.Replace(" ", string.Empty));
+            var vote = this.voteService.GetById(voteGuid);
+            this.discussionService.RemoveVote(vote.DiscussionId, voteGuid);
+            this.voteService.Delete(voteGuid);
+            var token = Request.Headers["token"];
+            return new StringToken() { Token = token };
         }
 
         /// <summary>
@@ -60,23 +121,24 @@ namespace PlanPoker.Controllers
         /// </summary>
         /// <param name="voteId">Id оценки.</param>
         /// <param name="cardId">Id карты.</param>
+        /// <returns>Оценка.</returns>
         [HttpPost]
-        public void ChangeCard(string voteId, string cardId)
+        public VoteDtoWithToken ChangeCard(ElementForVoteChangeCard body)
         {
-            var voteGuid = Guid.Parse(voteId.Replace(" ", string.Empty));
-            var cardGuid = Guid.Parse(cardId.Replace(" ", string.Empty));
-            this.voteService.ChangeCard(voteGuid, cardGuid);
-        }
-
-        /// <summary>
-        /// Просто для проверки работы.
-        /// </summary>
-        /// <returns>Все голоса из базы данных.</returns>
-        [HttpGet]
-        public IEnumerable<VoteDTO> GetAllVote()
-        {
-            var voteArray = this.voteService.GetAllVote();
-            return VoteDTOBuilder.BuildList(voteArray, this.cardService);
+            var voteGuid = Guid.Parse(body.voteId.Replace(" ", string.Empty));
+            var cardGuid = Guid.Parse(body.cardId.Replace(" ", string.Empty));
+            var vote = this.voteService.ChangeCard(voteGuid, cardGuid);
+            var voteDto = VoteDTOBuilder.Build(vote, this.cardService);
+            var tokenGuid = Guid.Parse(Request.Headers["token"].ToString().Replace(" ", string.Empty));
+            var result = new VoteDtoWithToken()
+            {
+                Card = voteDto.Card,
+                DiscussionId = voteDto.DiscussionId,
+                Id = voteDto.Id,
+                PlayerId = voteDto.PlayerId,
+                Token = tokenGuid
+            };
+            return result;
         }
     }
 }

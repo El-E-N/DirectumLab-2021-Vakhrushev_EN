@@ -1,14 +1,16 @@
 import * as React from 'react';
 import download from '../../images/download.svg';
 import Stories from '../stories/stories';
-import {IStory} from '../../store/types';
+import {IDiscussion, IPlayer, IRoom} from '../../store/types';
 import Button from '../button/button';
-import {mockState} from '../../mock/mock';
 import './history.css';
 
 interface IProps {
-  stories: Array<IStory>;
-  onShowModal?(): void;
+  discussions: Array<IDiscussion>;
+  room: IRoom;
+  player: IPlayer;
+  changeChoosedDiscussion(discussionId: string): void;
+  loadingRoom(hash: string, choosedDiscussionId: string | null): void;
 }
 
 const History: React.FunctionComponent<IProps> = (props) => {
@@ -17,11 +19,17 @@ const History: React.FunctionComponent<IProps> = (props) => {
     <div className="history__header">
       <div className="history__header-wrapper">
         <h3 className="history__title">Completed Stories</h3>
-        <div className="history__count">{mockState.stories.length}</div>
+        <div className="history__count">{props.discussions.length - 1}</div>
       </div>
       <Button value={downloadImg} className={'history__button'}/>
     </div>
-    <Stories stories={props.stories} onShowModal={props.onShowModal}/>
+    <Stories 
+      stories={props.discussions} 
+      changeChoosedDiscussion={props.changeChoosedDiscussion}
+      room={props.room}
+      player={props.player}
+      loadingRoom={props.loadingRoom}
+    />
   </div>;
 };
 

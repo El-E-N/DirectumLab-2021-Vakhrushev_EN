@@ -1,23 +1,29 @@
 import * as React from 'react';
 import Story from '../story/story';
-import {IStory} from '../../store/types';
+import {IDiscussion, IPlayer, IRoom} from '../../store/types';
 import './stories.css';
 
 interface IProps {
-  stories: Array<IStory>;
-  onShowModal?(): void;
+  stories: Array<IDiscussion>;
+  room: IRoom;
+  player: IPlayer;
+  changeChoosedDiscussion(discussionId: string): void;
+  loadingRoom(hash: string, choosedDiscussionId: string | null): void;
 }
 
 const Stories: React.FunctionComponent<IProps> = (props) => {
   return <table className="stories">
-    {/* eslint-disable-next-line consistent-return */}
     {props.stories.map((story) => {
-      if (story.average) {
+      if (story.name !== '') {
         return <Story
           key={story.name + story.id}
           name={story.name}
           average={story.average}
-          onShowModal={props.onShowModal}
+          discussionId={story.id}
+          room={props.room}
+          player={props.player}
+          changeChoosedDiscussion={props.changeChoosedDiscussion}
+          loadingRoom={props.loadingRoom}
         />;
       }
     })}

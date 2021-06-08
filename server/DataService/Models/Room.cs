@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json;
 
 namespace DataService.Models
 {
@@ -9,6 +10,13 @@ namespace DataService.Models
     public class Room : Entity
     {
         /// <summary>
+        /// Пустой конструктор.
+        /// </summary>
+        public Room()
+        {
+        }
+
+        /// <summary>
         /// Конструктор с параметрами.
         /// </summary>
         /// <param name="name">Название.</param>
@@ -16,10 +24,11 @@ namespace DataService.Models
         /// <param name="creatorId">Id создателя.</param>
         /// <param name="id">Id комнаты.</param>
         /// <param name="hash">Hash комнаты.</param>
-        public Room(string name, Guid hostId, Guid creatorId, Guid id, Guid hash)
+        /// <param name="playersIds">Id игроков.</param>
+        public Room(string name, Guid hostId, Guid creatorId, Guid id, Guid hash, ICollection<Guid> playersIds)
         {
             this.CreatorId = creatorId;
-            this.PlayersIds = new List<Guid>() { hostId };
+            this.PlayersIds = JsonSerializer.Serialize<ICollection<Guid>>(playersIds);
             this.Id = id;
             this.Hash = hash;
             this.HostId = hostId;
@@ -42,7 +51,7 @@ namespace DataService.Models
         /// <summary>
         /// Id игроков.
         /// </summary>
-        public ICollection<Guid> PlayersIds { get; }
+        public string PlayersIds { get; set; }
 
         /// <summary>
         /// ID управляющего комнатой.

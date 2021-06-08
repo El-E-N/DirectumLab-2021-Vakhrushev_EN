@@ -1,36 +1,36 @@
 import {Action} from 'redux';
 import {ActionType} from '../reducer';
-import {IRoom, IUser} from '../types';
-
-export interface ICardAction extends Action {
-  value: string;
-}
-
-export const updateVote = (roomId: string, value: string): ICardAction => {
-  return {
-    type: ActionType.ADD_SELECTED_CARD,
-    value,
-  };
-};
+import {IRoom} from '../types';
 
 export interface IRoomAction extends Action {
-  room: IRoom;
+  room: IRoom | null;
 }
 
-export const createRoom = (room: IRoom): IRoomAction => {
+export const updateRoom = (room: IRoom | null): IRoomAction => {
   return {
     type: ActionType.CREATE_ROOM,
     room,
   };
 };
 
-export interface IAddUserAction extends Action {
-  user: IUser;
+export interface IAddCurrentDiscussionIdAction extends Action {
+  currentDiscussionId: string;
 }
 
-export const addUser = (ourRoom: IRoom, user: IUser): IAddUserAction => {
+export const addCurrentDiscussionId = (currentDiscussionId: string): IAddCurrentDiscussionIdAction => {
   return {
-    type: ActionType.ADD_USER_INTO_ROOM,
-    user
+    type: ActionType.ADD_CURRENT_DISCUSSION_ID,
+    currentDiscussionId
   };
-};
+}
+
+export interface IChangeChoosedDiscussionAction extends Action {
+  choosedDiscussionId: string | null;
+}
+
+export const changeChoosedDiscussion = (choosedDiscussionId: string | null) => {
+  return {
+    type: ActionType.CHANGE_CHOOSED_DISCUSSION_ID,
+    choosedDiscussionId,
+  }
+}

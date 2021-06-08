@@ -11,7 +11,7 @@ namespace PlanPoker.Controllers
     /// </summary>
     [ApiController]
     [Route("/api/[controller]/[action]")]
-    public class CardController
+    public class CardController : ControllerBase
     {
         /// <summary>
         /// Сервисы карт.
@@ -31,6 +31,7 @@ namespace PlanPoker.Controllers
         /// Получение всех оценок.
         /// </summary>
         /// <returns>Все оценки.</returns>
+        [HttpGet]
         public IEnumerable<CardDTO> GetCards()
         {
             var cards = this.service.GetCards();

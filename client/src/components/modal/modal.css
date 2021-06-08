@@ -8,7 +8,6 @@
   display: flex;
   flex-direction: column;
   width: 715px;
-  min-height: 433px;
 
   background: #ffffff;
   transform: translate(-50%, -50%);

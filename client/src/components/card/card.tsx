@@ -1,14 +1,12 @@
 import * as React from 'react';
 import Input from '../input/input';
 import './card.css';
+import {IVote, ICard} from '../../store/types';
 
-interface ICard {
-  value: string;
-}
-
-interface IProps extends ICard {
-  // eslint-disable-next-line no-unused-vars
-  onClick(value: string): void;
+interface IProps {
+  updateVote(voteId: string, cardId: string): void;
+  card: ICard;
+  vote: IVote;
 }
 
 const coffeeIcon = <svg className={'card__coffee'} width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
@@ -17,13 +15,18 @@ const coffeeIcon = <svg className={'card__coffee'} width="44" height="44" viewBo
 
 const Card: React.FunctionComponent<IProps> = (props) => {
   const handleSetValue = () => {
-    props.onClick(props.value);
+    props.updateVote(props.vote.id, props.card.id);
   };
 
   return <label className="card">
-    <Input type={'radio'} name={'cards'} value={props.value} className={'card__input'} onClick={handleSetValue}/>
-    <div className="card__content">
-      {props.value === 'coffee' ? coffeeIcon : props.value}
+    <Input 
+      type={'radio'} 
+      name={'cards'} 
+      value={props.card.value} 
+      className={'card__input'}
+    />
+    <div className="card__content" onClick={handleSetValue}>
+      {props.card.value === 'coffee' ? coffeeIcon : props.card.value}
     </div>
   </label>;
 };

@@ -1,27 +1,42 @@
-export interface IUser {
+export interface IPlayer {
   id: string;
   name: string;
 }
 
 export interface IRoom {
   id: string;
+  hash: string;
   name: string;
-  cards: Array<string>;
-  selectedCard: string | null;
-  ownerId: string;
-  users: Array<IUser>;
-  storiesId: Array<string>;
+  cards: Array<ICard>;
+  hostId: string;
+  creatorId: string;
+  currentDiscussionId: string | null;
+  choosedDiscussionId: string | null;
+  players: Array<IPlayer>;
 }
 
-export interface IStory {
+export interface IDiscussion {
   id: string;
-  name: string | null;
-  average: number | null;
-  votes: { [key: string]: string }; // key - userId, value - vote
+  name: string;
+  average: number;
+  players: Array<IPlayer>;
+  voteArray: { [key: string]: IVote | null }; // key - userId, value - vote
+  startAt: string | null;
+  endAt: string | null;
+}
+
+export interface IVote {
+  id: string;
+  card: ICard | null;
+}
+
+export interface ICard {
+  id: string;
+  value: string;
 }
 
 export interface IRootState {
   room: IRoom | null;
-  stories: Array<IStory>;
-  user: IUser | null;
+  discussions: Array<IDiscussion>;
+  user: IPlayer | null;
 }

@@ -3,23 +3,27 @@ import Input from '../input/input';
 import './main__label.css';
 
 interface IProps {
+  updateValue(evt: React.ChangeEvent<HTMLInputElement>): void;
   title: string;
   placeHolder: string;
   name: string;
   id?: string;
 }
 
-const MainLabel: React.FunctionComponent<IProps> = (props) => {
-  return <label className="main__label">
-    {props.title}
-    <Input
-      id={props.id}
-      className={'main__input'}
-      type={'text'}
-      name={props.name}
-      placeHolder={props.placeHolder}
-    />
-  </label>;
-};
+class MainLabel extends React.Component<IProps, unknown> {
+  render() {
+    return <label className={'main__label'}>
+      {this.props.title}
+      <Input
+        onBlur={this.props.updateValue}
+        id={this.props.id}
+        className={'main__input'}
+        type={'text'}
+        name={this.props.name}
+        placeHolder={this.props.placeHolder}
+      />
+    </label>;
+  }
+}
 
 export default MainLabel;

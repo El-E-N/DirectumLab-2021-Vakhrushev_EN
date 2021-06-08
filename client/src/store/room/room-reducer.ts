@@ -1,25 +1,42 @@
 import {IRoom} from '../types';
-import {ICardAction, IRoomAction, IAddUserAction} from './room-action-creators';
+import {IRoomAction, IAddCurrentDiscussionIdAction, IChangeChoosedDiscussionAction} from './room-action-creators';
 import {ActionType} from '../reducer';
 
-export function reducer(state: IRoom | null = null, action: ICardAction | IRoomAction | IAddUserAction): IRoom | null {
+export function reducer(
+  state: IRoom | null = null, 
+  action: IRoomAction | IAddCurrentDiscussionIdAction | IChangeChoosedDiscussionAction
+): IRoom | null {
   switch (action.type) {
-    case ActionType.ADD_SELECTED_CARD:
-      const voteAction = action as ICardAction;
-      return state && {
-        ...state,
-        selectedCard: voteAction.value,
-      };
-    case ActionType.CREATE_ROOM:
+    case ActionType.CREATE_ROOM: {
       const roomAction = action as IRoomAction;
+
       return roomAction.room;
-    case ActionType.ADD_USER_INTO_ROOM:
-      const addUserAction = action as IAddUserAction;
-      return state && {
-        ...state,
-        users: [...state.users, addUserAction.user],
-      };
-    default:
+    }
+
+    case ActionType.ADD_CURRENT_DISCUSSION_ID: {
+      const addCurrentDiscussionIdAction = action as IAddCurrentDiscussionIdAction;
+
+      return state ? 
+        {
+          ...state,
+          currentDiscussionId: addCurrentDiscussionIdAction.currentDiscussionId,
+        } :
+        null;
+    }
+
+    case ActionType.CHANGE_CHOOSED_DISCUSSION_ID: {
+      const changeChoosedDiscussionAction = action as IChangeChoosedDiscussionAction;
+
+      return state ? 
+        {
+          ...state,
+          choosedDiscussionId: changeChoosedDiscussionAction.choosedDiscussionId
+        } :
+        null;
+    }
+    
+    default: {
       return state;
+    }
   }
 }

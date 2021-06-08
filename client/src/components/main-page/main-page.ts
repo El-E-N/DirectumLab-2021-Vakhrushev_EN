@@ -1,23 +1,89 @@
-import {IRootState} from '../../store/types';
+import {IDiscussion, IPlayer, IRootState} from '../../store/types';
 import {compose} from 'redux';
 import * as React from 'react';
+import * as discussionApi from '../../api/discussion-api';
 import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import MainPageView from './main-page-view';
 import {roomSelector} from '../../store/room/room-selectors';
 import {userSelector} from '../../store/user/user-selectors';
-
-interface IMain {
-  onShowModal(): void;
-}
+import {loadingRoom} from '../../store/room/room-operations';
+import {discussionByIdSelector, voteArraySelector, voteByPlayerSelector} from '../../store/discussions/discussions-selectors';
+import {updateVote as updateValueVote, createVote} from '../../store/discussions/discussions-operations';
+import {Dispatch} from 'redux';
+import {discussionsSelector} from '../../store/discussions/discussions-selectors';
+import {changeChoosedDiscussion} from '../../store/room/room-action-creators';
+import {updateUser as updateStoreUser} from '../../store/user/user-action-creators';
+import authService from '../../services/auth-service';
+import {loadingPlayerByTokenRequest} from '../../api/player-api';
 
 const mapStateToProps = (state: IRootState) => {
   const room = roomSelector(state);
-  const user = userSelector(state);
+  const player = userSelector(state);
+  const discussions = discussionsSelector(state);
+
+  const currentDiscussion = (room !== null && room.currentDiscussionId !== null && discussions !== null) ?
+    discussionByIdSelector(room.currentDiscussionId, discussions) :
+    null;
+
+  const vote = (player !== null && currentDiscussion !== null) ? 
+    voteByPlayerSelector(currentDiscussion, player) : 
+    null;
+
+  const voteArray = currentDiscussion && voteArraySelector(currentDiscussion);
+  
+  const getVote = (user: IPlayer) => {
+    return currentDiscussion !== null ? 
+      voteByPlayerSelector(currentDiscussion, user) :
+      null;
+  };
+
+  const discussionEndAt = currentDiscussion !== null ? 
+    currentDiscussion.endAt : 
+    null;
+
   return {
     room,
-    user
+    vote,
+    player,
+    discussions,
+    voteArray,
+    getVote,
+    discussionEndAt,
+    currentDiscussion
   };
 };
 
-export default compose<React.ComponentClass<IMain>>(withRouter, connect(mapStateToProps))(MainPageView);
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return {
+    loadingRoom: async (roomHash: string, choosedDiscussionId: string | null) => {
+      return dispatch(await loadingRoom(roomHash, choosedDiscussionId)(dispatch));
+    },
+
+    updateVote: async (voteId: string, cardId: string) => {
+      return dispatch(await updateValueVote(voteId, cardId)(dispatch));
+    },
+
+    createVote: async (roomHash: string, playerId: string, discussionId: string) => {
+      return dispatch(await createVote(roomHash, playerId, discussionId)(dispatch));
+    },
+
+    createDiscussion: async (roomHash: string) => {
+      const response = await discussionApi.createDiscussionRequest(roomHash, '');
+      authService.set(response.token);
+      return response;
+    },
+
+    changeChoosedDiscussion: (discussionId: string) => {
+      return dispatch(changeChoosedDiscussion(discussionId));
+    },
+
+    getPlayerByToken: async () => {
+      const response = await loadingPlayerByTokenRequest();
+      authService.set(response.token);
+      return dispatch(updateStoreUser({id: response.id, name: response.name}));
+    }
+  };
+};
+
+export default compose<React.ComponentClass>(withRouter, connect(mapStateToProps, mapDispatchToProps))(MainPageView);
