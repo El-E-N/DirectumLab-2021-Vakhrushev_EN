@@ -1,4 +1,4 @@
-import {baseUrl, options, IRoomDto} from './api-utils';
+import {baseUrl, post, IRoomDto} from './api-utils';
 
 const roomUrl = `${baseUrl}/room`;
 
@@ -8,7 +8,7 @@ export const createRoomRequest = async (
 ): Promise<IRoomDto> => {
   const response = await fetch(
     `${roomUrl}/create`,
-    {...options.POST,
+    {...post(),
     body: JSON.stringify({
       name: roomName,
       creatorId
@@ -22,7 +22,7 @@ export const loadingRoomRequest = async (
 ): Promise<IRoomDto | null> => {
   const response = await fetch(
     `${roomUrl}/getByHash`,
-    {...options.POST,
+    {...post(),
     body: JSON.stringify(hash)}
   );
   return response.status !== 204 ?
@@ -36,7 +36,7 @@ export const addPlayerIntoRoomRequest = async (
 ): Promise<IRoomDto> => {
   const response = await fetch(
     `${roomUrl}/addPlayer`,
-    {...options.POST,
+    {...post(),
     body: JSON.stringify({
       roomHash,
       playerId
@@ -51,7 +51,7 @@ export const removePlayerFromRoomRequest = async (
 ): Promise<IRoomDto> => {
   const response = await fetch(
     `${roomUrl}/removePlayer`,
-    {...options.POST,
+    {...post(),
     body: JSON.stringify({
       roomHash,
       playerId
@@ -66,7 +66,7 @@ export const changeHostRequest = async (
 ): Promise<IRoomDto> => {
   const response = await fetch(
     `${roomUrl}/ChangeHost`,
-    {...options.POST,
+    {...post(),
     body: JSON.stringify({
       roomHash,
       playerId: hostId
@@ -77,10 +77,11 @@ export const changeHostRequest = async (
 
 export const deleteRoomRequest = async (
   roomHash: string
-) => {
-  await fetch(
+): Promise<string> => {
+  const response = await fetch(
     `${roomUrl}/Delete`,
-    {...options.POST,
+    {...post(),
     body: JSON.stringify(roomHash)}
   );
+  return response.json();
 }

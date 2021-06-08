@@ -8,12 +8,14 @@ import MainPageView from './main-page-view';
 import {roomSelector} from '../../store/room/room-selectors';
 import {userSelector} from '../../store/user/user-selectors';
 import {loadingRoom} from '../../store/room/room-operations';
-import {updateUser} from '../../store/user/user-operations';
 import {discussionByIdSelector, voteArraySelector, voteByPlayerSelector} from '../../store/discussions/discussions-selectors';
 import {updateVote as updateValueVote, createVote} from '../../store/discussions/discussions-operations';
 import {Dispatch} from 'redux';
 import {discussionsSelector} from '../../store/discussions/discussions-selectors';
-import { changeChoosedDiscussion } from '../../store/room/room-action-creators';
+import {changeChoosedDiscussion} from '../../store/room/room-action-creators';
+import {updateUser as updateStoreUser} from '../../store/user/user-action-creators';
+import authService from '../../services/auth-service';
+import {loadingPlayerByTokenRequest} from '../../api/player-api';
 
 const mapStateToProps = (state: IRootState) => {
   const room = roomSelector(state);
@@ -58,10 +60,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
       return dispatch(await loadingRoom(roomHash, choosedDiscussionId)(dispatch));
     },
 
-    createUser: async (name: string | null) => {
-      return dispatch(await updateUser(name)(dispatch));
-    },
-
     updateVote: async (voteId: string, cardId: string) => {
       return dispatch(await updateValueVote(voteId, cardId)(dispatch));
     },
@@ -71,11 +69,19 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
     },
 
     createDiscussion: async (roomHash: string) => {
-      return await discussionApi.createDiscussionRequest(roomHash, '');
+      const response = await discussionApi.createDiscussionRequest(roomHash, '');
+      authService.set(response.token);
+      return response;
     },
 
     changeChoosedDiscussion: (discussionId: string) => {
       return dispatch(changeChoosedDiscussion(discussionId));
+    },
+
+    getPlayerByToken: async () => {
+      const response = await loadingPlayerByTokenRequest();
+      authService.set(response.token);
+      return dispatch(updateStoreUser({id: response.id, name: response.name}));
     }
   };
 };

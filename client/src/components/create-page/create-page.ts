@@ -14,6 +14,7 @@ import {discussionByIdSelector, discussionsSelector} from '../../store/discussio
 import { updateRoom } from '../../store/room/room-action-creators';
 import { updateDiscussions } from '../../store/discussions/discussions-action-creators';
 import { deleteVoteRequest } from '../../api/vote-api';
+import authService from '../../services/auth-service';
 
 const mapStateToProps = (state: IRootState) => {
   const player = userSelector(state);
@@ -41,7 +42,9 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
     },
 
     createDiscussion: async (roomHash: string) => {
-      return await discussionApi.createDiscussionRequest(roomHash, '');
+      const response = await discussionApi.createDiscussionRequest(roomHash, '');
+      authService.set(response.token);
+      return response;
     },
 
     clearDates: async (room: IRoom, playerId: string | null, discussion: IDiscussion) => {
@@ -53,7 +56,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
 
         if (vote !== null && vote !== undefined) {
           const voteId = vote.id;
-          await deleteVoteRequest(voteId);
+          const response: {token: string} = await deleteVoteRequest(voteId);
+          authService.set(response.token);
         }
       }
 

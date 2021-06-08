@@ -7,6 +7,7 @@ import {translateDtoDiscussionIntoDiscussion} from '../discussions/discussions-o
 import {updateDiscussions} from '../discussions/discussions-action-creators';
 import {IRoomDto} from '../../api/api-utils';
 import {updateUser} from '../user/user-action-creators';
+import authService from '../../services/auth-service';
 
 const getStoreDates = (roomDto: IRoomDto, choosedDiscussionId: string | null) => {
   const cards = translateDtoCardsIntoCard(roomDto.cards);
@@ -35,6 +36,7 @@ export const createRoom = (
 ): (dispatch: Dispatch) => Promise<IRoomAction> => {
   return async (dispatch: Dispatch) => {
     const roomDto = await roomApi.createRoomRequest(roomName, creatorId);
+    authService.set(roomDto.token);
     const cards = translateDtoCardsIntoCard(roomDto.cards);
 
     const room: IRoom = {
@@ -59,6 +61,7 @@ export const loadingRoom = (
 ): (dispatch: Dispatch) => Promise<IRoomAction> => {
   return async (dispatch: Dispatch) => {
     const roomDto = await roomApi.loadingRoomRequest(roomHash);
+    if (roomDto) authService.set(roomDto.token);
     
     if (roomDto !== null) {
       const storeDates = getStoreDates(roomDto, choosedDiscussionId);
@@ -85,11 +88,14 @@ export const removePlayerFromRoom = (
       dispatch(updateDiscussions([]));
 
       return dispatch(updateRoom(null));
+
     } else {
-      if (room.hostId === playerId)
+
+      if (room.hostId === playerId) 
         await roomApi.changeHostRequest(room.hash, room.players[1].id);
 
       const roomDto = await roomApi.removePlayerFromRoomRequest(room.hash, playerId);
+      authService.set(roomDto.token);
       const storeDates = getStoreDates(roomDto, room.choosedDiscussionId);
 
       dispatch(updateDiscussions(storeDates.discussions));

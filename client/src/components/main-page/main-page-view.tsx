@@ -8,6 +8,7 @@ import BrieflyResults from '../briefly-results/briefly-results';
 import History from '../history/history';
 import * as discussionApi from '../../api/discussion-api';
 import './main-page.css';
+import authService from '../../services/auth-service';
 
 interface IMatchParams {
   hash: string;
@@ -27,6 +28,7 @@ export interface IMainPageProps extends RouteComponentProps<IMatchParams> {
   createVote(roomHash: string, playerId: string, discussionId: string): void;
   createDiscussion(roomId: string): void;
   changeChoosedDiscussion(discussionId: string): void;
+  getPlayerByToken(): void;
 }
 
 export class MainPageView extends React.Component<IMainPageProps> {
@@ -41,8 +43,10 @@ export class MainPageView extends React.Component<IMainPageProps> {
     if (this.props.room === null)
       this.props.history.push(RoutePath.ERROR);
     else {
-      if (this.props.player === null)
+      if (this.props.player === null && authService.get() === '')
         this.props.history.push(`${RoutePath.INVITE}/${this.props.match.params.hash}`);
+      else
+        await this.props.getPlayerByToken();
       
       this.intervalId = await window.setInterval(() => {
           if (this.props.player !== null && this.props.room !== null)
@@ -59,7 +63,8 @@ export class MainPageView extends React.Component<IMainPageProps> {
 
   public async onCloseDiscussion() {
     if (this.props.room !== null && this.props.room.currentDiscussionId !== null) {
-      await discussionApi.closeDiscussionRequest(this.props.room.currentDiscussionId);
+      const response = await discussionApi.closeDiscussionRequest(this.props.room.currentDiscussionId);
+      authService.set(response.token);
 
       this.props.loadingRoom(this.props.room.hash, this.props.room?.choosedDiscussionId);
 

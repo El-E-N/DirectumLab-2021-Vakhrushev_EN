@@ -1,4 +1,4 @@
-import {baseUrl, options, IVoteDto} from './api-utils';
+import {baseUrl, post, IVoteDto} from './api-utils';
 
 const voteApi = `${baseUrl}/vote`;
 
@@ -9,7 +9,7 @@ export const createVoteRequest = async (
 ): Promise<IVoteDto> => {
   const response = await fetch(
     `${voteApi}/create`,
-    {...options.POST,
+    {...post(),
     body: JSON.stringify({
       roomHash,
       playerId,
@@ -25,7 +25,7 @@ export const changeCardRequest = async (
 ): Promise<IVoteDto> => {
   const response = await fetch(
     `${voteApi}/changeCard`,
-    {...options.POST,
+    {...post(),
     body: JSON.stringify({
       voteId,
       cardId
@@ -36,10 +36,11 @@ export const changeCardRequest = async (
 
 export const deleteVoteRequest = async (
   voteId: string
-) => {
-  await fetch(
+): Promise<{token: string}> => {
+  const response = await fetch(
     `${voteApi}/delete`,
-    {...options.POST,
+    {...post(),
     body: JSON.stringify(voteId)}
   );
+  return response.json();
 };

@@ -2,8 +2,9 @@ import {Dispatch} from 'redux';
 import * as voteApi from '../../api/vote-api';
 import {ICard, IDiscussion, IPlayer, IVote} from '../types';
 import { translateDtoCardIntoCard } from '../card';
-import { IDiscussionDto } from '../../api/api-utils';
+import { IDiscussionDto, IDiscussionDtoWithoutToken } from '../../api/api-utils';
 import {IUpdateVoteAction, updateVote as updateStoreVote} from './discussions-action-creators';
+import authService from '../../services/auth-service';
 
 const getAvg = (voteList: {[key: string]: IVote | null}) => {
   let count = 0;
@@ -23,7 +24,7 @@ const getAvg = (voteList: {[key: string]: IVote | null}) => {
     0;
 };
 
-export const translateDtoDiscussionIntoDiscussion = (discussionDto: IDiscussionDto, players: Array<IPlayer>) => {
+export const translateDtoDiscussionIntoDiscussion = (discussionDto: IDiscussionDtoWithoutToken, players: Array<IPlayer>) => {
   const allVote: { [key: string]: IVote | null } = {};
   const playerList: Array<IPlayer> = [];
   const {voteList} = discussionDto;
@@ -63,6 +64,7 @@ export const updateVote = (
 ): (dispatch: Dispatch) => Promise<IUpdateVoteAction> => {
   return async (dispatch: Dispatch) => {
     const voteDto = await voteApi.changeCardRequest(voteId, cardId);
+    authService.set(voteDto.token);
     const translatedCard = voteDto.card && translateDtoCardIntoCard(voteDto.card);
 
     const card: ICard | null = (voteDto.card && translatedCard) ? 
@@ -87,6 +89,7 @@ export const createVote = (
 ): (dispatch: Dispatch) => Promise<IUpdateVoteAction> => {
   return async (dispatch: Dispatch) => {
     const voteDto = await voteApi.createVoteRequest(roomHash, playerId, discussionId);
+    authService.set(voteDto.token);
     const translatedCard = voteDto.card && translateDtoCardIntoCard(voteDto.card);
 
     const card: ICard | null = voteDto.card && translatedCard ? 

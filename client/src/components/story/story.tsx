@@ -4,6 +4,7 @@ import Button from '../button/button';
 import {deleteDiscussionRequest} from '../../api/discussion-api';
 import {IPlayer, IRoom} from '../../store/types';
 import './story.css';
+import authService from '../../services/auth-service';
 
 interface IStory {
   name: string;
@@ -22,7 +23,8 @@ const Story: React.FunctionComponent<IStory> = (props) => {
   };
 
   const onDelete = async () => {
-    await deleteDiscussionRequest(props.discussionId);
+    const response: {token: string} = await deleteDiscussionRequest(props.discussionId);
+    authService.set(response.token);
     await props.loadingRoom(props.room.hash, props.room.choosedDiscussionId);
   }
 

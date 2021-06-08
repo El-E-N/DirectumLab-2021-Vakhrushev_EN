@@ -10,6 +10,11 @@ public class ElementForPlayerChangeName
     public string name { get; set; }
 }
 
+public class PlayerDtoWithToken : PlayerDTO
+{
+    public Guid Token { get; set; }
+}
+
 namespace PlanPoker.Controllers
 {
     /// <summary>
@@ -40,10 +45,18 @@ namespace PlanPoker.Controllers
         /// <returns>Объект игрока.</returns>
         /// <remarks>Не DTO, так как необходим токен.</remarks>
         [HttpPost]
-        public PlayerDTO Create([FromBody] string name)
+        public PlayerDtoWithToken Create([FromBody] string name)
         {
             var player = this.service.Create(name);
-            return PlayerDTOBuilder.Build(player);
+            var playerDto = PlayerDTOBuilder.Build(player);
+            var tokenGuid = Guid.Parse(player.Token.Replace(" ", string.Empty));
+            var result = new PlayerDtoWithToken()
+            {
+                Id = playerDto.Id,
+                Name = playerDto.Name,
+                Token = tokenGuid
+            };
+            return result;
         }
 
         /// <summary>
@@ -52,11 +65,34 @@ namespace PlanPoker.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPost]
-        public PlayerDTO GetById([FromBody] string id)
+        public PlayerDtoWithToken GetById([FromBody] string id)
         {
             var guid = Guid.Parse(id.Replace(" ", string.Empty));
             var player = this.service.GetById(guid);
-            return PlayerDTOBuilder.Build(player);
+            var playerDto = PlayerDTOBuilder.Build(player);
+            var tokenGuid = Guid.Parse(player.Token.Replace(" ", string.Empty));
+            var result = new PlayerDtoWithToken()
+            {
+                Id = playerDto.Id,
+                Name = playerDto.Name,
+                Token = tokenGuid
+            };
+            return result;
+        }
+
+        [HttpPost]
+        public PlayerDtoWithToken GetByToken()
+        {
+            var tokenGuid = Guid.Parse(Request.Headers["token"].ToString().Replace(" ", string.Empty));
+            var player = this.service.GetByToken(tokenGuid);
+            var playerDto = PlayerDTOBuilder.Build(player);
+            var result = new PlayerDtoWithToken()
+            {
+                Id = playerDto.Id,
+                Name = playerDto.Name,
+                Token = tokenGuid
+            };
+            return result;
         }
 
         /// <summary>
@@ -78,11 +114,20 @@ namespace PlanPoker.Controllers
         /// <param name="name">Новое имя игрока.</param>
         /// <returns>Объект DTO игрока с измененным именем.</returns>
         [HttpPost]
-        public PlayerDTO ChangeName(ElementForPlayerChangeName body)
+        public PlayerDtoWithToken ChangeName(ElementForPlayerChangeName body)
         {
             var playerGuid = Guid.Parse(body.playerId.Replace(" ", string.Empty));
+            var player = this.service.GetById(playerGuid);
             var updatingPlayer = this.service.ChangeName(playerGuid, body.name);
-            return PlayerDTOBuilder.Build(updatingPlayer);
+            var playerDto = PlayerDTOBuilder.Build(updatingPlayer);
+            var tokenGuid = Guid.Parse(updatingPlayer.Token.Replace(" ", string.Empty));
+            var result = new PlayerDtoWithToken()
+            {
+                Id = playerDto.Id,
+                Name = playerDto.Name,
+                Token = tokenGuid
+            };
+            return result;
         }
     }
 }

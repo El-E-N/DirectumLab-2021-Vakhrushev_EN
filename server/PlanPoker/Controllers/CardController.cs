@@ -11,7 +11,7 @@ namespace PlanPoker.Controllers
     /// </summary>
     [ApiController]
     [Route("/api/[controller]/[action]")]
-    public class CardController
+    public class CardController : ControllerBase
     {
         /// <summary>
         /// Сервисы карт.

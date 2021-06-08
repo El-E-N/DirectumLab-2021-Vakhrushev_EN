@@ -4,6 +4,7 @@ import Button from '../button/button';
 import './enter-story.css';
 import {IPlayer, IRoom} from '../../store/types';
 import * as discussionApi from '../../api/discussion-api';
+import authService from '../../services/auth-service';
 
 interface IProps {
   room: IRoom;
@@ -31,7 +32,8 @@ class EnterStory extends React.Component<IProps, IState> {
 
     const {room} = this.props;
     if (room.currentDiscussionId !== null && this.state.discussionName !== '') {
-      await discussionApi.setDiscussionNameRequest(room.currentDiscussionId, this.state.discussionName);
+      const response = await discussionApi.setDiscussionNameRequest(room.currentDiscussionId, this.state.discussionName);
+      authService.set(response.token);
       this.props.createDiscussion(room.hash);
       this.props.loadingRoom(room.hash, room.choosedDiscussionId);
     }

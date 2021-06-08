@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DataService.Models;
 using DataService.Repositories;
 
@@ -40,6 +41,8 @@ namespace PlanPoker.Services
         /// <param name="id">Id.</param>
         /// <returns>Игрок.</returns>
         public Player GetById(Guid id) => this.repository.Get(id);
+
+        public Player GetByToken(Guid token) => this.repository.GetItems().Where((player) => player.Token == token.ToString()).FirstOrDefault();
 
         /// <summary>
         /// Изменение имени игрока.

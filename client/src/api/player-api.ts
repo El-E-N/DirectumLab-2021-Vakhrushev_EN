@@ -1,4 +1,4 @@
-import {baseUrl, options, IPlayerDto} from './api-utils';
+import {baseUrl, post, IPlayerDto} from './api-utils';
 
 const playerUrl = `${baseUrl}/player`;
 
@@ -7,7 +7,7 @@ export const createPlayerRequest = async (
 ): Promise<IPlayerDto> => {
   const response = await fetch(
     `${playerUrl}/create`,
-    {...options.POST,
+    {...post(),
     body: JSON.stringify(name)}
   );
   return response.json();
@@ -18,8 +18,16 @@ export const loadingPlayerRequest = async (
 ): Promise<IPlayerDto> => {
   const response = await fetch(
     `${playerUrl}/getById`,
-    {...options.POST,
+    {...post(),
     body: JSON.stringify(id)}
+  );
+  return response.json();
+};
+
+export const loadingPlayerByTokenRequest = async (): Promise<IPlayerDto> => {
+  const response = await fetch(
+    `${playerUrl}/getByToken`,
+    post()
   );
   return response.json();
 };
@@ -29,7 +37,7 @@ export const getTokenRequest = async (
 ): Promise<string> => {
   const response = await fetch(
     `${playerUrl}/GetToken`,
-    {...options.POST,
+    {...post(),
     body: JSON.stringify(id)}
   );
   return response.json();
@@ -41,7 +49,7 @@ export const changeNameRequest = async (
 ): Promise<IPlayerDto> => {
   const response = await fetch(
     `${playerUrl}/ChangeName`,
-    {...options.POST,
+    {...post(),
     body: JSON.stringify({
       playerId: id,
       name

@@ -6,12 +6,18 @@ import Button from '../button/button';
 import {IRoom, IPlayer} from '../../store/types';
 import './invite-page.css';
 import { addPlayerIntoRoomRequest } from '../../api/room-api';
+import authService from '../../services/auth-service';
 
-export interface IProps extends RouteComponentProps {
+interface IMatchParams {
+  hash: string;
+}
+
+export interface IProps extends RouteComponentProps<IMatchParams> {
   room: IRoom | null;
   player: IPlayer | null;
   updateUser(name: string | null): void;
-  addUserIntoRoom(room: IRoom, newUser: IPlayer): void;
+  loadingRoom(hash: string, choosedDiscussionId: string | null): void;
+  getPlayerByToken(): void;
 }
 
 interface IState {
@@ -27,10 +33,14 @@ class InvitePageView extends React.Component<IProps, IState> {
     };
     this.props.updateUser(null);
   }
-  
-  componentDidMount() {
+
+  async componentDidMount() {
+    await this.props.loadingRoom(this.props.match.params.hash, null);
+
     if (this.props.room === null)
       this.props.history.push(`/error`);
+    if (this.props.player === null && authService.get() !== '')
+      await this.props.getPlayerByToken();
   }
 
   updateUserValue(evt: React.ChangeEvent<HTMLInputElement>) {
@@ -44,7 +54,10 @@ class InvitePageView extends React.Component<IProps, IState> {
     if (this.state.userName !== '' && this.props.room !== null) {
       await this.props.updateUser(this.state.userName);
 
-      this.props.player && await addPlayerIntoRoomRequest(this.props.room.hash, this.props.player.id);
+      if (this.props.player) {
+        const response = await addPlayerIntoRoomRequest(this.props.room.hash, this.props.player.id);
+        authService.set(response.token);
+      }
 
       this.props.history.push(`${RoutePath.MAIN}/${this.props.room.hash}`);
     }

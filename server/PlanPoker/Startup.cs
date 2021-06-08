@@ -1,6 +1,6 @@
-using DataService.Models;
 using DataService.Models.Contexts;
 using DataService.Repositories;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -37,6 +37,8 @@ namespace PlanPoker
         /// <param name="services">Сервисы.</param>
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllersWithViews();
+
             services.AddControllers();
 
             services.AddDbContext<RoomContext>(opt =>
@@ -82,6 +84,7 @@ namespace PlanPoker
             app.UseCors(builder => builder.AllowAnyHeader()
             .AllowAnyMethod()
             .AllowAnyOrigin()
+            .WithExposedHeaders("token")
             );
 
             app.UseEndpoints(endpoints =>

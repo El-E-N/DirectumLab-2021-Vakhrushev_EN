@@ -5,6 +5,7 @@ import Button from '../button/button';
 import {IDiscussion, IPlayer, IRoom} from '../../store/types';
 import {RoutePath} from '../../routes';
 import './create-page.css';
+import authService from '../../services/auth-service';
 
 export interface IProps extends RouteComponentProps {
   player: IPlayer | null;
@@ -29,13 +30,17 @@ class CreatePageView extends React.Component<IProps, IState> {
       userName: '',
       roomName: '',
     };
+
     this.props.createUser(null);
+
     if (this.props.room !== null && this.props.discussion !== null)
       this.props.clearDates(
         this.props.room, 
         this.props.player ? this.props.player.id : null, 
         this.props.discussion
-    );
+      );
+
+    authService.set('');
   }
 
   async handleSubmit(evt: React.FormEvent) {

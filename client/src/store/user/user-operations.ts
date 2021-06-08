@@ -7,7 +7,7 @@ export const updateUser = (name: string | null): (dispatch: Dispatch) => Promise
   return async (dispatch: Dispatch): Promise<IUserAction> => {
     const user = name ? await playerApi.createPlayerRequest(name) : null;
 
-    authService.set(user !== null ? user.id : '');
+    authService.set(user !== null ? user.token : '');
 
     return dispatch(updateStoreUser(user));
   };

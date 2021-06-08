@@ -1,4 +1,4 @@
-import {IDiscussionDto, baseUrl, options} from './api-utils';
+import {IDiscussionDto, baseUrl, post} from './api-utils';
 
 const discussionUrl = `${baseUrl}/discussion`;
 
@@ -8,7 +8,7 @@ export const createDiscussionRequest = async (
 ): Promise<IDiscussionDto> => {
   const response = await fetch(
     `${discussionUrl}/create`,
-    {...options.POST,
+    {...post(),
     body: JSON.stringify({
       roomHash,
       name
@@ -19,12 +19,13 @@ export const createDiscussionRequest = async (
 
 export const deleteDiscussionRequest = async (
   discussionId: string
-) => {
-  await fetch(
+): Promise<{token: string}> => {
+  const response = await fetch(
     `${discussionUrl}/delete`,
-    {...options.POST,
+    {...post(),
     body: JSON.stringify(discussionId)}
   );
+  return response.json();
 };
 
 export const closeDiscussionRequest = async (
@@ -32,7 +33,7 @@ export const closeDiscussionRequest = async (
 ): Promise<IDiscussionDto> => {
   const response = await fetch(
     `${discussionUrl}/close`,
-    {...options.POST,
+    {...post(),
     body: JSON.stringify(discussionId)}
   );
   return response.json();
@@ -44,7 +45,7 @@ export const setDiscussionNameRequest = async (
 ): Promise<IDiscussionDto> => {
   const response = await fetch(
     `${discussionUrl}/setName`,
-    {...options.POST,
+    {...post(),
     body: JSON.stringify({
       discussionId,
       name

@@ -1,13 +1,13 @@
-import {ICardDto} from '../api/api-utils';
+import {ICardDto, ICardDtoWithoutToken} from '../api/api-utils';
 import {ICard} from './types';
 
-export const translateDtoCardsIntoCard = (cardsDto: Array<ICardDto>) => {
+export const translateDtoCardsIntoCard = (cardsDto: Array<ICardDtoWithoutToken>) => {
   return cardsDto.map((card) => {
     return translateDtoCardIntoCard(card);
   });
 };
 
-export const translateDtoCardIntoCard = (card: ICardDto) => {
+export const translateDtoCardIntoCard = (card: ICardDtoWithoutToken) => {
   let tempCard: ICard;
 
   if (card.name === 'question') {
@@ -31,6 +31,6 @@ export const translateDtoCardIntoCard = (card: ICardDto) => {
       value: card.value!,
     };
   }
-  
+
   return tempCard;
 };
